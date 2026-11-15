@@ -134,14 +134,23 @@ Cada jugador tiene su refugio (datos de piezas por región, A4/B1). En un mundo 
 ### PvP 💡 (⬜ casi todo por decidir)
 Combates entre jugadores durante la exploración con las mecánicas de Tiny. Por decidir: zonas seguras o no, botín al morir, qué se pierde, protección del refugio mientras estás desconectado, límites contra abusos. Los «grupos hostiles» del punto 5 de §5 pueden ser jugadores reales o IA; se decide al llegar.
 
-### Forma del mundo online ⬜ (decisión que puede esperar)
+### Forma del mundo online ✅ (decidido el 15 nov: opción A a escala pequeña)
 - **Opción A, mundo compartido persistente:** un servidor mantiene un mundo por semilla donde todos coinciden (decenas de jugadores). Más cercano al sueño del usuario; exige servidor siempre encendido (coste y mantenimiento).
 - **Opción B, mundo propio + encuentros:** cada jugador tiene su mundo y refugio, y se cruza con otros en zonas/expediciones compartidas. Más barato y más fácil de proteger.
-- **Recomendación de Claude 💡: A a escala pequeña.** Cada partida es un mundo compartido por un grupo reducido (de 1 jugador a unas 8-20 personas, amigos o invitados). Encaja con «varias partidas» y muerte por partida; el servidor solo gasta recursos mientras la partida está activa; se ven pocos jugadores a la vez (mejor para el móvil); es más fácil de proteger contra trampas y abusos; y una partida con 1 jugador es idéntica al juego offline. Una partida pública gigante estilo MMO queda como posibilidad futura.
+- **Decidido por el usuario ✅: A a escala pequeña.** Cada partida es un mundo compartido por un grupo reducido (de 1 jugador a unas 8-20 personas, amigos o invitados). Encaja con «varias partidas» y muerte por partida; el servidor solo gasta recursos mientras la partida está activa; se ven pocos jugadores a la vez (mejor para el móvil); es más fácil de proteger contra trampas y abusos; y una partida con 1 jugador es idéntica al juego offline. Una partida pública gigante estilo MMO queda como posibilidad futura.
 - La preparación técnica (principios de arriba) es LA MISMA para ambas, por eso la decisión puede esperar. El P2P de PeerJS del otro proyecto sirve para 2 jugadores cooperativos, no para PvP con muchos jugadores.
 
 ### Muerte en online ✅ (decisión del usuario, 15 nov)
-Muerte total POR PARTIDA: el jugador puede tener varias partidas a la vez; cuando muere en una, esa partida se acaba para él y las demás no se tocan. Esto sustituye a la propuesta anterior de conservar el refugio. En solitario, la partida y su mundo se borran. En una partida compartida, qué pasa con el refugio del jugador muerto (⬜; propuesta 💡: queda como ruina saqueable para los demás) se decide en F3/F4.
+Muerte total POR PARTIDA: el jugador puede tener varias partidas a la vez; cuando muere en una, esa partida se acaba para él y las demás no se tocan. Esto sustituye a la propuesta anterior de conservar el refugio. En solitario, la partida y su mundo se borran. En una partida compartida, qué pasa con el refugio del jugador muerto ✅ (decisión del usuario): queda como ruina que los demás pueden saquear; qué botín queda y cuánto dura se afina en F3/F4.
 
 ### Estructura de partidas 💡
 Cada partida = un mundo con su semilla, su guardado y su simulación. En solitario es un servidor de un jugador. «Mis partidas» lista todas las que tiene el usuario.
+
+### Refugio con el dueño desconectado 💡 (pregunta del usuario; propuesta pendiente de confirmar)
+Problema: otro jugador encuentra tu refugio cuando no estás conectado. Propuesta, en capas (todas son datos y reglas de la simulación, se aplican en F3/F4):
+1. **Lo defienden tus NPC.** Los compañeros con rol de soldado y las trampas, vallas y torres defienden el refugio mientras no estás (la simulación del servidor los mantiene activos). Encaja con el pilar de los compañeros y con la «presión del refugio» (§5).
+2. **No se puede arrasar por completo.** Con el dueño fuera, las piezas se dañan pero no se eliminan del todo, y los NPC propios no se pueden matar ni secuestrar.
+3. **Saqueo limitado.** Solo se puede robar lo que está en las cajas de almacén, hasta un máximo por asalto, y asaltar lleva tiempo y hace ruido (atrae zombis). Lo que el dueño lleva encima o tiene en su cama está a salvo.
+4. **Enfriamiento.** Tras un asalto exitoso, ese refugio no puede ser asaltado otra vez durante un tiempo.
+5. **Informe al volver.** El dueño ve qué pasó (quién, cuándo, qué se llevó) y puede desquitarse.
+6. **Regla de cada partida.** Al crear la partida se elige «refugios protegidos si el dueño está desconectado» (nadie puede entrar) o «refugios abiertos» (con las capas de arriba). Valor por defecto por decidir (⬜); recomendación: abiertos con las capas 1-5.
