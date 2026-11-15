@@ -2,13 +2,13 @@
 
 Leído: `CLAUDE.md`, `docs/DISENO.md`, `docs/ROADMAP.md`, `docs/TINY_ACTUAL.md`, `docs/MODELOS_MESHY.md`. No se ha tocado código ni se ha rediseñado nada ✅. Las cifras propuestas aquí son 💡 (punto de partida a medir), no decisiones.
 
-## Preguntas al usuario (lo único que no puede decidir Claude)
-| # | Pregunta | Recomendación |
+## Decisiones del usuario (15 nov 2026) ✅ · Sonnet las pasa a `docs/DISENO.md`, `CLAUDE.md` y `docs/ROADMAP.md`
+| # | Pregunta | Decisión ✅ |
 |---|---|---|
-| P1 | ¿La luz y la niebla pueden cambiar con la hora y el clima? Hoy chocan dos ✅ (ver C1) | Sí, como excepción escrita (igual que las oleadas), con la noche de Tiny como punto fijo del ciclo |
-| P2 | ¿Suelo plano como Tiny o con relieve? (ver C2) | Plano. El relieve obliga a rehacer apuntado, balas y granadas |
-| P3 | ¿La munición pasa a ser limitada? ¿Desde cuándo? (ver C3) | Sí, desde A5, cuando ya hay botín |
-| P4 | ¿Cuál es el móvil de referencia para medir? | Apuntar modelo en `coordinacion/mediciones/` antes de A0 |
+| P1 | ¿La luz y la niebla pueden cambiar con la hora y el clima? (C1) | **Sí.** Excepción a la norma 1, como las oleadas; la noche de Tiny es un punto fijo del ciclo |
+| P2 | ¿Suelo plano o con relieve? (C2) | **Plano.** Se quita «relieve suave» de A2 |
+| P3 | ¿Munición limitada, y desde cuándo? (C3) | **Sí, desde A5**, cuando ya hay botín |
+| P4 | ¿Móvil de referencia para medir? | **iPhone 14** |
 
 ## 1. Contradicciones
 | # | Dónde | Choque | Solución concreta |
