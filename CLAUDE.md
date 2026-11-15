@@ -18,6 +18,7 @@ Leer `coordinacion/LEEME.md`: reparto de tareas, ramas y peticiones. Fable NO ed
 - Responder SIEMPRE en español, breve y directo: el usuario juega y trabaja desde el móvil y no es técnico. Claude decide las soluciones técnicas; si hay que elegir, ofrecer pocas opciones fáciles de tocar y una recomendación.
 - Un subpaso por sesión y un ZIP actualizado (con los documentos) tras CADA subpaso. Los subpasos no se agrandan ni se juntan.
 - Antes de tocar código: decir el esfuerzo (LOW o MEDIUM), qué se va a hacer y cuándo podrá verlo en el móvil. Esperar el «hazlo».
+- **Explicación fácil (regla permanente del usuario):** cada vez que se implemente algo, explicarle en un resumen corto y muy fácil de entender, sin tecnicismos: (1) qué se ha hecho, (2) qué cambia en lo que él verá o jugará, (3) cómo probarlo en el móvil. Máximo ~6 líneas, como si se lo contaras a alguien que no programa. El detalle técnico va aparte, en `docs/SESION.md`, que empieza cada entrada con ese mismo «Resumen fácil».
 - Al terminar: qué se hizo, qué se comprobó y qué queda pendiente. No dar por verificado lo que no se ha comprobado.
 - No sobreingenierizar, no ampliar tareas, no cambiar nada no pedido. Nada destructivo sin autorización (lo que se retira va a `docs/archivo/`).
 - Escribir código pronto: no gastar la sesión leyendo y planificando.

@@ -3,3 +3,4 @@
 | Fecha | Quién | Qué | Medida en el móvil (fps / peor cuadro) |
 |---|---|---|---|
 | 2026-11-15 | Sonnet | Diseño inicial, documentos, roadmap y estructura de coordinación. Sin código nuevo | — |
+| 2026-11-15 | Sonnet | Regla de explicación fácil añadida a CLAUDE.md; plan de créditos de Meshy (el usuario tiene 2 000) | — |

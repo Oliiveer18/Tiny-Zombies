@@ -58,3 +58,9 @@ Los pasos que no son de arte (mundo por regiones, semilla, guardado, necesidades
 4. NPC (cuerpo base compartido con ropa distinta) y jugador 2.
 5. Piezas del refugio y decorado de los primeros lugares abiertos (gasolinera, granja, camión volcado, campamento), según el hito A5/B1 del `ROADMAP.md`.
 No generar todo de golpe: cada modelo se decide cuando su paso del ROADMAP está cerca.
+
+## Cuándo empezar y presupuesto de créditos 💡 (15 nov 2026)
+- **Empezar ya**, en paralelo al código. El usuario tiene plan de pago con 2 000 créditos.
+- **Costes de referencia de Meshy** (página de ayuda de Meshy, «solo orientativos»; mirar siempre la cotización en pantalla antes de generar): Image to 3D 25 (Meshy 7), 20 (Meshy 6) o 10 (Meshy 6 Lite); Texture 10 (2K/4K) o 15 (8K); Retexture 10; Smart Topology 5. El coste del rigging y de las animaciones NO aparece en esa página: comprobarlo en la app antes de la prueba.
+- **Orden:** 1) prueba de tubería con el protagonista y el zombi normal (con 2-3 intentos cada uno); 2) si encajan en Tiny y en el móvil, el resto por prioridad de la lista de modelos.
+- **Reglas para no malgastar créditos:** máximo 2-3 generaciones por modelo; elegir la mejor imagen de referencia antes de generar; no texturizar en 8K; no generar un modelo hasta que su paso del ROADMAP esté cerca; apuntar en `coordinacion/REGISTRO.md` los créditos que quedan tras cada tanda.
