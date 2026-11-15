@@ -7,9 +7,9 @@ El usuario trabaja con DOS chats distintos que no se ven entre sí: uno con **So
 - **Fable:** escribe documentos (diseños técnicos, revisiones, simuladores de equilibrio). **No edita código.** Una petición = una sesión = un archivo en `RESPUESTAS_FABLE/`.
 - **Usuario:** decide, prueba en el móvil y pone capturas de `?debug` en `mediciones/`.
 
-## Ramas (forma única de entrega 💡: ramas en GitHub; el ZIP solo si el usuario lo pide)
+## Ramas (entrega ✅: todo en GitHub y se publica en `main`; nada de ZIP)
 - `main`: siempre compila (lo comprueba `.github/workflows/build.yml`).
-- `sonnet/<subpaso>`: trabajo de código; se fusiona a `main` solo si compila y el usuario mide bien en el móvil.
+- `sonnet/<subpaso>`: opcional, para trabajo de código largo o arriesgado; en subpasos pequeños Sonnet publica directo en `main` si compila.
 - `fable/<tema>`: solo documentos; se fusionan sin problema.
 
 ## Reglas para Fable (ahorrar tokens)

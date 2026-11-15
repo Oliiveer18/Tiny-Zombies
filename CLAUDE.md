@@ -16,7 +16,7 @@ Leer `coordinacion/LEEME.md`: reparto de tareas, ramas y peticiones. Fable NO ed
 
 ## Reglas de trabajo del usuario (heredadas de su proyecto Endless Aftermath; vigentes salvo que él diga otra cosa)
 - Responder SIEMPRE en español, breve y directo: el usuario juega y trabaja desde el móvil y no es técnico. Claude decide las soluciones técnicas; si hay que elegir, ofrecer pocas opciones fáciles de tocar y una recomendación.
-- Un subpaso por sesión. **Entrega (forma única, 💡 recomendada por Claude el 15 nov):** una rama `sonnet/<subpaso>` en GitHub con el código y los documentos actualizados; se fusiona a `main` solo si compila y el usuario lo prueba bien en el móvil. El ZIP NO es una entrega: solo se genera si el usuario lo pide. Los subpasos no se agrandan ni se juntan.
+- Un subpaso por sesión. **Entrega (forma única ✅, decidida por el usuario el 15 nov):** todo en GitHub y publicado en `main` (código y documentos actualizados tras cada subpaso, solo si `npm run build` compila). NO se envían ZIP. Los subpasos no se agrandan ni se juntan.
 - Antes de tocar código: decir el esfuerzo (LOW o MEDIUM), qué se va a hacer y cuándo podrá verlo en el móvil. Esperar el «hazlo».
 - **Explicación fácil (regla permanente del usuario):** cada vez que se implemente algo, explicarle en un resumen corto y muy fácil de entender, sin tecnicismos: (1) qué se ha hecho, (2) qué cambia en lo que él verá o jugará, (3) cómo probarlo en el móvil. Máximo ~6 líneas, como si se lo contaras a alguien que no programa. El detalle técnico va aparte, en `docs/SESION.md`, que empieza cada entrada con ese mismo «Resumen fácil».
 - Al terminar: qué se hizo, qué se comprobó y qué queda pendiente. No dar por verificado lo que no se ha comprobado.
