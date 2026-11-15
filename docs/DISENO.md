@@ -22,7 +22,8 @@ Procedencia: conversación del 15 nov 2026 + documentos del otro proyecto (`refe
 | Movimientos tácticos | Sí, los del vídeo de referencia: correr táctico, saltar obstáculos, deslizarse, agacharse (paso A8) | ✅ |
 | Cuerpos y skins | Un cuerpo base con esqueleto y animaciones compartidos, varias skins para jugador y NPC; accesorios aparte; colores propios distintos de la referencia | ✅ (detalle 💡) |
 | Oli y Lali | NO existen en este juego (son de otros proyectos): ni jugadores, ni NPC, ni nombres, ids ni modelos | ✅ |
-| Personajes y modelos | Todos con Meshy (estilo Tiny); no se crean por código ni se empieza con cápsulas; se espera a tenerlos (`MODELOS_MESHY.md`). Protagonista: sin nombre ni aspecto todavía; ids `j1` y `j2` | ✅ (aspecto ⬜) |
+| Personajes y modelos | Todos con Meshy (estilo Tiny); no se crean por código ni se empieza con cápsulas (`MODELOS_MESHY.md`). NO hay un protagonista fijo: cada jugador crea el suyo (cuerpo base + skin + accesorios) 💡; ids de jugador por perfil, no `j1`/`j2` fijos | ✅ (creador 💡) |
+| Online | Objetivo ✅: cada jugador monta su refugio y hay combates contra otros jugadores durante la exploración. Se implementa LO ÚLTIMO, pero todo se diseña ya para ello (§14) | ✅ |
 
 ## 1. Visión 💡
 Supervivencia de mundo abierto en un apocalipsis zombi, de movimiento y disparo directos como Tiny. Lo central es tu refugio: lo montas desde casi nada, lo haces crecer con compañeros rescatados y lo mantienes con comida y agua. El mundo no se adapta a ti: cada lugar es lo que es, y la tensión sale de explorar, del ruido que haces y de cuánto te expones al crecer. Solo o en cooperativo (2 móviles) más adelante.
@@ -98,7 +99,7 @@ Cada una es una capa independiente de datos. Orden de trabajo sugerido: 1-3 prim
 - Agua: pozo, río, lago, lluvia; la turbia se limpia en un purificador automático que construye el jugador. Más adelante bomba y tubería.
 - Comida: huerto, pesca, caza, corral, botín.
 - Inventario: pocos huecos en mano + mochila con peso. Cifras ⬜ (se ajustan con pruebas).
-- Muerte ✅: total. Se acaba la partida (y se borra el mundo, como en el otro proyecto). Se muestra el tiempo sobrevivido y el récord.
+- Muerte ✅ (para el juego en solitario): total. Se acaba la partida (y se borra el mundo, como en el otro proyecto). Se muestra el tiempo sobrevivido y el récord. ⚠️ Con online hay que redecidirlo: ver §14.
 
 ## 10. Vehículos y animales (después) 💡
 Vehículos (bici, moto, coche, camioneta, barca) abandonados y averiados, con combustible finito y ruido. Animales de granja y salvajes con id por región; perro domesticable. Detalle en `MUNDO.md` §3b-3c.
@@ -111,3 +112,31 @@ Ver las normas 2 y 3 de `CLAUDE.md`. Presupuestos: ≥ 58 fps, peor cuadro ≤ 2
 
 ## 13. Qué NO se trae del otro proyecto
 Su motor HD-2D por casillas, el suelo con shader y el horneado por chunk, los assets pixelados, Three r128 en un solo archivo, los 20 pasos de su hoja de ruta tal cual, el autoapuntado, «el mundo se endurece con el tiempo» y las zonas por distancia al claro. Se conservan como consulta en `referencia_carretera_zombi/`.
+
+## 14. Online (se implementa lo último; se diseña ya) ✅ objetivo · 💡 el resto
+Objetivo del usuario ✅: juego online en el que cada jugador monta su propio refugio y hay combates contra otros jugadores durante la exploración. Se hará al final, pero todo lo anterior se construye sabiéndolo.
+
+### Principios que valen desde el primer subpaso 💡
+1. **Simulación separada del dibujo.** Toda la lógica (movimiento, disparos, daño, zombis, NPC, comida, construcción, reloj) vive en módulos sin dibujo ni DOM. El dibujo solo lee su estado.
+2. **Órdenes, no cambios directos.** El jugador y la IA solo emiten órdenes (`mover`, `disparar`, `construir`…) con el id del jugador; la simulación las aplica. El juego offline es «un servidor de un solo jugador»: más adelante la misma simulación corre en un servidor y los móviles solo mandan órdenes y reciben estado.
+3. **Determinismo y semilla** (norma 3): mismo mundo para todos con la misma semilla; las órdenes se pueden repetir y validar.
+4. **Estado serializable con id** (jugadores, NPC, zombis, piezas, vehículos). Guardado por cambios sobre lo generado (A4), que servirá también como persistencia del servidor.
+5. **Tiempo de juego propio**, no el reloj del móvil.
+6. **Nada de confiar en el cliente** para lo que importe en PvP (daño, inventario, posición): se valida en la simulación. Se evita dejar lógica de juego en el código de dibujo o de entrada.
+
+### Protagonista y personajes 💡
+No hay un protagonista único. Cada jugador crea el suyo con un creador sencillo: elegir entre 1-3 cuerpos base y combinar skins (ropa/colores) y accesorios. Es el mismo sistema de cuerpo base + skins + accesorios sobre un esqueleto compartido de `MODELOS_MESHY.md`; los demás jugadores lo ven tal cual. Los datos del aspecto van en el perfil del jugador (serializables, ligeros de enviar por red). En un primer momento (solo) se empieza con 3-4 combinaciones prefijadas.
+
+### Refugios 💡
+Cada jugador tiene su refugio (datos de piezas por región, A4/B1). En un mundo compartido, cada refugio tiene su ubicación en el mapa. Si otros jugadores pueden asaltarlo, robar o destruirlo es una decisión de diseño pendiente (⬜).
+
+### PvP 💡 (⬜ casi todo por decidir)
+Combates entre jugadores durante la exploración con las mecánicas de Tiny. Por decidir: zonas seguras o no, botín al morir, qué se pierde, protección del refugio mientras estás desconectado, límites contra abusos. Los «grupos hostiles» del punto 5 de §5 pueden ser jugadores reales o IA; se decide al llegar.
+
+### Forma del mundo online ⬜ (decisión que puede esperar)
+- **Opción A, mundo compartido persistente:** un servidor mantiene un mundo por semilla donde todos coinciden (decenas de jugadores). Más cercano al sueño del usuario; exige servidor siempre encendido (coste y mantenimiento).
+- **Opción B, mundo propio + encuentros:** cada jugador tiene su mundo y refugio, y se cruza con otros en zonas/expediciones compartidas. Más barato y más fácil de proteger.
+- La preparación técnica (principios de arriba) es LA MISMA para ambas, por eso la decisión puede esperar. El P2P de PeerJS del otro proyecto sirve para 2 jugadores cooperativos, no para PvP con muchos jugadores.
+
+### Muerte en online ⬜
+La «muerte total que borra el mundo» (§9) no encaja con refugios persistentes en un mundo compartido. Propuesta 💡 para decidir: al morir se pierde el personaje y lo que llevas encima, y el refugio se conserva (con sus NPC o parte de ellos). Pendiente de respuesta del usuario.

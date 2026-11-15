@@ -2,8 +2,8 @@
 
 ### 001 · Revisión del diseño completo · estado: PENDIENTE
 - Objetivo: encontrar contradicciones, huecos y riesgos antes de programar nada.
-- Leer: `CLAUDE.md`, `docs/DISENO.md`, `docs/ROADMAP.md`, `docs/TINY_ACTUAL.md` y `docs/MODELOS_MESHY.md`. No leer `docs/referencia_carretera_zombi/` salvo que haga falta para aclarar una duda concreta.
-- Entregar: `RESPUESTAS_FABLE/001_revision_diseno.md`, máximo 3 páginas: (1) contradicciones; (2) huecos que bloquean algún paso; (3) riesgos de rendimiento y determinismo; (4) cambios propuestos al orden del ROADMAP, con motivo.
+- Leer: `CLAUDE.md`, `docs/DISENO.md` (incluida la §14, online), `docs/ROADMAP.md`, `docs/TINY_ACTUAL.md` y `docs/MODELOS_MESHY.md`. No leer `docs/referencia_carretera_zombi/` salvo que haga falta para aclarar una duda concreta.
+- Entregar: `RESPUESTAS_FABLE/001_revision_diseno.md`, máximo 3 páginas: (1) contradicciones; (2) huecos que bloquean algún paso; (3) riesgos de rendimiento y determinismo; (4) cambios propuestos al orden del ROADMAP, con motivo; (5) si la arquitectura de los hitos A-E permite llegar al online (§14) sin rehacer, y qué habría que cambiar ya para evitarlo.
 - Criterio de éxito: cada punto cita el archivo y la sección, y propone una solución concreta.
 - Fuera de alcance: escribir código, rediseñar decisiones marcadas ✅ por el usuario (solo señalar si chocan entre sí).
 

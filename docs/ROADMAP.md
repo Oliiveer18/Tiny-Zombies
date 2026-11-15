@@ -69,6 +69,16 @@ Objetivo: explorar un mundo infinito, disparar, saquear, beber y comer, y no mor
 | E4 Coop de 2 móviles | MEDIUM ×2 | Misma partida (los ids y el estado ya serializable lo permiten) |
 | E5 Pulido y rendimiento | MEDIUM | Ajuste final de cifras, equilibrio y fps en varios móviles |
 
+## Hito F · Online (el último; ≈ 5 subpasos, por definir con Fable al llegar)
+Todo lo anterior se construye ya con los principios de `DISENO.md` §14 (simulación separada del dibujo, órdenes con id, estado serializable), así que F no obliga a reescribir.
+| Paso | Esfuerzo | Qué incluye |
+|---|---|---|
+| F1 Servidor y red | MEDIUM ×2 | Ejecutar la simulación en un servidor; los móviles mandan órdenes y reciben estado; decidir opción A o B (`DISENO.md` §14). Sustituye a E4 (coop de 2 móviles), que pasa a ser el primer caso de F |
+| F2 Cuentas, perfil y creador de personaje | MEDIUM | Identidad del jugador, aspecto (cuerpo base + skin + accesorios) guardado en el perfil |
+| F3 Refugios por jugador | MEDIUM | Cada jugador con su refugio y su ubicación; persistencia en servidor |
+| F4 PvP | MEDIUM | Combate entre jugadores con validación en servidor; reglas de botín, zonas y protección |
+| F5 Seguridad y pulido | MEDIUM | Anti-trampas básico, límites, reconexión, equilibrio |
+
 ## Total aproximado
 Unos 41 subpasos (A 11 · B 9 · C 7 · D 7 · E 6). Lo jugable de verdad llega con A y B (≈ 20). C, D y E añaden profundidad y se pueden recortar o reordenar sin romper lo anterior.
 
