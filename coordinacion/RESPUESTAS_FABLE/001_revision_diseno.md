@@ -9,6 +9,7 @@ Leído: `CLAUDE.md`, `docs/DISENO.md`, `docs/ROADMAP.md`, `docs/TINY_ACTUAL.md`,
 | P2 | ¿Suelo plano o con relieve? (C2) | **Plano.** Se quita «relieve suave» de A2 |
 | P3 | ¿Munición limitada, y desde cuándo? (C3) | **Sí, desde A5**, cuando ya hay botín |
 | P4 | ¿Móvil de referencia para medir? | **iPhone 14** |
+| P5 | Cooperativo | **Ahora mismo NO hay cooperativo.** El juego es de un jugador. No se diseña, prepara ni programa nada de coop por ahora: H12 y la parte de coop de D1 quedan aplazadas, sin decidir, hasta que el usuario lo pida. De D1 solo vale ya lo que simplifica: el combate no necesita ser determinista |
 
 ## 1. Contradicciones
 | # | Dónde | Choque | Solución concreta |
