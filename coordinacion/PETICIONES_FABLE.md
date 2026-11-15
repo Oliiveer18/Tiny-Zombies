@@ -1,6 +1,6 @@
 # PETICIONES PARA FABLE (las redacta Sonnet; ver LEEME.md)
 
-### 001 · Revisión del diseño completo · estado: PENDIENTE
+### 001 · Revisión del diseño completo · estado: HECHA (ver `RESPUESTAS_FABLE/001_revision_diseno.md`)
 - Objetivo: encontrar contradicciones, huecos y riesgos antes de programar nada.
 - Leer: `CLAUDE.md`, `docs/DISENO.md` (incluida la §14, online), `docs/ROADMAP.md`, `docs/TINY_ACTUAL.md` y `docs/MODELOS_MESHY.md`. No leer `docs/referencia_carretera_zombi/` salvo que haga falta para aclarar una duda concreta.
 - Entregar: `RESPUESTAS_FABLE/001_revision_diseno.md`, máximo 3 páginas: (1) contradicciones; (2) huecos que bloquean algún paso; (3) riesgos de rendimiento y determinismo; (4) cambios propuestos al orden del ROADMAP, con motivo; (5) si la arquitectura de los hitos A-E permite llegar al online (§14) sin rehacer, y qué habría que cambiar ya para evitarlo.
