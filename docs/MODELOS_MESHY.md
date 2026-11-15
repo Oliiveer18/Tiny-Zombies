@@ -12,6 +12,7 @@ Ver `REFERENCIA_VISUAL.md`: figura compacta (cabeza grande), silueta legible des
 ## Sistema de cuerpos y skins ✅ (decisión del usuario; detalle 💡)
 Un cuerpo base con el mismo esqueleto y las mismas animaciones, y varias skins, para el jugador y los NPC. Los zombis comparten el esqueleto con cuerpos propios.
 - **Esqueleto único** (mismos huesos y nombres) para jugador, NPC y zombis: las animaciones se hacen una vez y valen para todos. Es lo que más ahorra.
+- **Jugadores y NPC con cuerpos distintos ✅:** los personajes que crean los jugadores no deben parecerse a los NPC. Cuerpos base y estilo propios para cada grupo (por ejemplo 2-3 cuerpos de jugador y 2-3 de NPC), todos sobre el MISMO esqueleto. Los NPC también se distinguen en pantalla con un marcador.
 - **1 a 3 cuerpos base** (por ejemplo delgado, normal y corpulento) para que los NPC no parezcan clones.
 - **Skins** = ropa y colores distintos sobre el mismo cuerpo: por re-texturizado en Meshy (cuesta créditos; comprobar en tu plan) o por teñido de zonas.
 - **Accesorios** como objetos aparte pegados a un hueso: gorros, cascos, mochilas, chalecos, gafas, herramientas. Son baratos y diferencian mucho a cada NPC y a cada rol.

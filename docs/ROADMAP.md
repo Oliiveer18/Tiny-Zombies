@@ -20,10 +20,10 @@ Objetivo: explorar un mundo infinito, disparar, saquear, beber y comer, y no mor
 | A1 Regiones | MEDIUM | Mundo infinito por semilla: carga y descarga de regiones, niebla en el borde, rejilla espacial para colisiones, origen flotante; Tiny funcionando igual |
 | A2 Terreno y agua | MEDIUM | Tipos de región (campo, bosque, pueblo, carretera, costa), relieve suave, lagos y ríos con orilla, props instanciados por región. Suelo con marcas pintadas y desgaste y objetos apilados (según `REFERENCIA_VISUAL.md`) |
 | A3 Zombis colocados | MEDIUM | Se quitan las oleadas; zombis por tipo de región (dormidos, deambulando, grupos); alerta por vista y ruido; ventaja ligera inicial en el arranque |
-| A4 Guardado | MEDIUM | Solo cambios por región, con versión (zombis muertos, saqueos). Se hace aquí porque ya hay cambios que guardar |
+| A4 Guardado | MEDIUM | Solo cambios por región, con versión (zombis muertos, saqueos); un guardado independiente por partida (el jugador puede tener varias; al morir se acaba esa partida). Se hace aquí porque ya hay cambios que guardar |
 | A5 Lugares abiertos y botín | MEDIUM ×2 | Plantillas de datos; primeros lugares abiertos (gasolinera, granja, camión volcado, campamento); botín finito; las granadas pasan a ser botín |
 | A6 Necesidades | MEDIUM | Hambre, sed, mochila con peso, pozo y agua de lagos; comida de botín. Muerte total y pantalla de fin con tiempo sobrevivido |
-| A7 Pantallas mínimas | LOW | Título (Continuar / Nueva partida), pausa, HUD completo |
+| A7 Pantallas mínimas | LOW | Título con «Mis partidas» (varias partidas guardadas, cada una con su mundo), pausa, HUD completo |
 | A8 Movimientos tácticos ✅ | MEDIUM ×2 | Los de la referencia: correr táctico, saltar obstáculos bajos, deslizarse, agacharse (más sigilo, menos ruido). Lo prepara A2: cada obstáculo lleva `altura` y `saltable`. En el móvil: salto automático al correr contra un obstáculo bajo; botones para deslizarse y agacharse (💡). Necesita las animaciones tácticas del esqueleto |
 
 **Entrega A:** se puede jugar y sobrevivir explorando. Es el primer momento de ver el «feeling» real en el móvil.

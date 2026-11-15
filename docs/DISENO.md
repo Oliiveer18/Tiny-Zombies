@@ -22,7 +22,8 @@ Procedencia: conversación del 15 nov 2026 + documentos del otro proyecto (`refe
 | Movimientos tácticos | Sí, los del vídeo de referencia: correr táctico, saltar obstáculos, deslizarse, agacharse (paso A8) | ✅ |
 | Cuerpos y skins | Un cuerpo base con esqueleto y animaciones compartidos, varias skins para jugador y NPC; accesorios aparte; colores propios distintos de la referencia | ✅ (detalle 💡) |
 | Oli y Lali | NO existen en este juego (son de otros proyectos): ni jugadores, ni NPC, ni nombres, ids ni modelos | ✅ |
-| Personajes y modelos | Todos con Meshy (estilo Tiny); no se crean por código ni se empieza con cápsulas (`MODELOS_MESHY.md`). NO hay un protagonista fijo: cada jugador crea el suyo (cuerpo base + skin + accesorios) 💡; ids de jugador por perfil, no `j1`/`j2` fijos | ✅ (creador 💡) |
+| Personajes y modelos | Todos con Meshy (estilo Tiny); no se crean por código ni se empieza con cápsulas (`MODELOS_MESHY.md`). NO hay un protagonista fijo: cada jugador crea el suyo (cuerpo base + skin + accesorios) ✅; los personajes de jugador NO deben parecerse a los NPC (cuerpos base y estilo propios para cada grupo) ✅; ids de jugador por perfil, no `j1`/`j2` fijos | ✅ |
+| Partidas | El usuario puede tener VARIAS partidas a la vez, cada una con su mundo, su semilla y su guardado. Al morir en una partida, esa partida se acaba (muerte total por partida); las demás siguen | ✅ |
 | Online | Objetivo ✅: cada jugador monta su refugio y hay combates contra otros jugadores durante la exploración. Se implementa LO ÚLTIMO, pero todo se diseña ya para ello (§14) | ✅ |
 
 ## 1. Visión 💡
@@ -136,7 +137,11 @@ Combates entre jugadores durante la exploración con las mecánicas de Tiny. Por
 ### Forma del mundo online ⬜ (decisión que puede esperar)
 - **Opción A, mundo compartido persistente:** un servidor mantiene un mundo por semilla donde todos coinciden (decenas de jugadores). Más cercano al sueño del usuario; exige servidor siempre encendido (coste y mantenimiento).
 - **Opción B, mundo propio + encuentros:** cada jugador tiene su mundo y refugio, y se cruza con otros en zonas/expediciones compartidas. Más barato y más fácil de proteger.
+- **Recomendación de Claude 💡: A a escala pequeña.** Cada partida es un mundo compartido por un grupo reducido (de 1 jugador a unas 8-20 personas, amigos o invitados). Encaja con «varias partidas» y muerte por partida; el servidor solo gasta recursos mientras la partida está activa; se ven pocos jugadores a la vez (mejor para el móvil); es más fácil de proteger contra trampas y abusos; y una partida con 1 jugador es idéntica al juego offline. Una partida pública gigante estilo MMO queda como posibilidad futura.
 - La preparación técnica (principios de arriba) es LA MISMA para ambas, por eso la decisión puede esperar. El P2P de PeerJS del otro proyecto sirve para 2 jugadores cooperativos, no para PvP con muchos jugadores.
 
-### Muerte en online ⬜
-La «muerte total que borra el mundo» (§9) no encaja con refugios persistentes en un mundo compartido. Propuesta 💡 para decidir: al morir se pierde el personaje y lo que llevas encima, y el refugio se conserva (con sus NPC o parte de ellos). Pendiente de respuesta del usuario.
+### Muerte en online ✅ (decisión del usuario, 15 nov)
+Muerte total POR PARTIDA: el jugador puede tener varias partidas a la vez; cuando muere en una, esa partida se acaba para él y las demás no se tocan. Esto sustituye a la propuesta anterior de conservar el refugio. En solitario, la partida y su mundo se borran. En una partida compartida, qué pasa con el refugio del jugador muerto (⬜; propuesta 💡: queda como ruina saqueable para los demás) se decide en F3/F4.
+
+### Estructura de partidas 💡
+Cada partida = un mundo con su semilla, su guardado y su simulación. En solitario es un servidor de un jugador. «Mis partidas» lista todas las que tiene el usuario.
