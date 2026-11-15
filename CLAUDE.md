@@ -1,0 +1,33 @@
+# CLAUDE.md · Tiny Zombies → juego de supervivencia de mundo abierto (instrucciones permanentes)
+
+## ⚠️ OLI Y LALI NO EXISTEN EN ESTE JUEGO
+Oli y Lali son personajes de OTROS proyectos del usuario. En este juego no aparecen: ni como jugadores, ni como NPC, ni en nombres, ids, archivos, menús, modelos o historia. No se implementa, se prepara ni se menciona nada de ellos. Si los documentos de `docs/referencia_carretera_zombi/` los nombran, se IGNORAN. El protagonista de este juego aún no tiene nombre ni aspecto (se decidirá con los modelos de Meshy); en el código y los datos se le llama simplemente «jugador» (ids `j1`, `j2`).
+
+**Estado: SOLO DISEÑO. No hay nada implementado todavía.** El código de `src/` es el Tiny Zombies original, sin tocar. El usuario quiere tener todo claro antes de empezar.
+
+## Qué es el proyecto
+Un juego de supervivencia en móvil que se juega y se siente EXACTAMENTE como Tiny Zombies (cámara, luz, controles, armas, zombis; ver `docs/TINY_ACTUAL.md`), pero dentro de un mundo grande, realista y por regiones, con NPC, refugio, comida, agua, estaciones y clima (ver `docs/DISENO.md`). Sin oleadas.
+
+## Trabajo con dos chats (Sonnet y Fable)
+Leer `coordinacion/LEEME.md`: reparto de tareas, ramas y peticiones. Fable NO edita código.
+
+## Lee en este orden
+1. Este archivo → 2. `docs/CONTINUAR.md` (estado y siguiente paso) → 3. `docs/DISENO.md` (decisiones) → 4. `docs/TINY_ACTUAL.md` solo si tocas código de Tiny → 5. `docs/ROADMAP.md` solo la fila del paso → 6. `docs/referencia_carretera_zombi/` SOLO para consultar ideas del otro proyecto (no es código a copiar).
+
+## Reglas de trabajo del usuario (heredadas de su proyecto Endless Aftermath; vigentes salvo que él diga otra cosa)
+- Responder SIEMPRE en español, breve y directo: el usuario juega y trabaja desde el móvil y no es técnico. Claude decide las soluciones técnicas; si hay que elegir, ofrecer pocas opciones fáciles de tocar y una recomendación.
+- Un subpaso por sesión y un ZIP actualizado (con los documentos) tras CADA subpaso. Los subpasos no se agrandan ni se juntan.
+- Antes de tocar código: decir el esfuerzo (LOW o MEDIUM), qué se va a hacer y cuándo podrá verlo en el móvil. Esperar el «hazlo».
+- Al terminar: qué se hizo, qué se comprobó y qué queda pendiente. No dar por verificado lo que no se ha comprobado.
+- No sobreingenierizar, no ampliar tareas, no cambiar nada no pedido. Nada destructivo sin autorización (lo que se retira va a `docs/archivo/`).
+- Escribir código pronto: no gastar la sesión leyendo y planificando.
+- Documentar cada subpaso en `docs/SESION.md` (crear al empezar) y actualizar `docs/CONTINUAR.md`.
+
+## Normas permanentes
+0. **Estilo visual objetivo:** `docs/REFERENCIA_VISUAL.md` (captura y vídeo aportados por el usuario). Arte propio, nunca copiado.
+1. **Tiny se queda igual.** Cámara, post-proceso, controles, estamina, armas, granadas, física de objetos y tipos de zombi no se rediseñan. Excepción decidida por el usuario: las OLEADAS desaparecen (ver DISENO §2).
+2. **Rendimiento en móvil.** ≥ 58 fps sostenidos, peor cuadro ≤ 25 ms, < 40 000 triángulos visibles, coste independiente del tamaño del mundo. Nada de crear o subir a la GPU el mundo entero: trabajo por regiones, solo las cercanas, con presupuesto por cuadro. No se baja la calidad visual (pixelRatio, bloom, sombras) para ganar fps sin que lo decida el usuario. Todo lo nuevo se mide con un medidor `?debug` en el móvil.
+3. **Listo para online/coop.** Todo estado nuevo vive en datos serializables con id (jugadores, NPC, zombis, piezas). Lo nuevo es determinista: semilla + tiempo de juego, sin `Math.random`, sin `Math.sin/pow` en decisiones de generación (solo hash de enteros con `Math.imul` y `+ - * /`), sin relojes de pared. Mismo mundo siempre con la misma semilla.
+4. **Contenido como datos** (JSON, tablas), no como código: lugares, tipos de región, estaciones, climas, NPC, recetas, armas.
+5. **Modelos: todos con Meshy** (GLB en `public/models/`, configurados en `src/models.config.js`), como Tiny. No se crean modelos por código ni se usan cápsulas como aspecto final (`docs/MODELOS_MESHY.md`). Lo demás (mundo, texturas del suelo, efectos) sí se genera ligero por código.
+6. El código de Tiny está muy comprimido. Al crecer, separar en módulos con nombres claros sin cambiar su comportamiento.
