@@ -21,20 +21,20 @@ Un cuerpo base con el mismo esqueleto y las mismas animaciones, y varias skins, 
 - **Prueba de tubería:** al generar el protagonista y el zombi normal, comprobar que comparten esqueleto y que una animación de uno funciona en el otro.
 
 ## Animaciones necesarias (por esqueleto)
-`idle`, `walk`, `run`, `shoot`, `reload`, `hit`, `die`, `attack` (zombis) y las tácticas del A8 del `ROADMAP.md`: `tactical_run`, `vault`, `slide`, `crouch_idle`, `crouch_walk`.
+`idle`, `walk`, `run`, `shoot`, `reload`, `hit`, `die`, `attack` (zombis; los zombis también necesitan `idle` o `sleep` y `walk` porque hay dormidos y deambulando) y las tácticas del A8 del `ROADMAP.md`: `tactical_run`, `vault`, `slide`, `crouch_idle`, `crouch_walk`.
 
 ## Lista de modelos (por prioridad)
 | # | Modelo | Archivo (`models.config.js`) | Animaciones (nombre del clip) | Notas |
 |---|---|---|---|---|
 | 1 | Protagonista (jugador 1) | `player.glb` | `idle`, `walk`, `run`, `shoot`, `reload`, `hit`, `die` + tácticas | Imprescindible. Aspecto por decidir; todavía no hay prompt ni imagen de referencia |
-| 2 | Jugador 2 (coop, más adelante) | skin del mismo cuerpo | las mismas | Misma malla base con otra skin |
-| 3 | Zombi normal | `zombie.glb` | `run`, `attack`, `die` | |
-| 4 | Zombi corredor | `runner.glb` | `run`, `attack`, `die` | |
-| 5 | Zombi tanque | `tank.glb` | `run`, `attack`, `die` | |
+| 2 | Otros jugadores (online, más adelante) | cuerpos y skins del creador de personaje | las mismas | Mismo esqueleto, cuerpos distintos de los NPC |
+| 3 | Zombi normal | `zombie.glb` | `idle` (o `sleep`), `walk`, `run`, `attack`, `die` | |
+| 4 | Zombi corredor | `runner.glb` | `idle` (o `sleep`), `walk`, `run`, `attack`, `die` | |
+| 5 | Zombi tanque | `tank.glb` | `idle` (o `sleep`), `walk`, `run`, `attack`, `die` | |
 | 6 | Objetos de Tiny | `fence`, `barrel`, `barrier`, `crate`, `sack`, `car` | — | Sin animación; radios de colisión en la config |
 | 7 | NPC | por roles (médico, soldado, mecánico, cultivador, pescador, vigía…) | `idle`, `run` (y `shoot` si combaten) | Conviene un cuerpo base compartido con ropa distinta |
 | 8 | Piezas del refugio | muro, puerta, suelo, hoguera, cama, caja, huerto, torre… | — | Se decide la lista al llegar al paso del refugio |
-| 9 | Lugares y decorado | edificios, vehículos, árboles muertos, escombros | — | Los lugares se componen de piezas; se decide con el paso 4 del ROADMAP |
+| 9 | Lugares y decorado | edificios, vehículos, árboles muertos, escombros | — | Los lugares se componen de piezas; se decide con el paso A5 del ROADMAP |
 
 ## Hechos de Meshy a tener en cuenta (de la documentación de Meshy a nov 2026; comprobar de nuevo antes de pagar)
 - Plan gratis: 10 descargas/mes y solo modelos sin textura. Modelos con textura, rigging y animación exigen plan de pago. Licencia CC BY 4.0 en el plan gratis (hay que acreditar a Meshy).
@@ -46,14 +46,12 @@ Jugador ≈ 2 500 triángulos con textura 1024; NPC ≈ 1 200 y 512; zombi ≤ 5
 
 ## Qué sigue sin estar decidido
 - Cómo es el protagonista (aspecto, ropa) y quién genera su imagen de referencia, y la de cada NPC.
-- Si el usuario tiene plan de pago de Meshy activo.
-- Si los zombis y NPC usan el mismo esqueleto humanoide que el protagonista (recomendado, para compartir animaciones).
 
 ## Qué se puede hacer mientras llegan los modelos
-Los pasos que no son de arte (mundo por regiones, semilla, guardado, necesidades, tiempo, estaciones, clima) no dependen de los modelos. El usuario decide si se avanza ya con esos pasos o si se espera a tener los modelos (ver pregunta en `CONTINUAR.md`).
+Los pasos que no son de arte (A0a-A7: mundo por regiones, semilla, guardado, necesidades, tiempo; y luego estaciones y clima) no dependen de los modelos y se programan con el relleno de Tiny; ningún hito se da por entregado con relleno. El usuario decide si se avanza ya con esos pasos o si se espera a tener los modelos (ver pregunta en `CONTINUAR.md`).
 
 ## Orden de generación recomendado 💡 (en paralelo al código)
-1. **Prueba de tubería con 2 modelos:** el protagonista y el zombi normal. Sirve para comprobar el plan de Meshy, el rigging, los nombres de clips (`idle`, `run`, `shoot`; `run`, `attack`, `die`), la escala y los triángulos en el móvil, ANTES de generar el resto. Se colocan en `public/models/` y se prueban en Tiny (subpaso LOW de integración).
+1. **Prueba de tubería con 2 modelos:** el protagonista y el zombi normal. Sirve para comprobar el plan de Meshy, el rigging, los nombres de clips (`idle`, `walk`, `run`, `shoot`; `idle`, `walk`, `run`, `attack`, `die`), la escala y los triángulos en el móvil, ANTES de generar el resto. Se colocan en `public/models/` y se prueban en Tiny (subpaso A0d del `ROADMAP.md`, LOW). Comprobar también los triángulos reales del zombi: 500 con esqueleto es optimista y, si no baja de ~1 200, se bajan zombis activos antes que calidad (💡 de la revisión 001).
 2. Corredor y tanque (mismo esqueleto que el zombi normal).
 3. Objetos de Tiny (valla, barril, barrera, caja, saco, coche): sin animación, los más baratos.
 4. NPC (cuerpo base compartido con ropa distinta) y jugador 2.

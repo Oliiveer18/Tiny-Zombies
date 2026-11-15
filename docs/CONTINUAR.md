@@ -1,6 +1,7 @@
 # CONTINUAR · estado y siguiente paso
 
 ## Estado (15 nov 2026)
+- Revisión de Fable (petición 001) aplicada a los documentos: contradicciones C1-C13 corregidas, ROADMAP rehecho (A ≈ 15 subpasos, total ≈ 43), huecos y riesgos en `DISENO.md` §15, petición 002 actualizada. Sin cooperativo por ahora.
 - Solo diseño. `src/` = Tiny Zombies original sin tocar (v0.1.0). No se ha ejecutado `npm install` ni `npm run build` en esta preparación.
 - Documentos: `DISENO.md` (todas las decisiones), `TINY_ACTUAL.md` (cómo es Tiny hoy, con cifras), `ROADMAP.md` (pasos y esfuerzo), `referencia_carretera_zombi/` (documentos del otro proyecto como consulta).
 
@@ -22,12 +23,16 @@ El usuario aportó una captura y un vídeo de un juego cenital con el estilo obj
 - Oli y Lali NO existen en este juego (son de otros proyectos): nada de ellos. El protagonista aún no tiene nombre ni aspecto.
 - Todos los modelos (jugador, zombis, NPC, objetos) se hacen con Meshy, como Tiny; no se crean por código ni se empieza con cápsulas. Se espera a tenerlos (`MODELOS_MESHY.md`).
 
+## Decidido el 15 nov (revisión 001)
+- Luz y niebla cambian con hora y clima (excepción a «Tiny igual»). Suelo plano. Munición limitada desde A5. Móvil de referencia: iPhone 14. NO hay cooperativo (idea lejana, E4).
+
 ## Preguntas abiertas (nada empieza hasta que el usuario responda o diga «decide tú»)
+0. Entrega única (C14, 💡 recomendada): ramas en GitHub; el ZIP solo si lo pides. ¿Vale? También: ¿cómo ves el juego en el iPhone mientras tanto? (propuesta: publicar `main` en GitHub Pages en A0a). Y la regla por defecto de refugios con el dueño desconectado (§14; recomendación: abiertos con capas 1-5).
 1. Mientras llegan los modelos de Meshy: ¿se avanza ya con los pasos que no dependen de ellos (mundo por regiones, semilla, guardado, necesidades, tiempo y clima), o se espera a tenerlos? Esos pasos se ven sin personajes finales solo con el relleno técnico de Tiny, que no cuenta como aspecto del juego.
 2. Cifras concretas de hambre, sed, mochila, duración exacta de día y estaciones y qué entra en la ventaja inicial: se fijan al construirlo y se ajustan midiendo.
 
 ## Primer subpaso propuesto (cuando el usuario diga «hazlo»)
-Orden completo en `ROADMAP.md` (hitos A-E). Empieza por A0 (LOW: preparar el código) y A1 (MEDIUM, descrito abajo).
+Orden completo en `ROADMAP.md`. Empieza por A0a (LOW: dividir el código de Tiny en módulos sin cambiar nada), luego A0b-A0d; antes de A1 hay que pedir a Fable la petición 002. A1 (MEDIUM) se describe abajo.
 
 ### A1 · MEDIUM
 Quitar la arena fija y generar un mundo por regiones con semilla: claro inicial con ventaja ligera, carga y descarga de regiones alrededor del jugador, niebla de Tiny ocultando el borde, y los zombis/cámara/armas de Tiny funcionando igual. Medir fps en el móvil con `?debug`. Entrega: ZIP + `docs/SESION.md`.

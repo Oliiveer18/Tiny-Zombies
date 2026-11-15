@@ -7,3 +7,4 @@
 | 2026-11-15 | Sonnet | Online como objetivo final: DISENO §14, hito F en ROADMAP, norma en CLAUDE.md; sin protagonista fijo (cada jugador crea el suyo) | — |
 | 2026-11-15 | Sonnet | Decidido por el usuario: personaje creado por cada jugador (distinto de los NPC), varias partidas a la vez y muerte total por partida. Propuesta A pequeña para el online | — |
 | 2026-11-15 | Sonnet | Decidido: online opción A pequeña; refugio del jugador muerto = ruina saqueable. Propuesta de refugio con dueño desconectado en DISENO §14 | — |
+| 2026-11-15 | Sonnet | Aplicada la revisión Fable 001: decisiones (luz/niebla, suelo plano, munición A5, iPhone 14, sin coop), C1-C13, ROADMAP R1-R9 (≈ 43 subpasos), huecos y riesgos en DISENO §15, petición 002 actualizada, entrega única por ramas (💡) | — |

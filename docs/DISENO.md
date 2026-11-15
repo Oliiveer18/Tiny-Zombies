@@ -18,27 +18,33 @@ Procedencia: conversación del 15 nov 2026 + documentos del otro proyecto (`refe
 | NPC | Encontrarlos, traerlos, tenerlos en el equipo | ✅ |
 | Tamaño del mundo | Ilimitado, generado por semilla | ✅ |
 | Historia | Sin historia ni final: mundo sin final donde el objetivo es sobrevivir y crecer | ✅ |
-| Muerte | Total: se acaba la partida (en coop, termina cuando caen todos) | ✅ |
+| Muerte | Total: se acaba la partida (cada partida por separado, §14) | ✅ |
 | Movimientos tácticos | Sí, los del vídeo de referencia: correr táctico, saltar obstáculos, deslizarse, agacharse (paso A8) | ✅ |
 | Cuerpos y skins | Un cuerpo base con esqueleto y animaciones compartidos, varias skins para jugador y NPC; accesorios aparte; colores propios distintos de la referencia | ✅ (detalle 💡) |
 | Oli y Lali | NO existen en este juego (son de otros proyectos): ni jugadores, ni NPC, ni nombres, ids ni modelos | ✅ |
 | Personajes y modelos | Todos con Meshy (estilo Tiny); no se crean por código ni se empieza con cápsulas (`MODELOS_MESHY.md`). NO hay un protagonista fijo: cada jugador crea el suyo (cuerpo base + skin + accesorios) ✅; los personajes de jugador NO deben parecerse a los NPC (cuerpos base y estilo propios para cada grupo) ✅; ids de jugador por perfil, no `j1`/`j2` fijos | ✅ |
 | Partidas | El usuario puede tener VARIAS partidas a la vez, cada una con su mundo, su semilla y su guardado. Al morir en una partida, esa partida se acaba (muerte total por partida); las demás siguen | ✅ |
+| Luz y niebla | Cambian con la hora y el clima: excepción a «Tiny igual», como las oleadas. La noche azul de Tiny es un punto fijo del ciclo. La densidad de niebla nunca baja de 0.03 (solo cambia el color) porque tapa el borde de carga | ✅ (15 nov) |
+| Suelo | Plano, sin relieve; la variedad sale del suelo pintado, el agua y los props | ✅ (15 nov) |
+| Munición | Limitada desde el paso A5, cuando ya hay botín | ✅ (15 nov) |
+| Móvil de referencia | iPhone 14 (`coordinacion/mediciones/MOVIL_REFERENCIA.md`) | ✅ (15 nov) |
+| Cooperativo | Ahora mismo NO hay cooperativo: el juego es de un jugador. No se diseña, prepara ni programa coop; solo queda como idea lejana (paso E4, sin decidir) | ✅ (15 nov) |
 | Online | Objetivo ✅: cada jugador monta su refugio y hay combates contra otros jugadores durante la exploración. Se implementa LO ÚLTIMO, pero todo se diseña ya para ello (§14) | ✅ |
 
 ## 1. Visión 💡
-Supervivencia de mundo abierto en un apocalipsis zombi, de movimiento y disparo directos como Tiny. Lo central es tu refugio: lo montas desde casi nada, lo haces crecer con compañeros rescatados y lo mantienes con comida y agua. El mundo no se adapta a ti: cada lugar es lo que es, y la tensión sale de explorar, del ruido que haces y de cuánto te expones al crecer. Solo o en cooperativo (2 móviles) más adelante.
+Supervivencia de mundo abierto en un apocalipsis zombi, de movimiento y disparo directos como Tiny. Lo central es tu refugio: lo montas desde casi nada, lo haces crecer con compañeros rescatados y lo mantienes con comida y agua. El mundo no se adapta a ti: cada lugar es lo que es, y la tensión sale de explorar, del ruido que haces y de cuánto te expones al crecer.
 
 ## 2. Lo que cambia de Tiny y lo que no
 - **Se amplía (decisión del usuario):** movimientos tácticos (correr táctico, saltar, deslizarse, agacharse) además de lo de Tiny.
-- **No cambia:** cámara, luz, bloom, niebla, controles táctiles y de teclado, estamina, disparo, recarga, granadas y física de objetos, los 3 tipos de zombi y sus cifras.
+- **No cambia:** cámara, bloom, controles táctiles y de teclado, estamina, disparo, recarga, granadas y física de objetos, los 3 tipos de zombi y sus cifras.
 - **Cambia (decisión del usuario):** las oleadas desaparecen. Los zombis ya están en el mundo, quietos, caminando o en grupo, y se alertan por ruido y visión. Las granadas pasan a ser botín, no un regalo por oleada. La arena fija se sustituye por el mundo por regiones.
+- **Cambia (decisiones del usuario, 15 nov):** la luz y la niebla varían con la hora y el clima (la noche de Tiny es un punto del ciclo; densidad de niebla ≥ 0.03); la munición es limitada desde A5 (el desgaste de armas queda en D5).
 - **Se añade:** mundo, NPC, refugio, necesidades, tiempo.
 
 ## 3. Mundo grande y por regiones 💡
 - **Rejilla de regiones** de unos 100×100 de lado (valor a medir). Cada región se divide en trozos de dibujo más pequeños.
 - **Solo existe lo cercano:** se mantienen cargadas unas 9–25 regiones alrededor del jugador; lo lejano se descarta. El coste es el mismo con un mundo pequeño que con uno enorme. Las regiones nuevas se preparan poco a poco (presupuesto por cuadro) y la niebla de Tiny oculta el borde.
-- **Semilla:** cada región sale de `hash(semilla, rx, rz, tipo)` con `Math.imul` y `+ - * /`. Una región sale igual en cualquier orden de carga y en cualquier móvil.
+- **Semilla:** cada región sale de dos niveles (C7 de la revisión 001): `tipo = f(hash(semilla, rx, rz))` y el contenido de cada capa = `hash(semilla, rx, rz, canal)`, con un canal entero por capa (props, zombis, botín, NPC) para que añadir una capa no cambie las otras. Solo `Math.imul` y `+ - * /`. Una región sale igual en cualquier orden de carga y en cualquier móvil.
 - **Origen flotante:** pasadas unas 2 000 unidades del origen, el dibujo resta el origen de la región activa para evitar errores de coma flotante.
 - **Guardado:** solo los CAMBIOS sobre lo generado (lo que construyes, saqueas, matas, NPC movidos), por región y con número de versión. Una región ya visitada no cambia aunque se añada contenido nuevo.
 - **Lo lejano se calcula al volver:** cada región guarda la última vez que se visitó; al volver se resuelve con una cuenta sencilla (cultivos, comida podrida, zombis que migraron), sin simularla mientras no se ve.
@@ -46,7 +52,7 @@ Supervivencia de mundo abierto en un apocalipsis zombi, de movimiento y disparo 
 - **Lugares hechos a mano:** plantillas de datos que caben en una región y se colocan por semilla y tipo. Lista base (de `MUNDO.md`): unos 20 con interior y puerta (casa, tienda, ferretería, clínica, comisaría, iglesia, bunker, farmacia, restaurante, escuela, pisos, almacén, taller, posada, biblioteca, armería, cuartel, faro, sótano/metro, barco varado) y unos 20 abiertos (granja, cobertizo, gasolinera, puerto, desguace, campamento militar, refugio de supervivientes, cantera, cementerio, puente con control, mercado, camión volcado, plaza, establo, central eléctrica, aeródromo, torre de vigilancia, campo de refugiados, depósito de agua, invernadero). Se hacen por olas, un prototipo a mano por tipo y variantes después. Primer prototipo: la casa abandonada.
 - **Interiores:** instancia aparte con puerta y fundido; se precarga al acercarse (en `MUNDO.md` y `DISENO.md` originales: caché de 2).
 - **Elementos sueltos:** vallas, coches abandonados, escombros, árboles muertos, barricadas, puentes, carteles. Son datos por región, dibujados en bloque (instanciados) como ya hace Tiny.
-- **Inicio con ventaja ligera** ✅: al principio hay un claro algo más tranquilo con un pozo (pocos zombis, lentos o dormidos, sin lugares diseñados dentro) para dar margen hasta que el jugador haga sus primeras mecánicas. Pero nunca es un sitio seguro: hay peligro desde el minuto uno. La ventaja es solo de arranque y no crea gradiente por distancia: fuera del claro todo depende del lugar.
+- **Inicio con ventaja ligera** ✅: al principio hay un claro algo más tranquilo con un pozo (solo zombis del tipo normal, pocos y dormidos, sin lugares diseñados dentro; no hay un tipo «lento») para dar margen hasta que el jugador haga sus primeras mecánicas. Pero nunca es un sitio seguro: hay peligro desde el minuto uno. La ventaja es solo de arranque y no crea gradiente por distancia: fuera del claro todo depende del lugar.
 - **Agua** (de `DISENO.md` original, ✅ allí): toda agua tiene causa (cuenca, cauce, manantial) y orilla; lagos y ríos sí, mar no; 3–4 % del mundo; pantano más adelante; el pozo del claro da agua limpia y el agua natural es turbia.
 - **Caminos y carreteras** unen lugares; la carretera cruza el río por un puente. Datos de ejemplo en `referencia_carretera_zombi/mapas/carretera_prueba.json`.
 - **Tamaño** ✅: ilimitado por semilla.
@@ -55,10 +61,12 @@ Supervivencia de mundo abierto en un apocalipsis zombi, de movimiento y disparo 
 - Los tres tipos de Tiny (normal, corredor, tanque) y sus cifras. Más variantes después.
 - Colocados al generar la región según su tipo y sus lugares (un pueblo denso está lleno, un campo casi vacío, un bunker tiene el mejor botín y muchos zombis). Estados: dormido, deambulando, en grupo.
 - **Ruido:** disparos, granadas, coches y obras atraen a los zombis cercanos. Las hordas son consecuencia del ruido, no de un contador. Percepción por vista corta y por oído.
-- Despejar un sitio lo deja despejado; los zombis solo vuelven despacio y por causas realistas (§5-7).
+- **Tope de activos (C8):** se mantiene el máximo de 40 zombis ACTIVOS de Tiny (con IA y dibujo). El resto de los zombis de la región son datos y se activan por cercanía.
+- **Despejar (C5):** una región despejada solo se repuebla si tiene una causa registrada (ruido acumulado o refugio cerca), con tope 💡 del 50 % de su población original; los zombis que llegan se restan de regiones vecinas. Sin causa, se queda despejada.
 - Piscinas de objetos como en Tiny: solo se dibujan los cercanos; los lejanos son datos.
 
 ## 5. Presión realista (sustituye a «más difícil con el tiempo»)
+**Frontera con el tiempo (C6):** ninguna cifra de peligro es función solo del tiempo total jugado; el tiempo solo actúa en ciclos (estaciones) o con causa (ruido, abandono).
 Cada una es una capa independiente de datos. Orden de trabajo sugerido: 1-3 primero, 4, 6-8, 5 al final.
 1. **Tu refugio se nota:** más gente, luz, ruido y tamaño atraen más zombis. Crecer da fuerza pero expone.
 2. **Más bocas que alimentar:** cada NPC consume comida y agua.
@@ -66,11 +74,11 @@ Cada una es una capa independiente de datos. Orden de trabajo sugerido: 1-3 prim
 4. **El mejor botín está en los peores sitios:** bunker, cuartel y zona muerta; seguir siendo un reto aunque estés fuerte.
 5. **Otros supervivientes** hostiles se fijan en refugios con buen equipo y pueden asaltarlos o robar (la más costosa; la última).
 6. **Estaciones y clima** (§6).
-7. **Los zombis se mueven:** se agrupan y migran hacia el ruido y la gente; un sitio limpio puede volver a llenarse.
+7. **Los zombis se mueven:** se agrupan y migran hacia el ruido y la gente; un sitio limpio puede volver a llenarse solo con causa registrada (§4).
 8. **Todo se deteriora:** edificios, comida, piezas del refugio y armas.
 
 ## 6. Tiempo, estaciones y clima 💡
-- **Un solo reloj de juego** (número guardado) del que salen hora, día del año, estación y clima. Determinista: misma semilla y mismo tiempo, mismo clima. Funciona igual en coop.
+- **Un solo reloj de juego** (número guardado) del que salen hora, día del año, estación y clima. Determinista: misma semilla y mismo tiempo, mismo clima. Funciona igual en una partida online.
 - **Día/noche:** unos 20 min reales por día; luz, cielo y niebla cambian suavemente. La noche azul de Tiny es un punto del ciclo.
 - **Estaciones «intermedias»:** ~6 días de juego cada una (≈ 2 h reales), año de 24 días (≈ 8 h reales). Cifras ajustables.
 - **Cada estación cambia:** aspecto (colores, nieve), comida (qué se cultiva y cuándo, caza), necesidades (frío: más gasto, fuego y abrigo) y agua (lagos y ríos pueden helarse o bajar).
@@ -99,14 +107,14 @@ Cada una es una capa independiente de datos. Orden de trabajo sugerido: 1-3 prim
 - Hambre y sed (la sed baja más rápido; a 0 quitan vida). Vida y estamina de Tiny se mantienen.
 - Agua: pozo, río, lago, lluvia; la turbia se limpia en un purificador automático que construye el jugador. Más adelante bomba y tubería.
 - Comida: huerto, pesca, caza, corral, botín.
-- Inventario: pocos huecos en mano + mochila con peso. Cifras ⬜ (se ajustan con pruebas).
+- Inventario: pocos huecos en mano + mochila con peso. Cifras ⬜ (se ajustan con pruebas). Provisionales 💡 para poder probar (H13): la sed vacía te quita vida en 1 día de juego (20 min reales), el hambre en 2; el simulador previsto antes de C las ajusta.
 - Muerte ✅ (para el juego en solitario): total. Se acaba la partida (y se borra el mundo, como en el otro proyecto). Se muestra el tiempo sobrevivido y el récord. ⚠️ Con online hay que redecidirlo: ver §14.
 
 ## 10. Vehículos y animales (después) 💡
 Vehículos (bici, moto, coche, camioneta, barca) abandonados y averiados, con combustible finito y ruido. Animales de granja y salvajes con id por región; perro domesticable. Detalle en `MUNDO.md` §3b-3c.
 
 ## 11. Pantallas e interfaz 💡
-Título (Continuar / Nueva partida), juego, pausa, fin de partida; HUD con vida, estamina, hambre, sed, hora y clima, arma y munición; inventario; modo construcción; minimapa. Sin tutorial. Para el móvil vertical y el pulgar. Detalle en `PANTALLAS.md`.
+Título (Continuar / Nueva partida), juego, pausa, fin de partida; HUD con vida, estamina, hambre, sed, hora y clima, arma y munición; inventario; modo construcción; minimapa. Sin tutorial. Para el móvil vertical y el pulgar. **Interactuar (H2, 💡):** lo pequeño se recoge al pisarlo; un único botón contextual «USAR» aparece junto a contenedores, pozo, puertas y NPC. Detalle en `PANTALLAS.md`.
 
 ## 12. Rendimiento y técnica (obligatorio)
 Ver las normas 2 y 3 de `CLAUDE.md`. Presupuestos: ≥ 58 fps, peor cuadro ≤ 25 ms, < 40 000 triángulos visibles. Medidor `?debug` desde el primer subpaso. Todo trabajo por región, solo lo visible y con presupuesto por cuadro. Cada subpaso se mide en el móvil antes de darlo por bueno.
@@ -154,3 +162,37 @@ Problema: otro jugador encuentra tu refugio cuando no estás conectado. Propuest
 4. **Enfriamiento.** Tras un asalto exitoso, ese refugio no puede ser asaltado otra vez durante un tiempo.
 5. **Informe al volver.** El dueño ve qué pasó (quién, cuándo, qué se llevó) y puede desquitarse.
 6. **Regla de cada partida.** Al crear la partida se elige «refugios protegidos si el dueño está desconectado» (nadie puede entrar) o «refugios abiertos» (con las capas de arriba). Valor por defecto por decidir (⬜); recomendación: abiertos con las capas 1-5.
+
+## 15. Revisión de Fable (petición 001, 15 nov 2026): huecos y riesgos 💡
+Todo lo de esta sección es 💡 (propuesta); las cifras son puntos de partida a medir en el iPhone 14. Las contradicciones C1-C13 ya están corregidas en su sitio (§0, §2-§6, `MODELOS_MESHY.md`, `ROADMAP.md`). Respuesta completa: `coordinacion/RESPUESTAS_FABLE/001_revision_diseno.md`.
+
+### Huecos que bloquean algún paso
+- **H1 · Obstáculos no circulares (A1/A2/A5).** Tiny solo tiene círculos. Se añade UNA forma nueva, el rectángulo girado, en la rejilla espacial de A1 (entra en la petición 002). El agua es zona no pisable hecha de celdas.
+- **H2 · Interactuar (A6a/A5).** Lo pequeño se recoge al pisarlo; un único botón contextual «USAR» aparece junto a contenedores, pozo, puertas y NPC (§11).
+- **H3 · Botín sin inventario.** Se resuelve con el orden A6a (inventario mínimo + USAR) → A5 → A6b en el ROADMAP.
+- **H4 · Vista y ruido (A3).** Tabla de datos `ruido.json`: vista 9; andar 3; correr 6; agachado 0; disparo 30; granada 45 (unidades de Tiny). Los zombis de regiones no cargadas no oyen: solo se apunta «ruido acumulado» en la región (lo usa la repoblación de §4).
+- **H5 · Dónde y cuándo se guarda (A4).** IndexedDB (no localStorage, por su límite de ~5 MB): una entrada por región y una por partida. Se guarda al descargar una región, cada 30 s y al ocultarse la app. El récord se guarda fuera de la partida (la muerte borra el mundo, §9).
+- **H6 · Compatibilidad del generador (A4).** Se guarda `versionGenerador` en la partida. Durante el desarrollo, cambiar el generador invalida las partidas; la compatibilidad se promete solo a partir del hito E. (Matiza «una región visitada no cambia» de §3.)
+- **H7 · Reloj antes que las necesidades.** El reloj de juego (ticks enteros, guardado) pasa a A0c.
+- **H8 · Refugio descargado (B2/B4).** Mientras el jugador está lejos, el refugio se resuelve «con cuenta al volver» (la versión mínima de C6 va justo antes de B2). En solitario los asaltos solo ocurren con el jugador presente. (En online, ver §14 «Refugio con el dueño desconectado».)
+- **H9 · Zombis y NPC ante recintos (B1/B4).** Zombi: si una pieza le corta el paso, la ataca (sin búsqueda de caminos). NPC: búsqueda de caminos solo dentro de la rejilla de la región activa, con presupuesto por cuadro. Diseñarlo antes de B1 (candidata a petición para Fable).
+- **H10 · Entidades que cruzan regiones (A1/A3).** El zombi activo pertenece a la piscina; al quedar a más de 60 unidades se escribe como dato en la región donde está. Un prop movido se guarda como cambio en la región donde se detiene (entra en la petición 002).
+- **H11 · Cámara cenital (A2).** En bosque solo troncos y árboles muertos bajos; nada por encima de 2.5 de altura cerca de zona pisable hasta D1.
+- **H12 · Modelo de coop.** APLAZADO y sin decidir: no hay cooperativo ahora (decisión del usuario). No se aplica nada de lo que proponía Fable.
+- **H13 · Hambre y sed.** Cifras provisionales en §9.
+
+### Riesgos de determinismo
+- **D1 (reducido por decisión del usuario).** Con `dt` variable y trigonometría en IA y física, simular igual en dos móviles no es alcanzable ni hace falta. El determinismo exacto solo se exige a: generación de regiones, reloj/clima y cálculo «al volver». El combate no lo necesita (norma 3).
+- **D2 · Formas que cruzan regiones** (ríos, lagos, carreteras). Salen de una función de mayor escala (`hash(semilla, celda grande)`) que cada región consulta por su cuenta; nunca se lee el estado de otra región. Es criterio de éxito de la petición 002.
+- **D3 · Clima.** `clima = hash(semilla, índiceDeTramo)` con tramos de duración fija; la transición es interpolar entre el tramo actual y el siguiente. Nunca una cadena que avance cuadro a cuadro.
+- **D4 · Reloj.** En ticks enteros (por ejemplo 1/20 s) acumulados; todo lo demás se deriva de ese entero.
+- **D5 · Cálculo al volver.** Depende solo de (cambios guardados, tick de la última visita, tick actual, semilla) y da lo mismo visitando una vez que dos: fórmulas cerradas por tramos, sin bucles con azar.
+- **D6 · Origen flotante.** Posición = región entera (`rx`, `rz`) + decimal local; se dibuja siempre relativo a la región del jugador, probado desde el primer día (en vez del umbral de 2 000 unidades de §3).
+
+### Riesgos de rendimiento (medir en el iPhone 14)
+- **R-a · Se carga demasiado.** Con niebla 0.03 y `far` 120 se ven unas 50 unidades; 9-25 regiones de 100×100 son excesivas. Para la petición 002: región de datos de 64, trozos de dibujo de 16-32, dibujado solo hasta ~60 del jugador, datos en 3×3.
+- **R-b · Tirones al cruzar regiones.** Una malla instanciada global por tipo de prop con capacidad fija, reescrita con los trozos cercanos; listas reutilizadas; presupuesto ≤ 2 ms por cuadro.
+- **R-c · Personajes.** Repartir los 40 000 triángulos: personajes 18 000 · mundo 18 000 · efectos 4 000; tope de ~25 esqueletos animando a la vez (los lejanos a media frecuencia); si el zombi no baja de ~1 200 triángulos, bajar zombis activos antes que calidad.
+- **R-d · Sombras.** El medidor `?debug` muestra los triángulos de las dos pasadas (con y sin sombra) y el límite se aplica a la suma; el decorado pequeño va sin sombra.
+- **R-e · Texturas.** Límite de 64 MB de texturas; decorado a 512 en atlas compartidos.
+- **R-f · Guardado que crece.** Cambios compactos por región (listas de ids), tope de 4 KB por región; el medidor muestra el tamaño total.
