@@ -77,3 +77,7 @@
 
 ## Ajuste con las medidas del usuario (16 nov 2026, LOW)
 Cámara: Altura 7,6 · Atrás 4,9 (distancia 9,0 · ángulo 57°). Velocidad: andar 2,1 · correr 3,4 (barra ×0,80 sobre 2,6/4,3). Fijadas en `renderer.js` y `player.js` (`MOVE`); la barra de `?debug` parte de ×1,00 sobre estos valores. Provisional hasta que el usuario lo vuelva a ajustar.
+
+## Calidad del personaje: MSAA y resolución (16 nov 2026, LOW)
+**Resumen fácil:** el personaje se veía «pixelado» porque el juego dibujaba sin suavizado de bordes (antialias apagado) y a 1,5 de resolución en el móvil. Ahora: suavizado MSAA ×4 en el post-proceso y resolución 2 (el iPhone 14 admite 3). Se puede comparar con `?res=1.5|2|3` y `?msaa=0|4` en la dirección. Gratis (sin créditos de Meshy).
+**Detalle:** `renderer.js`: `WebGLRenderTarget` con `samples` y `HalfFloatType` para el `EffectComposer`; `setPixelRatio` por `?res=` o `min(dpr,2)` en táctil. NO medido en iPhone (el entorno no tiene GPU). Riesgo: peor cuadro (ahora ~32 ms en el iPhone según el medidor; meta ≤25), el usuario mide con `?debug`. Si no llega: res 1.75 o msaa 2. Siguiente palanca si aún se ve blando: textura del jugador a 2048 (cuesta ~+400 KB) o el modelo alto (Meshy, ya pagado, sin créditos nuevos).
