@@ -215,3 +215,8 @@ Técnico: `MOVE={size:1.4,top:1.15,...}`; `K()=player.base*MOVE.size`; `topSpeed
 **Resumen fácil:** ahora los objetos aguantan unos disparos y se rompen: las cajas de madera sueltan tablas, el cartón se rompe y las balas lo atraviesan, los bidones rojos explotan (y encadenan con los de al lado), las papeleras y vallas caen rodando y la farola se apaga al romperla. Cada material suelta chispas de su color. Además he quitado el «toque para agacharse» del móvil: se activaba solo al moverte y deformaba al personaje.
 **Probar:** dispara a una caja unas 6 veces; a los bidones del fondo; a una farola.
 **Técnico:** `objetos.json` (vida, rompe, explota, vuelca, modelo/escala), `materiales.json` (hex, col, n), `world.js` (damageProp/hitProp/breakProp, vuelco visual), `physics.js` (vuelca, remove), nuevo `debris.js` (48 piezas instanciadas), `weapons.js` (cartón traspasable, hooks.boom). Verificado en headless: caja se rompe, 3 bidones en cadena, rotura de farola por código. NO verificado: disparo directo a farola (el test no logró alinear), ni en iPhone.
+
+## C3b · Salida de bala fija
+**Resumen fácil:** la bala y el fogonazo salen siempre del mismo punto, un poco delante del personaje, mirando hacia donde apuntas. Antes el punto se movía con la dispersión y a veces parecía salir de otro sitio. Cuando haya arma, ese punto pasará a ser el cañón.
+**Probar:** dispara en distintas direcciones y andando; la línea de la bala debe arrancar siempre delante del personaje.
+**Técnico:** `weapons.js` `MUZZLE=.55`; el rayo de impacto parte del centro (no se salta nada delante del cuerpo), el trazador y el fogonazo del punto fijo. Comprobado en headless que sigue rompiendo cajas y bidones; el aspecto en el iPhone NO está comprobado.

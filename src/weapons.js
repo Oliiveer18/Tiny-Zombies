@@ -5,7 +5,7 @@ import { zombies, hurt } from './zombies.js';
 import { obstacles, blast, hitProp, hooks, OBJ } from './world.js';
 import { muzzle, impact, tracer, explosion } from './effects.js';
 // Temblor de cámara. Tiny original: disparo .04, explosión .6. Disparo sin temblor por petición del usuario (16 nov); explosión más suave porque la cámara está más cerca.
-const SHAKE_SHOT=0,SHAKE_BOOM=.2;
+const MUZZLE=.55,SHAKE_SHOT=0,SHAKE_BOOM=.2;
 export const wp={mag:30,ammo:30,cd:0,reload:0,grenades:3,shake:0,onShake:null};
 const nades=[];
 export function initWeapons(scene){for(let i=0;i<4;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),new THREE.MeshStandardMaterial({color:0x445533}));m.visible=false;m.castShadow=true;scene.add(m);nades.push({m,on:false,t:0,x0:0,z0:0,x1:0,z1:0});}}
@@ -13,10 +13,11 @@ export function resetWeapons(){Object.assign(wp,{ammo:30,cd:0,reload:0,grenades:
 function shoot(){
   const sp=(Math.random()-.5)*.06*(input.aimHold?.35:1),c=Math.cos(sp),s=Math.sin(sp);
   const dx=player.aimX*c-player.aimZ*s,dz=player.aimX*s+player.aimZ*c;
-  const ox=player.x+dx*.5,oz=player.z+dz*.5;let best=28,hz=null,wall=false,bo=null;
+  const al=Math.hypot(player.aimX,player.aimZ)||1,mx=player.x+player.aimX/al*MUZZLE,mz=player.z+player.aimZ/al*MUZZLE; // punto de salida fijo (luego será el cañón del arma); la dispersión solo gira la dirección
+  const ox=player.x,oz=player.z;let best=28,hz=null,wall=false,bo=null;
   const thru=[];for(const o of obstacles){if(o.fly||o.key==='sack')continue;const t=rayCircle(ox,oz,dx,dz,o.x,o.z,o.r*.8);if(t===null)continue;if(OBJ[o.key]&&OBJ[o.key].pasa){thru.push([o,t]);continue;}if(t<best){best=t;wall=true;bo=o;}} // el cartón no frena la bala: la traspasa y se rompe
   for(const z of zombies){if(!z.alive)continue;const t=rayCircle(ox,oz,dx,dz,z.x,z.z,z.t.r+.12);if(t!==null&&t<best){best=t;hz=z;wall=false;bo=null;}}
-  tracer(ox,oz,ox+dx*best,oz+dz*best);muzzle(ox,.75,oz,dx,dz);
+  tracer(mx,mz,ox+dx*Math.max(best,MUZZLE),oz+dz*Math.max(best,MUZZLE));muzzle(mx,.75,mz,dx,dz);
   if(hz){hurt(hz,1,dx,dz);impact(ox+dx*best,.7,oz+dz*best,[.5,.9,.3]);}else if(wall){if(!hitProp(bo,dx,dz,ox+dx*best,oz+dz*best))impact(ox+dx*best,.5,oz+dz*best);}
   for(const [o,t] of thru)if(t<best)hitProp(o,dx,dz,ox+dx*t,oz+dz*t);
   wp.ammo--;wp.cd=.11;wp.shake=Math.max(wp.shake,SHAKE_SHOT);player.shootT=.1;
