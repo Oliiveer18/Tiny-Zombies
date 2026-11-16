@@ -152,3 +152,12 @@ Técnico: `MOVE={size:1.4,top:1.15,...}`; `K()=player.base*MOVE.size`; `topSpeed
 - Excepción a la norma «sin correr» (decisión del usuario del 16 nov: ahora correr con L3).
 - Comprobado: build compila; prueba en Chromium con mando simulado: correr baja la estamina, granada no sale mientras se mantiene y sale al soltar, R2 dispara, menú cabe en horizontal.
 - NO comprobado: mando real en iPhone, la sensación de correr (2.1×) y la distancia de la granada.
+
+## M3 · Engranajes separados y versión visible (16 nov 2026, LOW)
+**Resumen fácil:** arriba a la derecha había dos engranajes uno encima del otro (el de Controles y el del panel de medidas `?debug`). Ahora el de Controles (⚙) está en la esquina y el del panel de medidas es un icono distinto (📊) a su izquierda; solo sale con `?debug`. Abajo a la izquierda hay un número pequeño (por ejemplo v0.1.12): es la versión y sube sola con cada cambio que se publica, así sabes si el móvil ya tiene lo último.
+
+**Detalle técnico**
+- `vite.config.js` define `__VER__` = `v<mayor.menor de package.json>.<nº de commits>` (`git rev-list --count HEAD`). Los dos workflows hacen checkout con `fetch-depth: 0` para que el recuento sea completo en GitHub (en un clon superficial local el número sale más bajo; solo vale el de la web publicada).
+- `#ver` en `index.html` (9 px, `pointer-events:none`), rellenado desde `controls.js`. Con `?debug` el panel sigue mostrando también `__BUILD__`.
+- `debug.js`: botón del panel pasa a 📊, 38 px, a la izquierda del ⚙ de Controles.
+- Comprobado: build compila, captura en Chromium con `?debug` (iconos separados, versión visible).

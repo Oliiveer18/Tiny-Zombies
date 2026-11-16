@@ -30,7 +30,7 @@ if(DEBUG){renderer.info.autoReset=false;
   sl('Tamaño del personaje ×',.8,2.2,()=>MOVE.size,v=>MOVE.size=v);
   info();
   // Paneles escondidos por defecto: un botón pequeño los muestra u oculta
-  const btn=document.createElement('div');btn.textContent='⚙';btn.style.cssText='position:fixed;top:4px;right:4px;z-index:100;width:34px;height:34px;line-height:34px;text-align:center;font-size:20px;color:#fff;background:rgba(0,0,0,.35);border-radius:17px';
+  const btn=document.createElement('div');btn.textContent='📊';btn.style.cssText='position:fixed;top:max(12px,env(safe-area-inset-top));right:calc(max(12px,env(safe-area-inset-right)) + 46px);z-index:100;width:38px;height:38px;line-height:38px;text-align:center;font-size:18px;color:#fff;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.25);border-radius:50%;box-sizing:border-box';
   let on=false;const vis=()=>{el.style.display=on?'':'none';box.style.display=on?'':'none';};vis();
   const tog=e=>{e.stopPropagation();e.preventDefault();on=!on;vis();};btn.addEventListener('touchstart',tog,{passive:false});btn.addEventListener('click',tog);
   document.body.appendChild(btn);

@@ -1,6 +1,7 @@
 // Pantalla «Controles»: engranaje en la esquina (o botón Options del mando). Pausa el juego mientras está abierta.
 import { cfg, padState, hooks, ACTIONS, NAMES, save, resetCfg } from './gamepad.js';
 export function initControls(){
+  document.getElementById('ver').textContent=__VER__; // versión: sube sola con cada cambio publicado
   const gear=document.createElement('div');gear.id='gear';gear.className='ui';gear.textContent='⚙';
   const menu=document.createElement('div');menu.id='cfgm';menu.className='ui';
   document.body.append(gear,menu);

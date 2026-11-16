@@ -22,11 +22,12 @@ canvas{display:block}
 #cfgm h3{margin:0;font-size:18px}#cfgm .s{font-size:12px;opacity:.7}#cfgm .r{display:flex;align-items:center;justify-content:space-between;gap:10px}
 #cfgm button{min-width:80px;padding:6px 8px;border-radius:8px;border:1px solid #fff4;background:#fff2;color:#cfe;font-size:14px}#cfgm input[type=range]{width:50%;touch-action:pan-x}
 #cfgm .g{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px}#cfgm .c span{font-size:13px}#cfgm .c button{min-width:70px}
+#ver{position:fixed;left:max(6px,env(safe-area-inset-left));bottom:max(4px,env(safe-area-inset-bottom));font-size:9px;opacity:.45;pointer-events:none;z-index:5;letter-spacing:.3px}
 body.pad .stick,body.pad .btn{display:none!important}
 </style></head><body>
 <div id="vig"></div>
 <div id="hud"><div id="hp" class="bar"><i></i></div><div id="st" class="bar"><i></i></div><div id="info"></div></div>
 <div id="sl" class="stick"><b></b></div><div id="sr" class="stick"><b></b></div>
 <div id="bg" class="btn">GRAN.</div><div id="br" class="btn">RECAR.</div>
-<div id="msg"></div>
+<div id="msg"></div><div id="ver"></div>
 <script type="module" src="/src/main.js"></script></body></html>
