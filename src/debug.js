@@ -25,6 +25,7 @@ if(DEBUG){renderer.info.autoReset=false;
   sl('Exposición',.3,1.6,()=>renderer.toneMappingExposure,v=>renderer.toneMappingExposure=v);
   sl('Sol',0,4,()=>LUZ.sun?LUZ.sun.intensity:0,v=>{if(LUZ.sun)LUZ.sun.intensity=v;});
   sl('Ambiente',0,2,()=>LUZ.hemi?LUZ.hemi.intensity:0,v=>{if(LUZ.hemi)LUZ.hemi.intensity=v;});
+  sl('Velocidad al apuntar ×',.2,1,()=>MOVE.aim,v=>MOVE.aim=v);
   sl('Paso (cadencia)',.5,1.6,()=>MOVE.step,v=>MOVE.step=v);
   sl('Cambio a correr desde',.4,2.5,()=>MOVE.blendA,v=>{MOVE.blendA=v;MOVE.blendB=v+.5;});
   info();

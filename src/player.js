@@ -4,9 +4,9 @@ import { input } from './input.js';
 import { obstacles, FIELD } from './world.js';
 import { wp } from './weapons.js';
 // Velocidades (unidades/s). Tiny original: 4.2 / 7 con cámara a 16.4; con la cámara a 10.1 se ajustan para que la velocidad en pantalla sea parecida.
-export const MOVE={walk:2.1,run:3.4,mult:1,acc:9,dec:14,dead:.12,curve:1.5,
+export const MOVE={walk:.9,run:3,aim:.5,mult:1,acc:9,dec:14,dead:.12,curve:1.5,
   // Velocidad (unidades del juego/s) que recorre cada animación al paso 1: medida en el GLB (andar 1,10 · correr ~3,4 · disparar 1,40 por 0,53 de escala).
-  clipWalk:.58,clipRun:1.8,clipShoot:.74,blendA:.8,blendB:1.3,step:1};
+  clipWalk:.58,clipRun:1.8,clipShoot:.74,blendA:1.4,blendB:1.9,step:1};
 const vel=new THREE.Vector2();
 export const player={id:'j1',x:0,z:0,hp:100,stam:100,exhausted:false,aimX:0,aimZ:-1,ax:0,az:-6,inst:null,t:0,hurt:0,shootT:0,moving:false};
 const ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),0),hit=new THREE.Vector3();
@@ -19,9 +19,10 @@ export function updatePlayer(dt,cam){
   const ml=m.length(); if(ml<MOVE.dead)m.set(0,0); else m.multiplyScalar((ml-MOVE.dead)/(1-MOVE.dead)/ml); // zona muerta: sin salto brusco
   player.exhausted=player.exhausted?player.stam<20:player.stam<=0;
   {const ml2=m.length(); if(ml2>0)m.multiplyScalar(Math.pow(ml2,MOVE.curve)/ml2);} // curva: inclinaciones pequeñas = movimiento fino
-  const run=input.run&&!player.exhausted&&m.length()>.1;
+  const aiming=input.aimActive||input.fire; // apuntando: más lento y sin correr, para ser preciso
+  const run=input.run&&!aiming&&!player.exhausted&&m.length()>.1;
   player.stam=THREE.MathUtils.clamp(player.stam+(run?-28:16)*dt,0,100);
-  const sp=(run?MOVE.run:MOVE.walk)*MOVE.mult*(input.fire?.8:1);
+  const sp=(run?MOVE.run:MOVE.walk)*MOVE.mult*(aiming?MOVE.aim:1);
   // aceleración y frenada suaves
   const tx=m.x*sp,tz=m.y*sp,k=Math.min(1,dt*(m.length()>0?MOVE.acc:MOVE.dec));
   vel.x+=(tx-vel.x)*k;vel.y+=(tz-vel.y)*k;
