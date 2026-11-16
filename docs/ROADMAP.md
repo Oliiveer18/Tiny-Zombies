@@ -11,6 +11,12 @@ Estados: 💡 propuesta de Claude (el usuario la corrige). Esfuerzo: LOW o MEDIU
 6. **Meshy corre en paralelo.** Los modelos son lo que más tarda y no dependen del código: se generan mientras se programa (`MODELOS_MESHY.md`). Los pasos A0a-A7 se programan con el relleno de Tiny; ningún hito se da por entregado con relleno.
 7. **Medir cada paso.** Nada pasa al siguiente si se rompen ≥ 58 fps, peor cuadro ≤ 25 ms, < 40 000 triángulos.
 
+## Estado a 16 nov 2026 (03:45)
+- **Hecho (en `main`, jugable en el móvil):** A0a módulos · A0b medidor · A0c ids/semilla/reloj · A0d jugador de Meshy (falta el zombi) · y, fuera del plan original y pedidos por el usuario: A0e movimiento · A0f calidad del jugador · A0g luz, cámara y paneles ocultos · A0h joysticks flotantes · A0i pies sin patinar · A0j movimiento táctico.
+- **Siguiente, sin decidir (esperando al usuario):** 004 táctico con Fable y qué propuestas tácticas entran; zombi de Meshy (A0d zombi); luz/tono final; A1a.
+- **Pendiente de Hito A:** A0d zombi · A1 (6 subpasos) · A2 · A3 · A4 · A6a · A5 ×2 · A6b · A7 · A8. Quedan ≈ 17 de ≈ 26 (los 6 extra de movimiento y calidad se añaden al total).
+- **Hitos B-F sin empezar.** Online (F) es lo último.
+
 ## Reparto Sonnet / Fable (16 nov) · a Fable solo lo que exige pensar a fondo
 - **Sonnet (código, ajustes, medir, documentar):** todo subpaso de programación, los ajustes que dicta el usuario con las barras de `?debug` y los documentos de sesión. No pide permiso a Fable para ajustar cifras.
 - **Fable (documentos de diseño, nunca código), una petición cada vez y solo cuando el siguiente paso la necesita:**
