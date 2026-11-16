@@ -1,0 +1,8 @@
+{
+ "crate":   {"mat":"madera",  "forma":"caja",   "hx":0.4,  "hz":0.4,   "masa":15},
+ "barrel":  {"mat":"metal",   "forma":"circulo","r":0.4,                "masa":18},
+ "barrier": {"mat":"hormigon","forma":"caja",   "hx":0.7,  "hz":0.175, "masa":600},
+ "fence":   {"mat":"madera",  "forma":"caja",   "hx":0.8,  "hz":0.1,   "masa":25},
+ "sack":    {"mat":"tela",    "forma":"circulo","r":0.4,                "masa":30},
+ "car":     {"mat":"metal",   "forma":"caja",   "hx":1.3,  "hz":0.65,  "masa":1200,"mu":0.15}
+}

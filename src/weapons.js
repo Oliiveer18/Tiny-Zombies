@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { input } from './input.js';
 import { player } from './player.js';
 import { zombies, hurt } from './zombies.js';
-import { obstacles, blast } from './world.js';
+import { obstacles, blast, bump } from './world.js';
 import { muzzle, impact, tracer, explosion } from './effects.js';
 // Temblor de cámara. Tiny original: disparo .04, explosión .6. Disparo sin temblor por petición del usuario (16 nov); explosión más suave porque la cámara está más cerca.
 const SHAKE_SHOT=0,SHAKE_BOOM=.2;
@@ -13,11 +13,11 @@ export function resetWeapons(){Object.assign(wp,{ammo:30,cd:0,reload:0,grenades:
 function shoot(){
   const sp=(Math.random()-.5)*.06*(input.aimHold?.35:1),c=Math.cos(sp),s=Math.sin(sp);
   const dx=player.aimX*c-player.aimZ*s,dz=player.aimX*s+player.aimZ*c;
-  const ox=player.x+dx*.5,oz=player.z+dz*.5;let best=28,hz=null,wall=false;
-  for(const o of obstacles){if(o.fly||o.key==='sack')continue;const t=rayCircle(ox,oz,dx,dz,o.x,o.z,o.r*.8);if(t!==null&&t<best){best=t;wall=true;}}
-  for(const z of zombies){if(!z.alive)continue;const t=rayCircle(ox,oz,dx,dz,z.x,z.z,z.t.r+.12);if(t!==null&&t<best){best=t;hz=z;wall=false;}}
+  const ox=player.x+dx*.5,oz=player.z+dz*.5;let best=28,hz=null,wall=false,bo=null;
+  for(const o of obstacles){if(o.fly||o.key==='sack')continue;const t=rayCircle(ox,oz,dx,dz,o.x,o.z,o.r*.8);if(t!==null&&t<best){best=t;wall=true;bo=o;}}
+  for(const z of zombies){if(!z.alive)continue;const t=rayCircle(ox,oz,dx,dz,z.x,z.z,z.t.r+.12);if(t!==null&&t<best){best=t;hz=z;wall=false;bo=null;}}
   tracer(ox,oz,ox+dx*best,oz+dz*best);muzzle(ox,.75,oz,dx,dz);
-  if(hz){hurt(hz,1,dx,dz);impact(ox+dx*best,.7,oz+dz*best,[.5,.9,.3]);}else if(wall)impact(ox+dx*best,.5,oz+dz*best);
+  if(hz){hurt(hz,1,dx,dz);impact(ox+dx*best,.7,oz+dz*best,[.5,.9,.3]);}else if(wall){impact(ox+dx*best,.5,oz+dz*best);bump(bo,dx,dz,ox+dx*best,oz+dz*best);}
   wp.ammo--;wp.cd=.11;wp.shake=Math.max(wp.shake,SHAKE_SHOT);player.shootT=.1;
 }
 function rayCircle(ox,oz,dx,dz,cx,cz,r){const fx=cx-ox,fz=cz-oz,t=fx*dx+fz*dz;if(t<0)return null;const px=fx-dx*t,pz=fz-dz*t,d2=px*px+pz*pz;if(d2>r*r)return null;return t-Math.sqrt(r*r-d2);}

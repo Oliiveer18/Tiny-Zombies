@@ -1,0 +1,7 @@
+{
+ "metal":    {"mu":0.5,"e":0.3,"transf":1},
+ "madera":   {"mu":0.6,"e":0.2,"transf":0.6},
+ "hormigon": {"mu":0.8,"e":0.1,"transf":1},
+ "carton":   {"mu":0.5,"e":0.1,"transf":0.15},
+ "tela":     {"mu":0.9,"e":0.0,"transf":0.3}
+}
