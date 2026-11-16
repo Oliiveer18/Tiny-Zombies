@@ -34,7 +34,7 @@
 - Criterio de éxito: cada recomendación lleva una cifra o un ajuste concreto, dice de dónde sale (documentación de Meshy, de Three.js o razonamiento propio) y marca como 💡 lo que haya que medir en el iPhone. Buscar en la web solo lo necesario; citar las fuentes.
 - Fuera de alcance: código; cambiar decisiones ✅ (Tiny igual, Meshy para todos los modelos, mundo plano, sin coop).
 
-### 004 · Diseño táctico: cómo hacer que el juego se sienta táctico y de estrategia · estado: PENDIENTE
+### 004 · Diseño táctico: cómo hacer que el juego se sienta táctico y de estrategia · estado: HECHA (ver `RESPUESTAS_FABLE/004_diseno_tactico.md`)
 - Contexto nuevo (decisión del usuario, 16 nov): el juego será MUY táctico y de estrategia (sigue siendo Tiny en cámara y controles táctiles, con cámara cercana y centrada en el jugador, sin niebla general, ritmo más lento y deliberado). Las velocidades actuales son provisionales: andar 2,1 · correr 3,4 (unidades/s) y cámara a 9,0 de distancia y 57°.
 - Leer: `CLAUDE.md`, `docs/DISENO.md` §2, §3, §7-§9 (combate, zombis, ruido), `docs/TINY_ACTUAL.md`, `docs/SESION.md` (A0d-A0g), `src/player.js`, `src/weapons.js`, `src/zombies.js`.
 - Entregar `RESPUESTAS_FABLE/004_diseno_tactico.md`, máximo 3 páginas: (1) lista corta (5-8 mecánicas) de lo que hace táctico el juego, ordenada por impacto/coste, con qué paso del ROADMAP las lleva; (2) para cada una, reglas con cifras que se puedan medir y ajustar con barras (`MOVE`, ruido por acción, radio de alerta, cono de visión, cobertura, retroceso/dispersión, munición); (3) qué cambia en los tres zombis y en las armas; (4) qué tiene que ser jugable en el móvil con dos pulgares (nada que exija más de dos botones nuevos); (5) qué se prueba primero para saber si «se siente táctico» (3 pruebas de 2 minutos).
@@ -66,7 +66,7 @@
 - Criterio de éxito: cada cifra dice de dónde sale o va marcada 💡; nada contradice ✅ del usuario (Tiny igual, Meshy para todos los modelos).
 - Fuera de alcance: código, el mundo, el online, copiar el personaje de referencia (arte propio).
 
-### 007 · Mapa de prueba v1 «Calle → Reja → Callejón con NPC → Zona de zombis» + todo el diseño que lo rodea · estado: PENDIENTE
+### 007 · Mapa de prueba v1 «Calle → Reja → Callejón con NPC → Zona de zombis» + todo el diseño que lo rodea · estado: HECHA (ver `RESPUESTAS_FABLE/007_mapa_v1.md`)
 - Contexto (decisión del usuario, 16 nov): quiere un mapa de prueba profesional que sea una situación real del juego: exploras una calle, hay un callejón con una reja; disparas la reja (se rompe o se abre), detrás hay NPC (neutrales y hostiles), los matas, y dentro del callejón hay una zona con zombis. «Es un ejemplo»: lo que vale es el patrón. El usuario quiere aprovechar a Fable al máximo (su cuota gratis termina el 17 nov): esta petición agrupa todo el diseño que Sonnet necesita para varios subpasos.
 - Hecho ya (no rediseñar): callejón `callejon_01.json`, física propia (`physics.js`), vida/rotura de objetos, bidón explosivo, farolas que se apagan, partículas por material, trozos (`debris.js`), 005 y 006 respondidas, almacén de personajes P1-P2. Pendiente de 005: C4 marcas, C5 `?debug` física, C6 acción `use`, C7-C9 NPC, C10 medición.
 - Leer: `CLAUDE.md`, `docs/CONTINUAR.md`, `docs/SESION.md` (C1-C3b, P1-P2), `coordinacion/RESPUESTAS_FABLE/005_*.md` y `006_*.md`, `docs/DISENO.md` §3, §7-§9, `src/data/lugares/callejon_01.json`, `src/world.js`, `src/zombies.js`, `src/weapons.js`, `src/player.js`.

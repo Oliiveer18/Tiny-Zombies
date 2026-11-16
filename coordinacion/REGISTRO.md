@@ -26,3 +26,5 @@
 - P2: herramienta de piezas y carpetas del almacén.
 - C4: marcas de bala, sangre, quemaduras.
 - S1: suelo con relieve, aceras y marcas fijas.
+
+- Respuestas 004 y 007 de Fable copiadas a main.

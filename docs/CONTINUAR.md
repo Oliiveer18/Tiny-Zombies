@@ -46,3 +46,5 @@ Quitar la arena fija y generar un mundo por regiones con semilla: claro inicial 
 - P2 hecho (tools/prep_pieza.mjs + carpetas). Siguiente: P3 (instanciaPersonaje con piezas) cuando haya cuerpo y piezas de Meshy; P4 arma y boca del cañón.
 - C4 hecho (decals). Siguiente: suelo con materiales y variación (mío), luego lo que responda Fable en 007.
 - S1 hecho (suelo procedural + aceras + marcas fijas). Siguiente: esperar 007/004 de Fable; si tardan, C5/C6.
+
+- Respuestas 004 y 007 de Fable recibidas (plan de 18 pasos en 007 §10; decisiones del usuario en 007 §11 y 004 §4). Hecho ya de ese plan: C4 y parte de V2/V3 (suelo S1, calcos fijos). Siguiente: V1 (mapa calle_reja_01) cuando el usuario responda las decisiones.
