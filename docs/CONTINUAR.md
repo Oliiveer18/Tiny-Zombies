@@ -48,3 +48,5 @@ Quitar la arena fija y generar un mundo por regiones con semilla: claro inicial 
 - S1 hecho (suelo procedural + aceras + marcas fijas). Siguiente: esperar 007/004 de Fable; si tardan, C5/C6.
 
 - Respuestas 004 y 007 de Fable recibidas (plan de 18 pasos en 007 §10; decisiones del usuario en 007 §11 y 004 §4). Hecho ya de ese plan: C4 y parte de V2/V3 (suelo S1, calcos fijos). Siguiente: V1 (mapa calle_reja_01) cuando el usuario responda las decisiones.
+
+- Decisión del usuario (16 nov, 22:10): mapa de prueba COMPACTO (~14x20 m) y modelos de Meshy PRIMERO (ver docs/MESHY_PEDIDOS.md). V1 se rehace en versión compacta cuando haya modelos; no construir más mapa largo. Las 6 decisiones de 007/004 siguen sin contestar.
