@@ -17,14 +17,14 @@ function atlas(){
     else if(k===14)blob(x,y,15,'rgba(15,12,6,.65)',12,.6);
     else{for(let i=0;i<2;i++){g.fillStyle='rgba(200,165,70,.75)';g.fillRect(x-30,y-8+i*0,60,14);}g.fillStyle='rgba(0,0,0,.35)';for(let i=0;i<40;i++)g.fillRect(x-30+r()*60,y-8+r()*14,2+r()*5,1+r()*3);} // pintura vial desgastada
     g.restore();}
-  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;}
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.premultiplyAlpha=true;return t;}
 let mesh,cell,alpha;const D=[];const nxt={b:B0,s:S0,q:Q0,f:F0};const dummy=new THREE.Object3D();dummy.rotation.order='YXZ';let rn=0;
 export function initDecals(scene){
   const g=new THREE.PlaneGeometry(1,1);cell=new THREE.InstancedBufferAttribute(new Float32Array(N),1);alpha=new THREE.InstancedBufferAttribute(new Float32Array(N),1);
   g.setAttribute('cell',cell);g.setAttribute('alpha',alpha);
   const m=new THREE.ShaderMaterial({transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2,uniforms:{map:{value:atlas()}},
     vertexShader:`attribute float cell;attribute float alpha;varying vec2 vu;varying float va;void main(){vec2 o=vec2(mod(cell,4.),floor(cell/4.));vu=(uv+o)/4.;vu.y=1.-vu.y;va=alpha;gl_Position=projectionMatrix*modelViewMatrix*instanceMatrix*vec4(position,1.);}`,
-    fragmentShader:`uniform sampler2D map;varying vec2 vu;varying float va;void main(){vec4 c=texture2D(map,vu);gl_FragColor=vec4(c.rgb*.6,c.a*va);}`});
+    fragmentShader:`uniform sampler2D map;varying vec2 vu;varying float va;void main(){vec4 c=texture2D(map,vu);gl_FragColor=vec4(c.rgb*.6*va,c.a*va);}`,blending:THREE.CustomBlending,blendSrc:THREE.OneFactor,blendDst:THREE.OneMinusSrcAlphaFactor,blendEquation:THREE.AddEquation});
   mesh=new THREE.InstancedMesh(g,m,N);mesh.frustumCulled=false;mesh.renderOrder=1;scene.add(mesh);
   const z=new THREE.Matrix4().makeScale(0,0,0);for(let i=0;i<N;i++){mesh.setMatrixAt(i,z);D.push({on:false,i,t:0,life:0,p:null});}}
 function put(d){ // calcula la matriz de una marca (si está pegada a un objeto, sigue al objeto)
