@@ -2,7 +2,7 @@
 import { spawnDebris } from './debris.js';
 // Los objetos y los zombis los coloca world.js / zombies.js desde el mismo archivo (vía test.js).
 import * as THREE from 'three';
-import { LUGAR } from './test.js';
+import { LUGAR } from './test.js'; import { buildGround } from './ground.js';
 import { renderer } from './renderer.js'; import { obstacles, LUZ, phys } from './world.js';
 function glow(radio,color){ // charco de luz falso: disco aditivo con degradado, una sola malla
   const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d'),gr=g.createRadialGradient(32,32,0,32,32,32);
@@ -15,6 +15,7 @@ export function buildAlley(scene,ground){
   LUZ.hemi.color.set(0xa0abc4);LUZ.hemi.groundColor.set(0x3a3a44);LUZ.hemi.intensity=2.0;renderer.toneMappingExposure=1.15; // más claro que el día de Tiny a propósito: en el móvil el atardecer se veía casi negro
   LUZ.sun.color.set(0xff9a50);LUZ.sun.intensity=1.6;
   ground.material.color.set(0x5a5d68);
+  buildGround(scene,ground,LUGAR); // suelo con relieve, aceras y marcas fijas (ground.js)
   // muros: una caja por tramo (dibujo) + una fila de círculos (colisión y balas, como el resto de obstáculos)
   const mat=new THREE.MeshStandardMaterial({color:0x4a4440,roughness:1});
   LUGAR.muros.forEach((m,i)=>{const [x1,z1,x2,z2]=m,L=Math.hypot(x2-x1,z2-z1);

@@ -1,3 +1,4 @@
+import { blood } from './decals.js';
 import * as THREE from 'three';
 import { instance, play } from './assets.js';
 import { obstacles, FIELD } from './world.js';
@@ -21,7 +22,7 @@ function spawn(){
 function kill(z){z.dying=false;if(z.alive)state.alive--;z.alive=false;z.dead=0;z.inst.root.visible=false;if(!free[z.type].includes(z))free[z.type].push(z);}
 export function hurt(z,dmg,kx=0,kz=0){
   if(!z.alive||z.dead)return;z.hp-=dmg;z.x+=kx*.1;z.z+=kz*.1;
-  if(z.hp<=0){z.dead=.0001;state.score+=z.t.pts;state.alive--;z.alive=false;z.dying=true;if(z.inst.actions.die)play(z.inst,'die',true);}
+  if(z.hp<=0){blood(z.x,z.z,1+Math.random()*.4);z.dead=.0001;state.score+=z.t.pts;state.alive--;z.alive=false;z.dying=true;if(z.inst.actions.die)play(z.inst,'die',true);}
 }
 export function updateZombies(dt){
   // oleadas

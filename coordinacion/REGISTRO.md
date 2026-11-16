@@ -24,4 +24,7 @@
 
 - P1: clips compartidos en anims/humano.glb; 006 de Fable recibida.
 - P2: herramienta de piezas y carpetas del almacén.
-- 2026-11-16 · Fable · Respuesta 007 (mapa v1 calle-reja-campamento-patio: datos, reja con bisagra y candado, ruido y estados, suelos por código, animaciones, sonido sintetizado, 18 subpasos, 5 decisiones) y respuesta 004 (7 mecánicas tácticas T1-T7, 0 botones nuevos, 3 pruebas de 2 minutos).
+- C4: marcas de bala, sangre, quemaduras.
+- S1: suelo con relieve, aceras y marcas fijas.
+
+- Respuestas 004 y 007 de Fable copiadas a main.

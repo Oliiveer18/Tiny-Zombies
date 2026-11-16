@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { TEST, LAYOUT } from './test.js'; import { buildAlley } from './alley.js'; import { createPhysics } from './physics.js'; import MAT from './data/materiales.json'; import OBJ from './data/objetos.json'; export {OBJ}; import { impact } from './effects.js'; import { spawnDebris } from './debris.js'; import { propSource } from './assets.js'; import { mulberry, WORLD_SEED } from './sim.js';
+import { TEST, LAYOUT } from './test.js'; import { buildAlley } from './alley.js'; import { createPhysics } from './physics.js'; import MAT from './data/materiales.json'; import OBJ from './data/objetos.json'; export {OBJ}; import { impact } from './effects.js'; import { spawnDebris } from './debris.js'; import { bulletMark } from './decals.js'; import { propSource } from './assets.js'; import { mulberry, WORLD_SEED } from './sim.js';
 export const LUZ={}; // luces ajustables en vivo desde ?debug
 export const obstacles=[]; export const props=[]; export const FIELD=40;
 export const hooks={boom:null}; // lo rellena weapons.js (explosión de bidón)
@@ -50,7 +50,7 @@ export function damageProp(p,n){if(!p||p.dead||p.vida===undefined||p.vida===Infi
 // Impacto de bala en un objeto o muro: partículas según el material, empujón y daño. Devuelve true si lo ha tratado.
 export function hitProp(p,dx,dz,hx,hz){
   if(!p)return false;const m=MAT[matOf(p)];if(!m)return false;
-  impact(hx,.5,hz,m.col,m.n);if(p.body)phys.hit(p.body,dx,dz,hx,hz);damageProp(p,1);return true;}
+  impact(hx,.5,hz,m.col,m.n);if(p.body)phys.hit(p.body,dx,dz,hx,hz);if(p.vida===undefined||p.vida>1)bulletMark(hx,.45+(hx*7.3%1)*.2,hz,dx,dz,p);damageProp(p,1);return true;}
 export function blast(x,z,R,force){ // granada o bidón: empujón J = 400·(1−d/R) (force=16) y daño a lo que se rompe
   phys.blast(x,z,R,force*25);
   for(const p of props){if(p.dead||p.vida===Infinity)continue;const d=Math.hypot(p.x-x,p.z-z);if(d<R)damageProp(p,Math.ceil(force*.5*(1-d/R)));}}
