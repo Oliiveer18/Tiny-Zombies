@@ -43,7 +43,7 @@ export function updatePlayer(dt,cam){
     const dx=player.ax-player.x,dz=player.az-player.z,l=Math.hypot(dx,dz)||1;player.aimX=dx/l;player.aimZ=dz/l; }
   {const b=player.inst.body,tgt=player.crouch?1:0;player.cr=(player.cr||0)+(tgt-(player.cr||0))*Math.min(1,dt*10); // PROVISIONAL sin clip de agachado: encoge y se inclina
    {const S=K();b.scale.set(S,S*(1-.2*player.cr),S);}b.rotation.x=.22*player.cr;}
-  const r=player.inst.root;r.position.set(player.x,0,player.z);r.rotation.y=Math.atan2(player.aimX,player.aimZ);
+  const r=player.inst.root;r.position.set(player.x,0,player.z);r.rotation.y=Math.atan2(player.aimX,player.aimZ)-Math.PI/2*((player.inst.w&&player.inst.w.shoot_side)||0); // el clip «shoot_side» apunta hacia el costado del modelo (+X): se gira 90° para que el arma vaya hacia donde apuntas
   player.reticle.position.set(player.ax,.05,player.az);
   // animación: clips si existen, si no código
   player.t+=dt*(run?14:9);player.shootT=Math.max(0,player.shootT-dt);player.hurt=Math.max(0,player.hurt-dt);
@@ -68,7 +68,9 @@ export function updatePlayer(dt,cam){
     if(a.run)a.run.timeScale=bs*st*C(speed/(CR*K()),.5,2);
     if(a.shoot_back)a.shoot_back.timeScale=C(speed/(CB*K()),.5,1.6); // clip «inplace»: ya va hacia atrás por sí mismo
     if(a.shoot_fwd)a.shoot_fwd.timeScale=C(speed/(CF*K()),.7,1.6);
-    inst.mixer.update(dt);}
+    inst.mixer.update(dt);
+    if(a.shoot_side){const ss=a.shoot_side;if((inst.w.shoot_side||0)<.02)ss.time=.6;else if(ss.time>2.6)ss.time=1.25;} // el clip dura 4 s (sube el arma, apunta, la baja): se queda en la parte de apuntar, sin bajar los brazos cada 4 s
+  }
   else{player.inst.body.position.y=player.moving?Math.abs(Math.sin(player.t))*.07:0;player.inst.body.rotation.x=player.moving?.12:0;player.inst.body.rotation.z=Math.sin(player.t)*(player.moving?.08:0);}
 }
 

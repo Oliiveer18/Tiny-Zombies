@@ -178,3 +178,13 @@ Técnico: `MOVE={size:1.4,top:1.15,...}`; `K()=player.base*MOVE.size`; `topSpeed
 - `world.js`: en prueba los props salen de `LAYOUT.props` en vez de al azar. `zombies.js`: sin oleadas, zombis fijos (miran al jugador, sin moverse ni atacar), reaparecen en su `home` tras morir. `game.js`: granadas ≥ 5 y vida a 100. `controls.js`: botones Activar/Desactivar y Reiniciar.
 - Comprobado: build compila; en Chromium con `?prueba=1` aparece «PRUEBA», la versión con «· prueba», los zombis siguen en su sitio tras varios segundos y no hay errores en consola.
 - Los zombis siguen siendo cápsulas verdes (falta el modelo de Meshy); la velocidad de los zombis del juego normal NO se ha cambiado.
+
+## M6 · Disparo parado: el cuerpo apunta hacia donde dispara (16 nov 2026, LOW)
+**Resumen fácil:** corregido lo que se veía en tu vídeo: al disparar parado el personaje apuntaba con el arma hacia un lado distinto del de la bala y se encorvaba, y cada 4 segundos bajaba los brazos. Ahora el cuerpo se gira para que el arma vaya hacia donde apuntas y mantiene la postura de apuntar mientras disparas. Prueba en el iPhone: quédate quieto y dispara en varias direcciones; el arma debe ir hacia donde sale la bala.
+
+**Detalle técnico**
+- Causa: el clip `shoot_side` (Side_Shot de Meshy) apunta hacia el costado del modelo (+X; medido sobre el GLB: manos a +0,44 en X con el cuerpo en pie), pero la raíz solo giraba para que +Z mirase al objetivo, así que el arma salía 90° desviada de la bala. `player.js`: `rotation.y = atan2(aimX,aimZ) − 90°·peso(shoot_side)`; con `shoot_fwd/back` no cambia (apuntan a +Z).
+- El clip dura 4 s: 0-0,75 s sube el arma, 1,0-2,75 s apunta, 3,0-4 s la baja. Con el peso del clip a 0 se coloca en 0,6 s (sube rápido al empezar) y al pasar de 2,6 s vuelve a 1,25 s: se queda en la parte de apuntar.
+- Comprobado: build OK; prueba en Chromium con mando simulado en cuatro direcciones (la mano de apuntar y la cabeza van hacia donde sale la bala; la mano de apoyo queda a su izquierda, como en el clip).
+- Residuo: el arma del clip queda ~8° girada hacia -Z; no se corrige. NO comprobado en iPhone con táctil.
+- Sin resolver: en táctil, un toque corto en la mitad izquierda alterna agacharse y el agachado provisional deforma el cuerpo (encoge e inclina); puede confundirse con un fallo.
