@@ -110,3 +110,7 @@ Cámara: Altura 7,6 · Atrás 4,9 (distancia 9,0 · ángulo 57°). Velocidad: an
 
 ## Temblor al disparar (16 nov 2026, LOW)
 **Resumen fácil:** quitado el temblor de la pantalla al disparar. La explosión de la granada tiembla menos (0,2 en vez de 0,6) porque la cámara ahora está más cerca. Constantes `SHAKE_SHOT` y `SHAKE_BOOM` en `weapons.js`. Movimiento: el usuario NO está conforme y quiere pensarlo antes de tocar nada (pendiente, ver conversación).
+
+## A0k · Correr como Tiny: aro en el joystick (16 nov 2026, LOW)
+**Resumen fácil:** el usuario eligió la opción A tras ver cómo lo hacen otros juegos. Correr se hace empujando el pulgar más allá de un aro de puntos que se ve en el joystick (el anillo se pone naranja); dentro del aro, andas más o menos rápido según lo inclines. Desaparece el gesto de toque + mantener.
+**Detalle:** `input.js`: `runT` con histéresis (activa >0,85, desactiva <0,75); el aro del CSS (`.stick::after`, radio 0,8) marca la zona; `player.js`: `MOVE.runAt=.85`; dentro del aro la velocidad escala hasta `walk` (0,9), fuera va a `run` (3,0). Apuntando se anula correr (sin cambios). Comprobado con toques simulados (dentro del aro = normal; más allá = naranja; vuelta = normal). NO en iPhone. Fuentes consultadas: Game Developer (sticks flotantes, zonas muertas escaladas), Cursa (gestos táctiles); el resto, criterio propio.

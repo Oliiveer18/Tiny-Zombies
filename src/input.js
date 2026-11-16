@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-export const input={move:new THREE.Vector2(),aim:new THREE.Vector2(),aimActive:false,fire:false,run:false,runHold:false,reload:false,grenade:false,touch:false,mouse:new THREE.Vector2()};
+export const input={move:new THREE.Vector2(),aim:new THREE.Vector2(),aimActive:false,fire:false,run:false,runT:false,reload:false,grenade:false,touch:false,mouse:new THREE.Vector2()};
 const keys={};
 export function initInput(canvas){
   input.touch=matchMedia('(pointer:coarse)').matches||'ontouchstart' in window; document.body.classList.toggle('touch',input.touch);
@@ -11,11 +11,8 @@ export function initInput(canvas){
   addEventListener('contextmenu',e=>e.preventDefault());
   if(input.touch){
     // Joysticks flotantes: aparecen donde pones el pulgar (mitad izquierda = mover, derecha = apuntar/disparar)
-    // Correr = toque rápido y, enseguida, otro toque que se mantiene (como «clic y mantener»); al soltar vuelves a andar
-    let lastTap=0;
-    floatStick('sl',(x,y)=>x<innerWidth*.5&&y>innerHeight*.18,(x,y)=>input.move.set(x,y),
-      ()=>{input.runHold=performance.now()-lastTap<350;document.getElementById('sl').style.borderColor=input.runHold?'#f93':'';},
-      (dur,moved)=>{input.runHold=false;document.getElementById('sl').style.borderColor='';if(dur<220&&moved<14)lastTap=performance.now();});
+    // Correr = empujar el pulgar más allá del aro marcado (como en Tiny); dentro del aro, andas según lo inclines
+    floatStick('sl',(x,y)=>x<innerWidth*.5&&y>innerHeight*.18,(x,y)=>input.move.set(x,y));
     floatStick('sr',(x,y)=>x>=innerWidth*.5&&y>innerHeight*.18,(x,y,on)=>{input.aim.set(x,y);input.aimActive=on&&Math.hypot(x,y)>.25;input.fire=input.aimActive;});
     // Sin zoom, sin menú de mantener pulsado, sin gestos del navegador
     for(const ev of ['gesturestart','gesturechange','gestureend','dblclick'])document.addEventListener(ev,e=>e.preventDefault());
@@ -26,7 +23,9 @@ export function initInput(canvas){
 }
 export function pollKeys(){
   if(!input.touch)input.move.set((keys.KeyD?1:0)-(keys.KeyA?1:0),(keys.KeyS?1:0)-(keys.KeyW?1:0));
-  input.run=!!(keys.ShiftLeft||keys.ShiftRight)||(input.touch&&input.runHold);
+  if(input.touch){const l=input.move.length();if(!input.runT&&l>.85)input.runT=true;else if(input.runT&&l<.75)input.runT=false; // con margen para que no parpadee
+    const s=document.getElementById('sl');if(s)s.style.borderColor=input.runT?'#f93':'';}
+  input.run=!!(keys.ShiftLeft||keys.ShiftRight)||(input.touch&&input.runT);
 }
 function floatStick(id,inZone,cb,onStart,onEnd){
   const el=document.getElementById(id),knob=el.firstElementChild;let tid=null,ox=0,oy=0,t0=0,sx=0,sy=0,mv=0;const R=60,K=45,H=65;
