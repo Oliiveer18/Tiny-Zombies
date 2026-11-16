@@ -2,17 +2,17 @@ import * as THREE from 'three';
 import { instance, play } from './assets.js';
 import { obstacles, FIELD } from './world.js';
 import { player } from './player.js';
-import { impact } from './effects.js';
+import { impact } from './effects.js'; import { mulberry, hash, WORLD_SEED } from './sim.js';
 export const TYPES={normal:{model:'zombie',hp:3,sp:2.3,dmg:8,r:.35,pts:10,pool:36},runner:{model:'runner',hp:2,sp:4.3,dmg:5,r:.3,pts:15,pool:24},tank:{model:'tank',hp:14,sp:1.6,dmg:20,r:.55,pts:50,pool:6}};
-export const zombies=[]; const free={};let scene;
+export const zombies=[]; const free={};let scene;const rnd=mulberry(hash(WORLD_SEED,1)); // canal 1 = zombis
 export const state={wave:0,queue:0,spawnT:0,inter:2,score:0,alive:0,onHurt:null};
 export function initZombies(s){scene=s;for(const [k,t] of Object.entries(TYPES)){free[k]=[];for(let i=0;i<t.pool;i++){
-  const inst=instance(t.model);inst.root.visible=false;scene.add(inst.root);const z={type:k,t,inst,alive:false,x:0,z:0,hp:0,atk:0,dead:0,ph:Math.random()*6,vx:0,vz:0};zombies.push(z);free[k].push(z);}}}
+  const inst=instance(t.model);inst.root.visible=false;scene.add(inst.root);const z={id:'z'+zombies.length,type:k,t,inst,alive:false,x:0,z:0,hp:0,atk:0,dead:0,ph:rnd()*6,vx:0,vz:0};zombies.push(z);free[k].push(z);}}}
 export function resetZombies(){for(const z of zombies)kill(z,true);Object.assign(state,{wave:0,queue:0,spawnT:0,inter:2,score:0});}
 function spawn(){
-  const w=state.wave;let k='normal',r=Math.random();if(w>=3&&r<Math.min(.03*w,.15))k='tank';else if(w>=2&&r<Math.min(.12+.04*w,.4))k='runner';
+  const w=state.wave;let k='normal',r=rnd();if(w>=3&&r<Math.min(.03*w,.15))k='tank';else if(w>=2&&r<Math.min(.12+.04*w,.4))k='runner';
   const z=free[k].pop();if(!z)return false;
-  const a=Math.random()*6.28,d=22;z.x=player.x+Math.cos(a)*d;z.z=player.z+Math.sin(a)*d;
+  const a=rnd()*6.28,d=22;z.x=player.x+Math.cos(a)*d;z.z=player.z+Math.sin(a)*d;
   const L=FIELD-1;z.x=THREE.MathUtils.clamp(z.x,-L,L);z.z=THREE.MathUtils.clamp(z.z,-L,L);
   z.hp=z.t.hp+Math.floor(w/4);z.alive=true;z.dead=0;z.atk=0;z.inst.root.visible=true;z.inst.root.rotation.set(0,0,0);z.inst.body.rotation.set(0,0,0);z.inst.body.position.y=0;
   state.alive++;return true;}

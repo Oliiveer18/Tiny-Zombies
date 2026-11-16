@@ -10,3 +10,4 @@
 | 2026-11-15 | Sonnet | Aplicada la revisión Fable 001: decisiones (luz/niebla, suelo plano, munición A5, iPhone 14, sin coop), C1-C13, ROADMAP R1-R9 (≈ 43 subpasos), huecos y riesgos en DISENO §15, petición 002 actualizada, entrega única por ramas (💡) | — |
 | 2026-11-15 | Sonnet | A0a: `main.js` dividido en `renderer.js`, `game.js` y `main.js` sin cambiar comportamiento; build OK. Entrega única: GitHub/main, sin ZIP | pendiente de medir en iPhone |
 | 2026-11-16 | Sonnet | A0b: medidor `?debug` (`src/debug.js`): fps, peor cuadro, CPU, triángulos de todas las pasadas, llamadas, recursos; build OK | pendiente de medir en iPhone 14 |
+| 2026-11-16 | Sonnet | A0c: `src/sim.js` (semilla, hash de enteros, reloj en ticks), ids en zombis/props/jugador, zombis con semilla propia; build OK | pendiente de medir en iPhone 14 |
