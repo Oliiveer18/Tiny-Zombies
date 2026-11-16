@@ -4,7 +4,7 @@ import { input } from './input.js';
 import { obstacles, FIELD } from './world.js';
 import { wp } from './weapons.js';
 // Velocidades (unidades/s). Tiny original: 4.2 / 7 con cámara a 16.4; con la cámara a 10.1 se ajustan para que la velocidad en pantalla sea parecida.
-export const MOVE={walk:1.4,run:1.4,aim:.4,runAt:.85,mult:1,acc:9,dec:14,dead:.12,curve:1.5,
+export const MOVE={walk:1.4,run:1.4,aim:.4,crouch:.5,runAt:.85,mult:1,acc:9,dec:14,dead:.12,curve:1.5,
   // Velocidad (unidades del juego/s) que recorre cada animación al paso 1: medida en el GLB (andar 1,10 · correr ~3,4 · disparar 1,40 por 0,53 de escala).
   clipWalk:.58,clipRun:1.8,clipShoot:.74,blendA:.7,blendB:1.2,step:1};
 const vel=new THREE.Vector2();
@@ -13,16 +13,17 @@ const ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),0
 export function initPlayer(scene){player.inst=instance('player');scene.add(player.inst.root);
   const ring=new THREE.Mesh(new THREE.RingGeometry(.22,.3,20),new THREE.MeshBasicMaterial({color:0xff5a3a,transparent:true,opacity:.8,depthTest:false}));
   ring.rotation.x=-Math.PI/2;ring.renderOrder=9;scene.add(ring);player.reticle=ring;}
-export function resetPlayer(){Object.assign(player,{x:0,z:0,hp:100,stam:100,exhausted:false,hurt:0});vel.set(0,0);if(player.inst){player.inst.blendReady=false;player.inst.dead=false;}}
+export function resetPlayer(){Object.assign(player,{x:0,z:0,hp:100,stam:100,exhausted:false,hurt:0});vel.set(0,0);player.crouch=false;input.crouch=false;if(player.inst){player.inst.blendReady=false;player.inst.dead=false;}}
 export function updatePlayer(dt,cam){
   const m=input.move.clone();if(m.length()>1)m.normalize();
   const ml=m.length(); if(ml<MOVE.dead)m.set(0,0); else m.multiplyScalar((ml-MOVE.dead)/(1-MOVE.dead)/ml); // zona muerta: sin salto brusco
   player.exhausted=player.exhausted?player.stam<20:player.stam<=0;
   {const ml2=m.length(); if(ml2>0)m.multiplyScalar(Math.pow(ml2,MOVE.curve)/ml2);} // curva: inclinaciones pequeñas = movimiento fino
+  if(input.crouchToggle){player.crouch=!player.crouch;input.crouchToggle=false;} input.crouch=player.crouch; // agacharse: más lento (y más sigilo cuando exista el ruido)
   const aiming=input.aimActive||input.fire; // apuntando: más lento y sin correr, para ser preciso
   const run=input.run&&!aiming&&!player.exhausted&&m.length()>.1;
   player.stam=THREE.MathUtils.clamp(player.stam+(run?-28:16)*dt,0,100);
-  const sp=(run?MOVE.run:MOVE.walk)*MOVE.mult*(aiming?MOVE.aim:1);
+  const sp=(run?MOVE.run:MOVE.walk)*MOVE.mult*(aiming?MOVE.aim:1)*(player.crouch?MOVE.crouch:1);
   // aceleración y frenada suaves
   const tx=m.x*sp,tz=m.y*sp,k=Math.min(1,dt*(m.length()>0?MOVE.acc:MOVE.dec));
   vel.x+=(tx-vel.x)*k;vel.y+=(tz-vel.y)*k;
@@ -36,6 +37,8 @@ export function updatePlayer(dt,cam){
     player.ax=player.x+player.aimX*8;player.az=player.z+player.aimZ*8;
   } else { ray.setFromCamera(input.mouse,cam); if(ray.ray.intersectPlane(plane,hit)){player.ax=hit.x;player.az=hit.z;}
     const dx=player.ax-player.x,dz=player.az-player.z,l=Math.hypot(dx,dz)||1;player.aimX=dx/l;player.aimZ=dz/l; }
+  {const b=player.inst.body,tgt=player.crouch?1:0;player.cr=(player.cr||0)+(tgt-(player.cr||0))*Math.min(1,dt*10); // PROVISIONAL sin clip de agachado: encoge y se inclina
+   b.scale.y=.53*(1-.2*player.cr);b.rotation.x=.22*player.cr;}
   const r=player.inst.root;r.position.set(player.x,0,player.z);r.rotation.y=Math.atan2(player.aimX,player.aimZ);
   player.reticle.position.set(player.ax,.05,player.az);
   // animación: clips si existen, si no código

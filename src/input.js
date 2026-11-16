@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-export const input={move:new THREE.Vector2(),aim:new THREE.Vector2(),aimActive:false,fire:false,run:false,runT:false,reload:false,grenade:false,touch:false,mouse:new THREE.Vector2()};
+export const input={move:new THREE.Vector2(),aim:new THREE.Vector2(),aimActive:false,fire:false,run:false,crouchToggle:false,crouch:false,reload:false,grenade:false,touch:false,mouse:new THREE.Vector2()};
 const keys={};
 export function initInput(canvas){
   input.touch=matchMedia('(pointer:coarse)').matches||'ontouchstart' in window; document.body.classList.toggle('touch',input.touch);
-  addEventListener('keydown',e=>{keys[e.code]=1;if(e.code==='KeyR')input.reload=true;if(e.code==='KeyE')input.grenade=true;});
+  addEventListener('keydown',e=>{keys[e.code]=1;if(e.code==='KeyR')input.reload=true;if(e.code==='KeyE')input.grenade=true;if(e.code==='KeyC')input.crouchToggle=true;});
   addEventListener('keyup',e=>keys[e.code]=0);
   canvas.addEventListener('mousemove',e=>input.mouse.set(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1));
   canvas.addEventListener('mousedown',e=>{if(e.button===0&&!input.touch)input.fire=true;});
@@ -11,7 +11,8 @@ export function initInput(canvas){
   addEventListener('contextmenu',e=>e.preventDefault());
   if(input.touch){
     // Joysticks flotantes: aparecen donde pones el pulgar (mitad izquierda = mover, derecha = apuntar/disparar)
-    floatStick('sl',(x,y)=>x<innerWidth*.5&&y>innerHeight*.18,(x,y)=>input.move.set(x,y));
+    // Toque corto en la mitad izquierda = agacharse / levantarse
+    floatStick('sl',(x,y)=>x<innerWidth*.5&&y>innerHeight*.18,(x,y)=>input.move.set(x,y),null,(dur,moved)=>{if(dur<220&&moved<14)input.crouchToggle=true;});
     floatStick('sr',(x,y)=>x>=innerWidth*.5&&y>innerHeight*.18,(x,y,on)=>{input.aim.set(x,y);input.aimActive=on&&Math.hypot(x,y)>.25;input.fire=input.aimActive;});
     // Sin zoom, sin menú de mantener pulsado, sin gestos del navegador
     for(const ev of ['gesturestart','gesturechange','gestureend','dblclick'])document.addEventListener(ev,e=>e.preventDefault());
@@ -22,6 +23,7 @@ export function initInput(canvas){
 }
 export function pollKeys(){
   if(!input.touch)input.move.set((keys.KeyD?1:0)-(keys.KeyA?1:0),(keys.KeyS?1:0)-(keys.KeyW?1:0));
+  {const s=document.getElementById('sl');if(s)s.style.borderColor=input.crouch?'#6cf':'';}
   input.run=false; // sin correr (decisión del usuario, 16 nov): una sola caminata intermedia, más o menos rápida según inclines el joystick
 }
 function floatStick(id,inZone,cb,onStart,onEnd){
