@@ -28,3 +28,4 @@
 - S1: suelo con relieve, aceras y marcas fijas.
 
 - Respuestas 004 y 007 de Fable copiadas a main.
+- 2026-11-17 · Fable · Informe 008 (reorientación visual tipo Tiny Troopers): estado, diferencias, qué se aprovecha, pista R0-R8 y 5 decisiones. Nada implementado; espera aprobación del usuario.
