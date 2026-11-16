@@ -11,7 +11,7 @@ Estados: 💡 propuesta de Claude (el usuario la corrige). Esfuerzo: LOW o MEDIU
 6. **Meshy corre en paralelo.** Los modelos son lo que más tarda y no dependen del código: se generan mientras se programa (`MODELOS_MESHY.md`). Los pasos A0a-A7 se programan con el relleno de Tiny; ningún hito se da por entregado con relleno.
 7. **Medir cada paso.** Nada pasa al siguiente si se rompen ≥ 58 fps, peor cuadro ≤ 25 ms, < 40 000 triángulos.
 
-## Hito A · Núcleo jugable (≈ 15 subpasos)
+## Hito A · Núcleo jugable (≈ 20 subpasos)
 Objetivo: explorar un mundo infinito, disparar, saquear, beber y comer, y no morir de hambre ni de zombis.
 
 | Paso | Esfuerzo | Qué incluye |
@@ -20,7 +20,7 @@ Objetivo: explorar un mundo infinito, disparar, saquear, beber y comer, y no mor
 | A0b Medidor | LOW | Medidor `?debug` (fps, peor cuadro, triángulos de las dos pasadas con y sin sombra, tamaño de guardado); se apunta el iPhone 14 como móvil de referencia |
 | A0c Ids, semilla y reloj | LOW | Ids de entidades; `Math.random` del mundo → semilla (el del combate puede quedarse); reloj de juego en ticks enteros guardable |
 | A0d Prueba de tubería Meshy | LOW | Integrar el protagonista y el zombi normal de Meshy en Tiny: nombres de clips, escala, triángulos y esqueleto compartido (`MODELOS_MESHY.md`). Se hace cuando los GLB estén generados |
-| A1 Regiones | MEDIUM | Mundo infinito por semilla: carga y descarga de regiones, niebla en el borde, rejilla espacial para colisiones con círculos y **rectángulos girados**, posición = región entera + decimal local, entidades que cruzan regiones, formato de cambios e ids fijados (ver petición 002); Tiny funcionando igual |
+| A1 Regiones | 6 subpasos (A1a LOW · A1b MEDIUM · A1c LOW · A1d MEDIUM · A1e MEDIUM · A1f LOW; ver `RESPUESTAS_FABLE/002_diseno_A1_regiones.md` §9) | Mundo infinito por semilla: carga y descarga de regiones, niebla en el borde, rejilla espacial para colisiones con círculos y **rectángulos girados**, posición = región entera + decimal local, entidades que cruzan regiones, formato de cambios e ids fijados (ver petición 002); Tiny funcionando igual |
 | A2 Terreno y agua | MEDIUM | Mundo PLANO. Tipos de región (campo, bosque, carretera, costa), lagos y ríos con orilla, props instanciados por región. Suelo con marcas pintadas y desgaste y objetos apilados (según `REFERENCIA_VISUAL.md`). «Pueblo», «granja» y «ruinas» entran con A5 |
 | A3 Zombis colocados | MEDIUM | Se quitan las oleadas; zombis por tipo de región (dormidos, deambulando, grupos); alerta por vista y ruido (`ruido.json`); tope de 40 activos; claro inicial solo con zombis normales dormidos |
 | A4 Guardado | MEDIUM | IndexedDB; solo cambios por región, con `versionGenerador` (zombis muertos, saqueos); un guardado independiente por partida (varias; al morir se acaba esa partida). Se hace aquí porque ya hay cambios que guardar |
@@ -87,7 +87,7 @@ Todo lo anterior se construye ya con los principios de `DISENO.md` §14 (simulac
 | F5 Seguridad y pulido | MEDIUM | Anti-trampas básico, límites, reconexión, equilibrio |
 
 ## Total aproximado
-Unos 43 subpasos antes de F (A 15 · B 9 · C 6 · D 8 · E 5; el antiguo cálculo de 41 estaba mal sumado). Lo jugable de verdad llega con A y B (≈ 24). C, D y E añaden profundidad y se pueden recortar o reordenar sin romper lo anterior.
+Unos 48 subpasos antes de F (A 20 · B 9 · C 6 · D 8 · E 5; el antiguo cálculo de 41 estaba mal sumado). Lo jugable de verdad llega con A y B (≈ 29). C, D y E añaden profundidad y se pueden recortar o reordenar sin romper lo anterior.
 
 ## Qué hace este orden más corto que el anterior
 - El guardado pasa de ser un paso grande a un subpaso pequeño dentro de A, porque llega justo cuando hay cambios que guardar.

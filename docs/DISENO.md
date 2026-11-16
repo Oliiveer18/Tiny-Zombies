@@ -42,7 +42,7 @@ Supervivencia de mundo abierto en un apocalipsis zombi, de movimiento y disparo 
 - **Se añade:** mundo, NPC, refugio, necesidades, tiempo.
 
 ## 3. Mundo grande y por regiones 💡
-- **Rejilla de regiones** de unos 100×100 de lado (valor a medir). Cada región se divide en trozos de dibujo más pequeños.
+- **Rejilla de regiones** de 64×64 de datos 💡 (diseño técnico en `coordinacion/RESPUESTAS_FABLE/002_diseno_A1_regiones.md`: ventana de datos 3×3, trozos de dibujo de 16 en ventana 5×5, rejilla de colisión de celdas de 4; todo a medir en el iPhone 14). Cada región se divide en trozos de dibujo más pequeños.
 - **Solo existe lo cercano:** se mantienen cargadas unas 9–25 regiones alrededor del jugador; lo lejano se descarta. El coste es el mismo con un mundo pequeño que con uno enorme. Las regiones nuevas se preparan poco a poco (presupuesto por cuadro) y la niebla de Tiny oculta el borde.
 - **Semilla:** cada región sale de dos niveles (C7 de la revisión 001): `tipo = f(hash(semilla, rx, rz))` y el contenido de cada capa = `hash(semilla, rx, rz, canal)`, con un canal entero por capa (props, zombis, botín, NPC) para que añadir una capa no cambie las otras. Solo `Math.imul` y `+ - * /`. Una región sale igual en cualquier orden de carga y en cualquier móvil.
 - **Origen flotante:** pasadas unas 2 000 unidades del origen, el dibujo resta el origen de la región activa para evitar errores de coma flotante.
