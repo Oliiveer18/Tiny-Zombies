@@ -1,18 +1,19 @@
-# Pedidos a Meshy · estilo SEMI-REALISTA (como el vídeo de referencia)
+# Pedidos a Meshy · estilo ESTILIZADO DE JUEGO MÓVIL (como el vídeo de referencia)
 
-Decidido por el usuario el 16 nov (22:20): **semi-realista con proporciones normales** (no juguete), mapa **compacto** y **modelos primero**. Esto sustituye el «chunky toy-like» de las recetas 003, 005 §7, 006 §4 y 007 §8 (las cifras de triángulos, texturas y huesos de la 006 siguen valiendo). Arte propio: no copiar colores, ropa ni rótulos del juego de referencia.
+Decidido por el usuario el 16 nov (22:25): **estilizado de juego móvil** (formas simplificadas y fuertes, texturas pintadas; ni fotorrealista ni juguete puro; la prueba «semi-realista» dio una foto y se descartó), mapa **compacto** y **modelos primero**. Esto sustituye el «chunky toy-like» de las recetas 003, 005 §7, 006 §4 y 007 §8 (las cifras de triángulos, texturas y huesos de la 006 siguen valiendo). Arte propio: no copiar colores, ropa ni rótulos del juego de referencia.
 
 **Arranque común de OBJETOS** (pegar antes de cada texto):
-`3D game asset, semi-realistic stylized, PBR materials, worn and grimy with scratches and rust, dark muted palette with small warm orange accents, single object, three-quarter view seen from above, plain light grey background, soft studio lighting, clean readable silhouette, no text, no logos.`
+`3D rendered stylized game prop, chunky simplified shapes with worn edges, hand-painted matte textures, dark muted palette with small warm orange accents, single object, three-quarter view seen from above, plain light grey background, soft studio lighting, strong readable silhouette, NOT photorealistic, no text, no logos.`
 
-**Arranque común de PERSONAJES** (límite de Meshy: 800 caracteres en total; lección de la v1: sin «3D rendered» salió una ilustración 2D):
-`3D rendered game character, full body, front view, A-pose, plain light grey background, soft studio lighting. Semi-realistic stylized proportions, adult human about 7 heads tall, readable silhouette seen from above, matte painted PBR materials, worn, muted dark palette. NOT a 2D illustration, NOT a cartoon. No weapon, no text, no logos.`
+**Arranque común de PERSONAJES** (límite de Meshy: 800 caracteres en total):
+`3D rendered stylized game character, full body, front view, A-pose, plain light grey background, soft studio lighting. Stylized mobile top-down shooter look: simplified chunky shapes, hand-painted matte textures, clean smooth forms, slightly oversized head, hands and boots, about 5 heads tall, strong readable silhouette. NOT photorealistic, NOT a photo, NOT a 2D illustration.`
 
 ## 1º · ZOMBI A (es lo primero: hoy es una cápsula verde y es lo más visto)
-**Paso 1 · imagen** (texto completo, ≈ 640 caracteres, pegar entero):
+**Paso 1 · imagen** (texto completo, pegar entero; la 1.ª prueba con «semi-realista» salió fotorrealista y se descartó):
 ```
-3D rendered game character, full body, front view, A-pose, plain light grey background, soft studio lighting. Semi-realistic stylized proportions, adult human about 7 heads tall, readable silhouette seen from above, matte painted PBR materials, worn, muted dark palette. NOT a 2D illustration, NOT a cartoon. Zombie office worker: pale grey-green skin, sunken eyes, slightly open mouth, torn dirty white shirt with one sleeve missing, loose dark tie, grey trousers, one bare foot, one shoe. Arms slightly away from body, legs slightly apart, hunched but symmetrical. No weapon, no text, no logos.
+3D rendered stylized game character, full body, front view, A-pose, plain light grey background, soft studio lighting. Stylized mobile top-down shooter look: simplified chunky shapes, hand-painted matte textures, clean smooth forms, slightly oversized head, hands and boots, about 5 heads tall, strong readable silhouette. NOT photorealistic, NOT a photo, NOT a 2D illustration. Zombie: pale grey-green skin, sunken dark eyes, open mouth, torn dirty shirt and trousers, bare feet. Arms slightly away from body, legs slightly apart, hunched but symmetrical. No weapon, no text, no logos.
 ```
+Si Meshy ofrece en «Estilos» una opción tipo cartoon/estilizado o 3D render, pruébala en lugar de «Predeterminado» (⚠️ no sé cómo se llaman). Si sale demasiado juguete o demasiado realista, dime y subo o bajo «5 heads tall».
 **Paso 2 · Image to 3D** con la imagen elegida (Meshy 6 o 6 Lite; con textura PBR). Malla baja: objetivo ≈ 800 triángulos (yo lo reduzco si sale más).
 **Paso 3 · Rigging humanoide** (esqueleto automático). Comprobar que brazos y piernas quedan bien separados (el zombi usa el MISMO esqueleto que el jugador).
 **Paso 4 · Animaciones** de la biblioteca de Meshy: `idle`, `walk`, `run`, `attack`, `die` (zombi; si no hay `attack`, vale un golpe o arañazo).

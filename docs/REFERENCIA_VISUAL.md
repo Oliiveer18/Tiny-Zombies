@@ -35,3 +35,5 @@ El usuario aclaró que NO se copian los colores ni la vestimenta del juego de la
 
 ## Corrección (16 nov, 22:20, tras revisar el vídeo con el usuario)
 Los personajes de la referencia son **semi-realistas, de proporciones normales y pequeños en pantalla**; la nota anterior de «cabeza grande, cuerpo corto» era una lectura imprecisa. El usuario eligió **semi-realista con proporciones normales** para personajes y objetos. La luz de la referencia es casi negra azulada con charcos cálidos de farola; el suelo, placas industriales oscuras con pintura vial. Pendiente: ajustar luz y suelo hacia eso SIN perder legibilidad (el usuario ya pidió antes que no estuviera demasiado oscuro).
+
+**Actualización 22:25:** el texto «semi-realista» produjo una foto. Estilo elegido: estilizado de juego móvil (formas simplificadas, texturas pintadas). Ver MESHY_PEDIDOS.md.
