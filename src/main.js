@@ -8,7 +8,7 @@ import { touch, renderer, scene, cam, OFF } from './renderer.js';
 import { G, setSun, die, frame } from './game.js'; import { TEST } from './test.js'; import { obstacles, phys } from './world.js'; import { zombies } from './zombies.js';
 async function main(){
   showMsg('Cargando…');await loadAll();initInput(renderer.domElement);initControls();
-  setSun(buildWorld(scene,{shadow:touch?1024:2048}));initEffects(scene);initDebris(scene);initDecals(scene);initPlayer(scene);initZombies(scene);initWeapons(scene);
+  initDecals(scene);setSun(buildWorld(scene,{shadow:touch?1024:2048}));initEffects(scene);initDebris(scene);initPlayer(scene);initZombies(scene);initWeapons(scene);
   if(TEST)window.__tz={damageProp,player,obstacles,zombies,state,phys,wp}; // ayuda para las pruebas automáticas del mapa de prueba
   state.onHurt=d=>{if(!G.run)return;player.hp-=d;player.hurt=.25;if(player.hp<=0)die();};wp.onSelfHit=state.onHurt;
   state.onWave=()=>{wp.grenades=Math.min(wp.grenades+1,5);};

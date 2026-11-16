@@ -1,7 +1,7 @@
 // Marcas en suelo, muros y objetos (agujeros de bala, sangre, quemaduras). Diseño: 005 §3.
 // UNA malla instanciada de 64 cuadrados con un atlas dibujado por código: 1 llamada de dibujo. Solo dibujo: no se guarda ni se sincroniza.
 import * as THREE from 'three';
-const N=64,B0=0,B1=40,S0=40,S1=56,Q0=56,Q1=64; // bala 0-39 · sangre 40-55 · quemadura 56-63 (colas circulares)
+const N=96,B0=0,B1=40,S0=40,S1=56,Q0=56,Q1=64,F0=64; // bala 0-39 · sangre 40-55 · quemadura 56-63 (colas circulares)
 // casillas del atlas 4×4: 0-3 agujeros · 4 desconchón · 5 grieta · 6-9 sangre · 10-12 quemadura · 13 charco · 14-15 mancha
 const ro=a=>{let s=a>>>0;return()=>{s=Math.imul(s^s>>>15,2246822519)>>>0;s=(s+0x9e3779b9)>>>0;return(s^s>>>13)/4294967296+.5;};};
 function atlas(){
@@ -13,11 +13,12 @@ function atlas(){
     else if(k===5){g.strokeStyle='rgba(0,0,0,.8)';g.lineWidth=2;g.beginPath();g.moveTo(x-28,y-6);for(let i=1;i<7;i++)g.lineTo(x-28+i*9,y-6+(r()-.5)*18);g.stroke();}
     else if(k<10){const R=14+(k-6)*5;blob(x,y,R*2,'rgba(90,6,8,.85)',12,.7);blob(x,y,R,'rgba(55,3,5,.95)',9,.4);for(let i=0;i<5;i++)blob(x+(r()-.5)*44,y+(r()-.5)*44,4,'rgba(80,5,8,.9)',3,.2);}
     else if(k<13){const R=18+(k-10)*4;blob(x,y,R*2.2,'rgba(6,5,5,.35)',14,.7);blob(x,y,R*1.3,'rgba(0,0,0,.65)',12,.5);}
-    else if(k===13){blob(x,y,28,'rgba(20,28,40,.55)',14,.5);}
-    else{blob(x,y,24,k===14?'rgba(15,12,6,.55)':'rgba(30,24,14,.4)',12,.6);}
+    else if(k===13){blob(x,y,17,'rgba(25,34,52,.6)',14,.5);blob(x,y,9,'rgba(60,78,110,.35)',9,.3);} // charco
+    else if(k===14)blob(x,y,15,'rgba(15,12,6,.65)',12,.6);
+    else{for(let i=0;i<2;i++){g.fillStyle='rgba(200,165,70,.75)';g.fillRect(x-30,y-8+i*0,60,14);}g.fillStyle='rgba(0,0,0,.35)';for(let i=0;i<40;i++)g.fillRect(x-30+r()*60,y-8+r()*14,2+r()*5,1+r()*3);} // pintura vial desgastada
     g.restore();}
   const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;}
-let mesh,cell,alpha;const D=[];const nxt={b:B0,s:S0,q:Q0};const dummy=new THREE.Object3D();dummy.rotation.order='YXZ';let rn=0;
+let mesh,cell,alpha;const D=[];const nxt={b:B0,s:S0,q:Q0,f:F0};const dummy=new THREE.Object3D();dummy.rotation.order='YXZ';let rn=0;
 export function initDecals(scene){
   const g=new THREE.PlaneGeometry(1,1);cell=new THREE.InstancedBufferAttribute(new Float32Array(N),1);alpha=new THREE.InstancedBufferAttribute(new Float32Array(N),1);
   g.setAttribute('cell',cell);g.setAttribute('alpha',alpha);
@@ -43,6 +44,7 @@ export function bulletMark(x,y,z,dx,dz,prop){
   rn=(rn*1664525+1013904223)>>>0;add('b',B0,B1,(rn>>>12)%4,x-dx*.02,y,z-dz*.02,.18+((rn>>>4)&7)*.015,false,-dx,-dz,prop&&prop.body?prop:null,1e9);}
 export function blood(x,z,size=1,c=null){rn=(rn*1664525+1013904223)>>>0;add('s',S0,S1,c??6+(rn>>>10)%4,x,.025,z,size,true,0,1,null,60);}
 export function burn(x,z,size=3){rn=(rn*1664525+1013904223)>>>0;add('q',Q0,Q1,10+(rn>>>10)%3,x,.022,z,size,true,0,1,null,120);}
+export function staticDecal(c,x,z,size,roll=0){const i=nxt.f;add('f',F0,N,c,x,.02,z,size,true,0,1,null,1e9);const d=D[i];d.roll=roll;put(d);alpha.setX(i,c===5||c===4||c===14?.5:c===15?.55:.8);alpha.needsUpdate=true;} // marca fija del lugar (no se borra)
 export function updateDecals(dt){
   if(!mesh)return;for(const d of D){if(!d.on)continue;d.t+=dt;
     if(d.life<1e8&&d.t>d.life-3){const a=Math.max(0,(d.life-d.t)/3);alpha.setX(d.i,a);alpha.needsUpdate=true;if(a<=0){d.on=false;mesh.setMatrixAt(d.i,new THREE.Matrix4().makeScale(0,0,0));mesh.instanceMatrix.needsUpdate=true;continue;}}
