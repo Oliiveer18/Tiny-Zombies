@@ -161,7 +161,7 @@ Problema: otro jugador encuentra tu refugio cuando no estás conectado. Propuest
 3. **Saqueo limitado.** Solo se puede robar lo que está en las cajas de almacén, hasta un máximo por asalto, y asaltar lleva tiempo y hace ruido (atrae zombis). Lo que el dueño lleva encima o tiene en su cama está a salvo.
 4. **Enfriamiento.** Tras un asalto exitoso, ese refugio no puede ser asaltado otra vez durante un tiempo.
 5. **Informe al volver.** El dueño ve qué pasó (quién, cuándo, qué se llevó) y puede desquitarse.
-6. **Regla de cada partida.** Al crear la partida se elige «refugios protegidos si el dueño está desconectado» (nadie puede entrar) o «refugios abiertos» (con las capas de arriba). Valor por defecto por decidir (⬜); recomendación: abiertos con las capas 1-5.
+6. **Regla de cada partida.** Al crear la partida se elige «refugios protegidos si el dueño está desconectado» (nadie puede entrar) o «refugios abiertos» (con las capas de arriba). Valor por defecto ✅ (decidido el 16 nov): «refugios abiertos» con las capas 1-5; «protegidos» queda como opción al crear la partida.
 
 ## 15. Revisión de Fable (petición 001, 15 nov 2026): huecos y riesgos 💡
 Todo lo de esta sección es 💡 (propuesta); las cifras son puntos de partida a medir en el iPhone 14. Las contradicciones C1-C13 ya están corregidas en su sitio (§0, §2-§6, `MODELOS_MESHY.md`, `ROADMAP.md`). Respuesta completa: `coordinacion/RESPUESTAS_FABLE/001_revision_diseno.md`.

@@ -27,7 +27,7 @@ El usuario aportó una captura y un vídeo de un juego cenital con el estilo obj
 - Luz y niebla cambian con hora y clima (excepción a «Tiny igual»). Suelo plano. Munición limitada desde A5. Móvil de referencia: iPhone 14. NO hay cooperativo (idea lejana, E4).
 
 ## Preguntas abiertas (nada empieza hasta que el usuario responda o diga «decide tú»)
-0. Entrega ✅ (decidida): todo en GitHub y en `main`, sin ZIP. Pendiente: ¿cómo ves el juego en el iPhone? (propuesta: publicar `main` en GitHub Pages). Y la regla por defecto de refugios con el dueño desconectado (§14; recomendación: abiertos con capas 1-5).
+0. Entrega ✅ (decidida): todo en GitHub y en `main`, sin ZIP. Pendiente: ¿cómo ves el juego en el iPhone? (propuesta: publicar `main` en GitHub Pages). (Refugios con el dueño desconectado: decidido ✅ «abiertos» con capas 1-5.)
 1. Mientras llegan los modelos de Meshy: ¿se avanza ya con los pasos que no dependen de ellos (mundo por regiones, semilla, guardado, necesidades, tiempo y clima), o se espera a tenerlos? Esos pasos se ven sin personajes finales solo con el relleno técnico de Tiny, que no cuenta como aspecto del juego.
 2. Cifras concretas de hambre, sed, mochila, duración exacta de día y estaciones y qué entra en la ventaja inicial: se fijan al construirlo y se ajustan midiendo.
 
