@@ -3,7 +3,7 @@ import { input } from './input.js';
 import { player } from './player.js';
 import { zombies, hurt } from './zombies.js';
 import { obstacles, blast, hitProp, hooks, OBJ } from './world.js';
-import { muzzle, impact, tracer, explosion } from './effects.js';
+import { blood, burn } from './decals.js'; import { muzzle, impact, tracer, explosion } from './effects.js';
 // Temblor de cámara. Tiny original: disparo .04, explosión .6. Disparo sin temblor por petición del usuario (16 nov); explosión más suave porque la cámara está más cerca.
 const MUZZLE=.55,SHAKE_SHOT=0,SHAKE_BOOM=.2;
 export const wp={mag:30,ammo:30,cd:0,reload:0,grenades:3,shake:0,onShake:null};
@@ -18,7 +18,7 @@ function shoot(){
   const thru=[];for(const o of obstacles){if(o.fly||o.key==='sack')continue;const t=rayCircle(ox,oz,dx,dz,o.x,o.z,o.r*.8);if(t===null)continue;if(OBJ[o.key]&&OBJ[o.key].pasa){thru.push([o,t]);continue;}if(t<best){best=t;wall=true;bo=o;}} // el cartón no frena la bala: la traspasa y se rompe
   for(const z of zombies){if(!z.alive)continue;const t=rayCircle(ox,oz,dx,dz,z.x,z.z,z.t.r+.12);if(t!==null&&t<best){best=t;hz=z;wall=false;bo=null;}}
   tracer(mx,mz,ox+dx*Math.max(best,MUZZLE),oz+dz*Math.max(best,MUZZLE));muzzle(mx,.75,mz,dx,dz);
-  if(hz){hurt(hz,1,dx,dz);impact(ox+dx*best,.7,oz+dz*best,[.5,.9,.3]);}else if(wall){if(!hitProp(bo,dx,dz,ox+dx*best,oz+dz*best))impact(ox+dx*best,.5,oz+dz*best);}
+  if(hz){hurt(hz,1,dx,dz);impact(ox+dx*best,.7,oz+dz*best,[.5,.9,.3]);if(Math.random()<.34)blood(ox+dx*(best+.6),oz+dz*(best+.6),.5);}else if(wall){if(!hitProp(bo,dx,dz,ox+dx*best,oz+dz*best))impact(ox+dx*best,.5,oz+dz*best);}
   for(const [o,t] of thru)if(t<best)hitProp(o,dx,dz,ox+dx*t,oz+dz*t);
   wp.ammo--;wp.cd=.11;wp.shake=Math.max(wp.shake,SHAKE_SHOT);player.shootT=.1;
 }
@@ -36,7 +36,7 @@ export function updateWeapons(dt,active){
 }
 hooks.boom=(x,z)=>detonate(x,z); // bidón explosivo: misma explosión que la granada
 function detonate(x,z){
-  explosion(x,z);blast(x,z,7,16);wp.shake=SHAKE_BOOM;
+  explosion(x,z);burn(x,z,3);blast(x,z,7,16);wp.shake=SHAKE_BOOM;
   for(const zb of zombies){if(!zb.alive)continue;const dx=zb.x-x,dz=zb.z-z,d=Math.hypot(dx,dz);if(d<6){hurt(zb,Math.ceil(14*(1-d/6)),dx/(d||1)*14,dz/(d||1)*14);}}
   const dp=Math.hypot(player.x-x,player.z-z);if(dp<4)wp.onSelfHit?.(Math.round(30*(1-dp/4)));
 }

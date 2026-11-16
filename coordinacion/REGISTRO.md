@@ -24,3 +24,4 @@
 
 - P1: clips compartidos en anims/humano.glb; 006 de Fable recibida.
 - P2: herramienta de piezas y carpetas del almacén.
+- C4: marcas de bala, sangre, quemaduras.

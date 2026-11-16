@@ -44,3 +44,4 @@ Quitar la arena fija y generar un mundo por regiones con semilla: claro inicial 
 
 - P1 hecho (006). Siguiente: P2 (tools/prep_pieza.mjs + carpetas + piezas.json). El arma visible y la boca del cañón llegan en P4. 006 recibida de Fable.
 - P2 hecho (tools/prep_pieza.mjs + carpetas). Siguiente: P3 (instanciaPersonaje con piezas) cuando haya cuerpo y piezas de Meshy; P4 arma y boca del cañón.
+- C4 hecho (decals). Siguiente: suelo con materiales y variación (mío), luego lo que responda Fable en 007.
