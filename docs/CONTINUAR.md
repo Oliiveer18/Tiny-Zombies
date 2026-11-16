@@ -40,3 +40,7 @@ Orden completo en `ROADMAP.md`. A0a, A0b y A0c HECHOS (falta medir en el iPhone 
 Quitar la arena fija y generar un mundo por regiones con semilla: claro inicial con ventaja ligera, carga y descarga de regiones alrededor del jugador, niebla de Tiny ocultando el borde, y los zombis/cámara/armas de Tiny funcionando igual. Medir fps en el móvil con `?debug`. Entrega: ZIP + `docs/SESION.md`.
 
 - C3 hecho (vida/rotura/bidón/farola). Siguiente: arma visible y salida de bala desde el cañón (pedido del usuario 16 nov), luego C4 marcas.
+- C3b: salida de bala fija (MUZZLE). Siguiente: C4 marcas de bala; arma visible cuando haya modelos (petición 006).
+
+- P1 hecho (006). Siguiente: P2 (tools/prep_pieza.mjs + carpetas + piezas.json). El arma visible y la boca del cañón llegan en P4. 006 recibida de Fable.
+- P2 hecho (tools/prep_pieza.mjs + carpetas). Siguiente: P3 (instanciaPersonaje con piezas) cuando haya cuerpo y piezas de Meshy; P4 arma y boca del cañón.

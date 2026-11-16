@@ -2,7 +2,7 @@
 // scale: escala uniforme · offset: [x,y,z] · placeholder: forma usada si el GLB no existe
 // clips: nombre del clip en el GLB para cada acción lógica (si falta, se anima por código).
 export const MODELS = {
-  player:  { file:'player.glb',  scale:0.53,   offset:[0,0,0], placeholder:{shape:'capsule',color:0x4a8fd8,h:0.9},  clips:{idle:'idle',walk:'walk',run:'run',shoot_side:'shoot_side',shoot_back:'shoot_back',shoot_fwd:'shoot_fwd',reload:'reload',die:'die'} },
+  player:  { file:'personajes/cuerpos/jugador_a.glb', anims:'personajes/anims/humano.glb',  scale:0.53,   offset:[0,0,0], placeholder:{shape:'capsule',color:0x4a8fd8,h:0.9},  clips:{idle:'idle',walk:'walk',run:'run',shoot_side:'shoot_side',shoot_back:'shoot_back',shoot_fwd:'shoot_fwd',reload:'reload',die:'die'} },
   zombie:  { file:'zombie.glb',  scale:1,   offset:[0,0,0], placeholder:{shape:'capsule',color:0x6a9a5a,h:0.9},  clips:{run:'run',attack:'attack',die:'die'} },
   runner:  { file:'runner.glb',  scale:0.9, offset:[0,0,0], placeholder:{shape:'capsule',color:0xb0a040,h:0.85}, clips:{run:'run',attack:'attack',die:'die'} },
   tank:    { file:'tank.glb',    scale:1.5, offset:[0,0,0], placeholder:{shape:'capsule',color:0x8a3a3a,h:1.0},  clips:{run:'run',attack:'attack',die:'die'} },
