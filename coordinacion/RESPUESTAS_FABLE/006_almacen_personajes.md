@@ -2,9 +2,9 @@
 
 Origen de cada dato: **[C]** leído en el código o en el repositorio · **[003]** respuesta 003 · **[T]** cómo funciona Three.js r170 · **[R]** razonamiento propio · 💡 hay que medirlo · ⚠️ sin verificar.
 
-## Preguntas antes de empezar
-1. **¿El `player.glb` actual lleva arma?** Su texto de Meshy decía «No weapon» [C]; doy por hecho que no y que el arma será una pieza en la mano. Si la lleva pegada, el paso P4 cambia (se lee la boca del cañón del propio modelo).
-2. **Créditos de Meshy que quedan.** La prueba de §5 gasta ≈ 125. El último dato apuntado es 2 388 [C].
+## Preguntas (respondidas por el usuario, 16 nov) ✅
+1. El personaje va **sin nada en las manos**: el arma es una pieza aparte en `RightHand` (paso P4 tal como está) y un personaje sin arma es válido.
+2. Créditos de Meshy: valen los apuntados (2 388 [C]); la prueba de §5 gasta ≈ 125.
 
 ## 1. Veredicto: enfoque mixto SÍ, con cinco correcciones
 1. **Ropa = pintura; volumen = piezas RÍGIDAS.** Una pieza de Meshy sale con malla propia, sin relación con la del cuerpo: si se le pone esqueleto para que se doble (pantalón, chaqueta, cabeza cambiable) aparecen costuras y el cuerpo la atraviesa al moverse. Por eso: la ropa sigue siendo re-texturizado del cuerpo [003 §4] y TODA pieza es rígida, pegada a UN hueso: casco y pelo → `Head`, chaleco y mochila → `Spine2`, arma → `RightHand`, funda → `LeftUpLeg`. Sin costuras, porque nada se cose.
