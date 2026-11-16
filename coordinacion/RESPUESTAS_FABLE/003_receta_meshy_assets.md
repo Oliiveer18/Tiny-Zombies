@@ -35,7 +35,7 @@ Aviso: desde esta sesión no pude abrir las páginas de Meshy, solo resúmenes d
 | 3 | Remesh | **Adaptativo Alto**, triángulos | 0 |
 | 4 | Texture | Con la MISMA imagen de referencia como guía (lleva la boca y los ojos a la pintura). Generar a 4K: cuesta lo mismo que 2K [M]; 8K no. PBR: sí en jugador y NPC, no en zombis y objetos | 10 |
 | 5 | Rigging humanoide | Después de texturizar: la API dice que no vale para mallas sin textura ⚠️; el máximo es 300 000 caras [M], sobra | 0 en la app ⚠️ (la API dice 5) |
-| 6 | Animaciones | Las de `MODELOS_MESHY.md` | 0 en la app ⚠️ (la API dice 3 cada una) |
+| 6 | Animaciones | Las de `MODELOS_MESHY.md` | **0 en la app ✅ comprobado por el usuario (17 nov)**; la API dice 3 cada una |
 | 7 | Descargar GLB | Guardar el original en `arte_fuente/` (fuera de `public/`) | 0 |
 
 - **Por qué texturizar DESPUÉS del remesh:** Meshy se contradice sobre si Remesh conserva la textura ⚠️ (su guía dice que la recalcula sola; su tutorial dice que se pierde). Con este orden no depende de ello.
