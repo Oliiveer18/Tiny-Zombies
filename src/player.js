@@ -4,7 +4,7 @@ import { input } from './input.js';
 import { obstacles, FIELD } from './world.js';
 import { wp } from './weapons.js';
 // Velocidades (unidades/s). Tiny original: 4.2 / 7 con cámara a 16.4; con la cámara a 10.1 se ajustan para que la velocidad en pantalla sea parecida.
-export const MOVE={walk:1.4,run:1.4,aim:.5,runAt:.85,mult:1,acc:9,dec:14,dead:.12,curve:1.5,
+export const MOVE={walk:1.4,run:1.4,aim:.4,runAt:.85,mult:1,acc:9,dec:14,dead:.12,curve:1.5,
   // Velocidad (unidades del juego/s) que recorre cada animación al paso 1: medida en el GLB (andar 1,10 · correr ~3,4 · disparar 1,40 por 0,53 de escala).
   clipWalk:.58,clipRun:1.8,clipShoot:.74,blendA:.7,blendB:1.2,step:1};
 const vel=new THREE.Vector2();
@@ -44,8 +44,12 @@ export function updatePlayer(dt,cam){
     const inst=player.inst,a=inst.actions;
     if(!inst.blendReady){for(const n in a){a[n].stop();a[n].enabled=true;a[n].setLoop(n==='die'?THREE.LoopOnce:THREE.LoopRepeat);a[n].clampWhenFinished=true;a[n].play();a[n].setEffectiveWeight(n==='idle'?1:0);}inst.cur=null;inst.blendReady=true;inst.w={idle:1};}
     // Pesos objetivo: reload > shoot > locomoción (quieto / andar / correr mezclados por la velocidad real)
-    const tg={idle:0,walk:0,run:0,shoot:0,reload:0,die:0};
-    if(wp.reload>0&&a.reload)tg.reload=1; else if(input.fire&&a.shoot)tg.shoot=1;
+    const tg={idle:0,walk:0,run:0,shoot_side:0,shoot_fwd:0,shoot_back:0,reload:0,die:0};
+    const sp0=Math.max(speed,.01),fn=(vel.x*player.aimX+vel.y*player.aimZ)/sp0; // fn: 1 = avanzas hacia donde apuntas, -1 = de espaldas
+    const shooting=input.fire&&a.shoot_side;
+    if(wp.reload>0&&a.reload)tg.reload=1;
+    else if(shooting){const mw=THREE.MathUtils.clamp(speed/.25,0,1); // quieto: disparo lateral; andando: según la dirección respecto a donde apuntas
+      tg.shoot_fwd=mw*Math.max(0,fn);tg.shoot_back=mw*Math.max(0,-fn);tg.shoot_side=(1-mw)+mw*(1-Math.abs(fn));}
     else{const wi=THREE.MathUtils.clamp(1-speed/.25,0,1),tt=THREE.MathUtils.smoothstep(speed,MOVE.blendA,MOVE.blendB);tg.idle=wi;tg.walk=(1-wi)*(1-tt);tg.run=(1-wi)*tt;}
     const k=Math.min(1,dt*12);
     for(const n in a){inst.w[n]=(inst.w[n]||0)+(tg[n]-(inst.w[n]||0))*k;a[n].setEffectiveWeight(inst.w[n]);}
@@ -54,7 +58,8 @@ export function updatePlayer(dt,cam){
     const C=THREE.MathUtils.clamp;
     if(a.walk)a.walk.timeScale=back*st*C(speed/MOVE.clipWalk,.4,2.2);
     if(a.run)a.run.timeScale=back*st*C(speed/MOVE.clipRun,.5,2.2);
-    if(a.shoot)a.shoot.timeScale=speed>.3?back*st*C(speed/MOVE.clipShoot,.5,2):1;
+    if(a.shoot_back)a.shoot_back.timeScale=C(speed/.34,.6,1.6); // clip «inplace»: ya va hacia atrás por sí mismo
+    if(a.shoot_fwd)a.shoot_fwd.timeScale=C(speed/.2,.7,1.6);
     inst.mixer.update(dt);}
   else{player.inst.body.position.y=player.moving?Math.abs(Math.sin(player.t))*.07:0;player.inst.body.rotation.x=player.moving?.12:0;player.inst.body.rotation.z=Math.sin(player.t)*(player.moving?.08:0);}
 }

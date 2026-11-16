@@ -10,7 +10,7 @@ import sharp from 'sharp';
 import fs from 'node:fs';
 const [,, SRC, DST, TRIS='4000', TEX='1024'] = process.argv;
 const CLIPS = { // nombre de Meshy -> nombre lógico (models.config.js)
-  Axe_Breathe_and_Look_Around:'idle', Walking:'walk', Running:'run', Run_and_Shoot:'shoot', Standing_Reload:'reload', Dead:'die' };
+  Axe_Breathe_and_Look_Around:'idle', Walking:'walk', Running:'run', Standing_Reload:'reload', Dead:'die', Side_Shot:'shoot_side', Walk_Backward_While_Shooting_inplace:'shoot_back', Walk_Forward_While_Shooting:'shoot_fwd' };
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS); const doc = await io.read(SRC); const root = doc.getRoot();
 const skin = root.listSkins()[0]; const joints = skin.listJoints(); const nm = j => j.getName().replace('mixamorig:','');
 // 1) qué huesos se quedan: dedos y puntas se fusionan con la mano/pie; el resto se queda
