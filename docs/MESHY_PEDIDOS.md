@@ -1,5 +1,7 @@
 # Pedidos a Meshy · estilo ESTILIZADO DE JUEGO MÓVIL (como el vídeo de referencia)
 
+> ⏸️ **EN PAUSA (decisión del usuario, 17 nov):** no gastar más créditos de Meshy hasta validar la cámara (R1) y fijar las proporciones. Estilo vigente: inspirado en Tiny Troopers, **4-5 cabezas de alto**, compacto pero no infantil ni de juguete (`REFERENCIA_VISUAL.md`). Los textos de abajo se revisarán antes de usarlos (quitar «chunky», fijar las cabezas); el jugador actual no es referencia.
+
 Decidido por el usuario el 16 nov (22:25): **estilizado de juego móvil** (formas simplificadas y fuertes, texturas pintadas; ni fotorrealista ni juguete puro; la prueba «semi-realista» dio una foto y se descartó), mapa **compacto** y **modelos primero**. Esto sustituye el «chunky toy-like» de las recetas 003, 005 §7, 006 §4 y 007 §8 (las cifras de triángulos, texturas y huesos de la 006 siguen valiendo). Arte propio: no copiar colores, ropa ni rótulos del juego de referencia.
 
 **Arranque común de OBJETOS** (pegar antes de cada texto):

@@ -1,5 +1,15 @@
 # REFERENCIA_VISUAL · el estilo objetivo del juego
 
+## ⚠️ Dirección vigente desde el 17 nov 2026 (manda sobre el resto de este documento)
+**Referencia principal: Tiny Troopers (Global Ops y Joint Ops).** No se copia: identidad propia inspirada en ese tipo de juego. Lo de abajo (vídeo del cenital industrial) queda como referencia secundaria de luz, suelo y efectos.
+- **Personajes:** compactos pero no infantiles ni de juguete; **4-5 cabezas de alto**; cabeza algo grande sin exagerar; cuerpo robusto y proporcionado; cara expresiva; casco, mochila, chaleco y arma reconocibles y con detalle; materiales cuidados. Tampoco soldados realistas.
+- **El jugador actual (~3 cabezas, juguete) NO es referencia** para modelos nuevos. El primer personaje nuevo será la referencia visual del resto de personajes y enemigos.
+- **Cámara:** cenital elevada con ligera inclinación, personajes pequeños, más escenario visible. Se elige en el móvil (Controles > Cámara). Medido en iPhone 14 apaisado: Cerca 9,0 m / 57° → personaje 1/8 del alto · **A** 10,7 m / 58° → 1/10 · **B** 10,7 m / 61° → 1/11 · **C** 10,5 m / 64° → 1/12 · Tiny original 16,4 m / 58° → 1/16.
+- **Como el personaje se ve pequeño**, el detalle debe estar en la forma y en el contraste de color de las piezas, no en textura fina.
+- **Créditos de Meshy: en pausa** hasta validar cámara y proporciones.
+- **Escala del mundo 💡 (pendiente de validar tras elegir cámara):** personaje 1,5 m (el actual mide 1,26-1,48 m según la pose) · puerta 1,9 m · muro 3,2 m · caja 0,8 m · barrera 0,6 m de alto · coche 3,4 m de largo (hoy 2,6 m, escala de juguete). Tamaño del mapa de prueba: sin fijar.
+
+
 El usuario aportó una captura y un vídeo (15 s) de un juego cenital de otro autor y dijo: «el juego debería ser de este estilo; algo así se vería el personaje, pero con nuestro tipo de skins». Archivos en `referencia_visual/`: `captura_referencia.png`, `video_fotograma_1/3/5.png`. El vídeo original (28 MB) no está en el repositorio: lo guarda el usuario aparte. Es referencia de ESTILO, no código ni assets a copiar.
 
 ## Qué se ve (descripción de las imágenes)

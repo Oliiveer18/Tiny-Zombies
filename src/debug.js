@@ -1,5 +1,5 @@
 // Medidor ?debug: fps, peor cuadro, tiempo de CPU, triángulos y recursos. Sin ?debug no hace nada.
-import { renderer, OFF } from './renderer.js';
+import { renderer, OFF, CAM } from './renderer.js'; import { charFrac } from './game.js';
 import { MOVE, topSpeed } from './player.js';
 import { LUZ } from './world.js';
 import { state } from './zombies.js';
@@ -14,7 +14,7 @@ if(DEBUG){renderer.info.autoReset=false;
   const row=(name,min,max,key)=>{const r=document.createElement('div');const l=document.createElement('span');
     const s=document.createElement('input');s.type='range';s.min=min;s.max=max;s.step=.1;s.value=OFF[key];s.style.cssText='width:100%;margin:2px 0 6px';
     const show=()=>{l.textContent=name+' '+Number(OFF[key]).toFixed(1);};show();
-    s.oninput=()=>{OFF[key]=Number(s.value);show();info();};r.append(l,s);box.append(r);};
+    s.oninput=()=>{OFF[key]=Number(s.value);show();info();};r.append(l,s);box.append(r);sync.push(()=>{s.value=OFF[key];show();info();});};const sync=[];CAM.onChange=()=>sync.forEach(f=>f());
   const inf=document.createElement('div');inf.style.cssText='opacity:.8';box.append(inf);
   const info=()=>{inf.textContent='distancia '+Math.hypot(OFF.y,OFF.z).toFixed(1)+' · ángulo '+(Math.atan2(OFF.y,OFF.z)*57.3).toFixed(0)+'°';};
   row('Altura',2,30,'y');row('Atrás',0,20,'z');
@@ -46,5 +46,5 @@ export function debugEnd(){if(!DEBUG)return;const n=performance.now();cpu=n-t0;c
   worstWin=0;for(const h of hist)if(h[1]>worstWin)worstWin=h[1];
   const i=renderer.info,tri=i.render.triangles,bad=fps<58||worstWin>25||tri>40000;
   el.style.color=bad?'#f88':'#9f9';
-  el.textContent=`versión ${__BUILD__}\nfps ${fps.toFixed(0)}  (meta ≥58)\npeor cuadro 5 s ${worstWin.toFixed(1)} ms (meta ≤25)\nCPU cuadro ${cpu.toFixed(1)} ms (máx ${cpuMax.toFixed(1)})\ntriángulos ${tri} (meta <40000, todas las pasadas)\nllamadas ${i.render.calls}\ngeometrías ${i.memory.geometries} · texturas ${i.memory.textures}\nzombis vivos ${state.alive}`;
+  el.textContent=`versión ${__BUILD__}\nfps ${fps.toFixed(0)}  (meta ≥58)\npeor cuadro 5 s ${worstWin.toFixed(1)} ms (meta ≤25)\nCPU cuadro ${cpu.toFixed(1)} ms (máx ${cpuMax.toFixed(1)})\ntriángulos ${tri} (meta <40000, todas las pasadas)\nllamadas ${i.render.calls}\ngeometrías ${i.memory.geometries} · texturas ${i.memory.textures}\nzombis vivos ${state.alive}\ncámara ${CAM.id} · personaje 1/${(1/Math.max(charFrac(),.001)).toFixed(1)} del alto`;
   cpuMax=0;}

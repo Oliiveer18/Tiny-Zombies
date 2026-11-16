@@ -2,18 +2,19 @@ import * as THREE from 'three';
 import { instance, play } from './assets.js';
 import { input } from './input.js';
 import { obstacles, FIELD } from './world.js';
-import { wp } from './weapons.js';
+import { wp } from './weapons.js'; import { CAM } from './renderer.js';
 // Velocidades (unidades/s). Tiny original: 4.2 / 7 con cámara a 16.4; con la cámara a 10.1 se ajustan para que la velocidad en pantalla sea parecida.
 export const MOVE={size:1.4,top:1.15,aim:.4,crouch:.5,runAt:.85,runMult:2.1,mult:1,acc:9,dec:14,dead:.12,curve:1.5,
   step:1};
 // Velocidades que recorre cada animación al paso 1, en unidades del MODELO por segundo (medidas en el GLB). Se pasan a unidades del juego con K()=escala del cuerpo.
 const CW=1.10,CR=3.2,CB=.64,CF=.25;
 export const K=()=>player.base*MOVE.size; // escala del cuerpo (modelo → juego)
-export const topSpeed=()=>MOVE.top*CW*K()*MOVE.mult; // velocidad máxima: un poco por encima del paso natural, así las piernas no patinan ni van en cámara lenta
+export const topSpeed=()=>MOVE.top*CW*K()*MOVE.mult*CAM.vel; // velocidad máxima: un poco por encima del paso natural, así las piernas no patinan ni van en cámara lenta
 const vel=new THREE.Vector2();
 export const player={id:'j1',x:0,z:0,hp:100,stam:100,exhausted:false,aimX:0,aimZ:-1,ax:0,az:-6,inst:null,t:0,hurt:0,shootT:0,moving:false};
 const ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),0),hit=new THREE.Vector3();
 export function initPlayer(scene){player.inst=instance('player');player.base=player.inst.body.scale.x;scene.add(player.inst.root);
+  {const b=new THREE.Box3().setFromObject(player.inst.root);player.alto=(b.max.y-b.min.y)*MOVE.size||1.5;} // altura real en el mundo (para medir su tamaño en pantalla)
   const ring=new THREE.Mesh(new THREE.RingGeometry(.22,.3,20),new THREE.MeshBasicMaterial({color:0xff5a3a,transparent:true,opacity:.8,depthTest:false}));
   ring.rotation.x=-Math.PI/2;ring.renderOrder=9;scene.add(ring);player.reticle=ring;}
 export function resetPlayer(){Object.assign(player,{x:0,z:0,hp:100,stam:100,exhausted:false,hurt:0});vel.set(0,0);player.crouch=false;input.crouch=false;if(player.inst){player.inst.blendReady=false;player.inst.dead=false;}}

@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from 'three'; import { CAM } from './renderer.js';
 const MAX=600; let pts,pos,col,life,vel,mx,grav,siz,head=0,mat,tm; const tracers=[];
 export function initEffects(scene){
   const g=new THREE.BufferGeometry(); pos=new Float32Array(MAX*3);col=new Float32Array(MAX*3);siz=new Float32Array(MAX);
@@ -22,7 +22,7 @@ export function explosion(x,z){
   for(let i=0;i<40;i++){const a=Math.random()*6.28,s=6+Math.random()*10;emit(x,.5,z,Math.cos(a)*s,4+Math.random()*8,Math.sin(a)*s,1,.9,.5,.7,.16,22);}
 }
 export function updateEffects(dt){
-  mat.uniforms.k.value=innerHeight*.9;
+  mat.uniforms.k.value=innerHeight*.9*Math.sqrt(CAM.k); // con la cámara lejos las chispas se agrandan un poco para que se lean
   for(let i=0;i<MAX;i++){if(life[i]<=0)continue;life[i]-=dt;
     vel[i*3+1]-=grav[i]*dt;for(let k=0;k<3;k++)pos[i*3+k]+=vel[i*3+k]*dt;
     if(pos[i*3+1]<.02&&grav[i]>0){pos[i*3+1]=.02;vel[i*3+1]*=-.3;}
