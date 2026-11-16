@@ -32,7 +32,7 @@ El usuario aportó una captura y un vídeo de un juego cenital con el estilo obj
 2. Cifras concretas de hambre, sed, mochila, duración exacta de día y estaciones y qué entra en la ventaja inicial: se fijan al construirlo y se ajustan midiendo.
 
 ## Primer subpaso propuesto (cuando el usuario diga «hazlo»)
-Orden completo en `ROADMAP.md`. A0a HECHO (15 nov). Siguiente: A0b (medidor `?debug`), luego A0c-A0d; antes de A1 hay que pedir a Fable la petición 002. A1 (MEDIUM) se describe abajo.
+Orden completo en `ROADMAP.md`. A0a y A0b HECHOS (A0b falta medirlo en el iPhone 14). Siguiente: A0c (ids, semilla y reloj), luego A0d; antes de A1 hay que pedir a Fable la petición 002. A1 (MEDIUM) se describe abajo.
 
 ### A1 · MEDIUM
 Quitar la arena fija y generar un mundo por regiones con semilla: claro inicial con ventaja ligera, carga y descarga de regiones alrededor del jugador, niebla de Tiny ocultando el borde, y los zombis/cámara/armas de Tiny funcionando igual. Medir fps en el móvil con `?debug`. Entrega: ZIP + `docs/SESION.md`.
