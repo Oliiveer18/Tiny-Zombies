@@ -3,7 +3,7 @@ import { propSource } from './assets.js'; import { mulberry, WORLD_SEED } from '
 export const obstacles=[]; export const props=[]; export const FIELD=40;
 const dyn={}; const dummy=new THREE.Object3D(); const mm=new THREE.Matrix4();
 export function buildWorld(scene,q){
-  scene.background=new THREE.Color(0x9cc4e4); scene.fog=new THREE.FogExp2(0x9cc4e4,0.03); // DÍA provisional (noche de Tiny: fondo/niebla 0x070b16)
+  scene.background=new THREE.Color(0x9cc4e4); scene.fog=null; // sin niebla por decisión del usuario (16 nov). DÍA provisional (noche de Tiny: fondo/niebla 0x070b16)
   scene.add(new THREE.HemisphereLight(0xdcebff,0x6a6650,1.1));
   const sun=new THREE.DirectionalLight(0xfff0d2,2.2); sun.position.set(-14,26,10); sun.castShadow=true;
   const s=sun.shadow; s.mapSize.set(q.shadow,q.shadow); const e=20; Object.assign(s.camera,{left:-e,right:e,top:e,bottom:-e,far:80}); s.bias=-0.0004; s.radius=3;
