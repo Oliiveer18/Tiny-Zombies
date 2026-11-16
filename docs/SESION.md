@@ -161,3 +161,20 @@ Técnico: `MOVE={size:1.4,top:1.15,...}`; `K()=player.base*MOVE.size`; `topSpeed
 - `#ver` en `index.html` (9 px, `pointer-events:none`), rellenado desde `controls.js`. Con `?debug` el panel sigue mostrando también `__BUILD__`.
 - `debug.js`: botón del panel pasa a 📊, 38 px, a la izquierda del ⚙ de Controles.
 - Comprobado: build compila, captura en Chromium con `?debug` (iconos separados, versión visible).
+
+## M4 · Apuntado y movimiento más finos con mando (16 nov 2026, LOW)
+**Resumen fácil:** el personaje ya dispara hacia donde apuntas con el stick derecho aunque lo inclines poco, y si disparas sin tocar ese stick sigue mirando hacia donde apuntabas (antes giraba hacia donde caminabas). El movimiento con el stick izquierdo es más suave: sin tirones ni parpadeos de animación al cambiar de dirección. Prueba en el iPhone: camina en círculos mientras disparas.
+
+**Detalle técnico**
+- Causa de «dispara hacia otro lado» (visto en el vídeo del usuario): el stick derecho solo contaba como apuntando por encima de 0.25 y, si no, la dirección pasaba a ser la de caminar. Ahora cuenta cualquier inclinación fuera de la zona muerta y, con R2 o L2 pulsados y sin inclinar, se mantiene la última dirección (`player.js`, `gamepad.js`).
+- Movimiento: la zona muerta se aplicaba dos veces (mando 15 % + jugador 12 %); con mando solo una. Filtro exponencial (45 ms) sobre el stick izquierdo. Animación: la caminata/correr ya no cambia de sentido de golpe (histéresis + giro suave del `timeScale`).
+- NO comprobado en iPhone: la sensación final (solo prueba automática con mando simulado).
+
+## M5 · Mapa de prueba (16 nov 2026, MEDIUM)
+**Resumen fácil:** hay un mapa de prueba para probar sin perder tiempo. Se activa en el engranaje (Controles) > «Mapa de prueba» > Activar (se recarga el juego). En él los zombis están quietos y no te atacan, reaparecen en su sitio al matarlos, las granadas son infinitas y no mueres. Hay cajas, barriles, vallas, barreras, coches y sacos en sitios fijos. Pone «PRUEBA» en vez de «Oleada» y «· prueba» junto a la versión. Para volver al juego normal: Controles > Desactivar. También sirve `?prueba=1` y `?prueba=0` en la dirección.
+
+**Detalle técnico**
+- Nuevo `src/test.js`: bandera `TEST` (localStorage `tz_prueba`) y `LAYOUT` con los props y zombis como datos (línea de tiro a 6, 10, 14 y 18 m, un corredor, un tanque, un grupo de 6 para granadas, barriles juntos para explosiones).
+- `world.js`: en prueba los props salen de `LAYOUT.props` en vez de al azar. `zombies.js`: sin oleadas, zombis fijos (miran al jugador, sin moverse ni atacar), reaparecen en su `home` tras morir. `game.js`: granadas ≥ 5 y vida a 100. `controls.js`: botones Activar/Desactivar y Reiniciar.
+- Comprobado: build compila; en Chromium con `?prueba=1` aparece «PRUEBA», la versión con «· prueba», los zombis siguen en su sitio tras varios segundos y no hay errores en consola.
+- Los zombis siguen siendo cápsulas verdes (falta el modelo de Meshy); la velocidad de los zombis del juego normal NO se ha cambiado.

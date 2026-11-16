@@ -1,7 +1,7 @@
 // Pantalla «Controles»: engranaje en la esquina (o botón Options del mando). Pausa el juego mientras está abierta.
-import { cfg, padState, hooks, ACTIONS, NAMES, save, resetCfg } from './gamepad.js';
+import { TEST, setTest } from './test.js'; import { cfg, padState, hooks, ACTIONS, NAMES, save, resetCfg } from './gamepad.js';
 export function initControls(){
-  document.getElementById('ver').textContent=__VER__; // versión: sube sola con cada cambio publicado
+  document.getElementById('ver').textContent=__VER__+(TEST?' · prueba':''); // versión: sube sola con cada cambio publicado
   const gear=document.createElement('div');gear.id='gear';gear.className='ui';gear.textContent='⚙';
   const menu=document.createElement('div');menu.id='cfgm';menu.className='ui';
   document.body.append(gear,menu);
@@ -15,11 +15,14 @@ export function initControls(){
       <div class="g">${rows}</div>
       <div class="r"><span>Zona muerta ${Math.round(cfg.dead*100)}%</span><input type="range" data-k="dead" min="0.05" max="0.4" step="0.01" value="${cfg.dead}"></div>
       <div class="r"><span>Sensibilidad ${cfg.sens.toFixed(2)}</span><input type="range" data-k="sens" min="0.5" max="1.5" step="0.05" value="${cfg.sens}"></div>
+      <div class="r"><span>Mapa de prueba (zombis quietos)</span><span><button data-t="mode">${TEST?'Desactivar':'Activar'}</button>${TEST?' <button data-t="reload">Reiniciar</button>':''}</span></div>
       <div class="s">Stick izq. camina · stick der. apunta · pulsar el stick izq. mientras caminas = correr. Granada: mantén el botón, apunta con el stick izq. y suelta para lanzar. Options abre y cierra este menú.</div>`;
   };
   menu.addEventListener('click',e=>{
     const t=e.target.closest('button');if(!t)return;
     if(t.dataset.a){padState.listen=padState.on?t.dataset.a:null;render();if(!padState.on)menu.querySelector('.s').textContent='Primero conecta el mando y pulsa un botón';}
+    else if(t.dataset.t==='mode'){setTest(!TEST);location.reload();}
+    else if(t.dataset.t==='reload')location.reload();
     else if(t.dataset.x==='reset'){resetCfg();render();}
     else if(t.dataset.x==='close')setOpen(false);
   });

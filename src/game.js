@@ -6,7 +6,7 @@ import { updateEffects } from './effects.js';
 import { updatePlayer, player, resetPlayer,playDeath } from './player.js';
 import { updateZombies, resetZombies, state } from './zombies.js';
 import { updateWeapons, resetWeapons, wp } from './weapons.js';
-import { pollPad, padState } from './gamepad.js'; import { updateUI, showMsg, hideMsg } from './ui.js';
+import { TEST } from './test.js'; import { pollPad, padState } from './gamepad.js'; import { updateUI, showMsg, hideMsg } from './ui.js';
 import { touch, cam, comp, OFF } from './renderer.js'; import { debugStart, debugEnd } from './debug.js'; import { advanceClock, resetClock } from './sim.js';
 export const G={run:false,over:false};let sun;
 export function setSun(s){sun=s;}
@@ -17,7 +17,8 @@ export function die(){G.run=false;G.over=true;G.overT=performance.now();input.fi
 const CAM_LEAD=0; // Tiny original: .12 (la cámara se adelanta hacia donde apuntas). 0 = el jugador siempre en el centro, como la referencia.
 const tgt=new THREE.Vector3();
 export function frame(dt){
-  debugStart();pollKeys();pollPad();if(padState.start&&!G.run)begin({});
+  debugStart();pollKeys();pollPad(dt);if(padState.start&&!G.run)begin({});
+  if(TEST&&G.run){wp.grenades=Math.max(wp.grenades,5);if(player.hp<100)player.hp=100;} // prueba: granadas infinitas y sin morir
   const pz=padState.open; // menú de Controles abierto = juego en pausa
   if(pz){updateUI();comp.render();debugEnd();return;}
   if(G.run){advanceClock(dt);updatePlayer(dt,cam);updateWeapons(dt,true);}

@@ -19,7 +19,7 @@ export function initPlayer(scene){player.inst=instance('player');player.base=pla
 export function resetPlayer(){Object.assign(player,{x:0,z:0,hp:100,stam:100,exhausted:false,hurt:0});vel.set(0,0);player.crouch=false;input.crouch=false;if(player.inst){player.inst.blendReady=false;player.inst.dead=false;}}
 export function updatePlayer(dt,cam){
   const m=input.move.clone();if(m.length()>1)m.normalize();
-  const ml=m.length(); if(ml<MOVE.dead)m.set(0,0); else m.multiplyScalar((ml-MOVE.dead)/(1-MOVE.dead)/ml); // zona muerta: sin salto brusco
+  const ml=m.length(); const dz=input.pad?0:MOVE.dead; if(ml<=dz)m.set(0,0); else m.multiplyScalar((ml-dz)/(1-dz)/ml); // con mando la zona muerta ya se aplica en gamepad.js (no se duplica) // zona muerta: sin salto brusco
   player.exhausted=player.exhausted?player.stam<20:player.stam<=0;
   {const ml2=m.length(); if(ml2>0)m.multiplyScalar(Math.pow(ml2,MOVE.curve)/ml2);} // curva: inclinaciones pequeñas = movimiento fino
   if(input.crouchToggle){player.crouch=!player.crouch;input.crouchToggle=false;} input.crouch=player.crouch; // agacharse: más lento (y más sigilo cuando exista el ruido)
@@ -37,7 +37,7 @@ export function updatePlayer(dt,cam){
   // apuntado
   if(input.touch||input.pad){ if(input.nadeHold&&input.nadeAim.length()>.05){const nl=input.nadeAim.length();player.aimX=input.nadeAim.x/nl;player.aimZ=input.nadeAim.y/nl;player.ax=player.x+player.aimX*(3+9*Math.min(1,nl));player.az=player.z+player.aimZ*(3+9*Math.min(1,nl));}
     else{ if(input.aimActive){const l=Math.hypot(input.aim.x,input.aim.y);player.aimX=input.aim.x/l;player.aimZ=input.aim.y/l;}
-    else if(m.length()>.1){player.aimX=m.x/m.length();player.aimZ=m.y/m.length();}
+    else if(m.length()>.1&&!(input.pad&&(input.fire||input.aimHold))){player.aimX=m.x/m.length();player.aimZ=m.y/m.length();}
     player.ax=player.x+player.aimX*8;player.az=player.z+player.aimZ*8;}
   } else { ray.setFromCamera(input.mouse,cam); if(ray.ray.intersectPlane(plane,hit)){player.ax=hit.x;player.az=hit.z;}
     const dx=player.ax-player.x,dz=player.az-player.z,l=Math.hypot(dx,dz)||1;player.aimX=dx/l;player.aimZ=dz/l; }
@@ -61,10 +61,11 @@ export function updatePlayer(dt,cam){
     const k=Math.min(1,dt*12);
     for(const n in a){inst.w[n]=(inst.w[n]||0)+(tg[n]-(inst.w[n]||0))*k;a[n].setEffectiveWeight(inst.w[n]);}
     // Cadencia = velocidad real / velocidad que el clip recorre de verdad (medida en el GLB): los pies no patinan
-    const back=(vel.x*player.aimX+vel.y*player.aimZ)<-.35*Math.max(speed,.01)?-1:1,st=MOVE.step;
+    const dv=(vel.x*player.aimX+vel.y*player.aimZ)/Math.max(speed,.01);inst.bk=inst.bk?(dv<.1):(dv<-.45); // histéresis: no parpadea entre andar de frente y de espaldas
+    const bs=inst.bs=(inst.bs===undefined?1:inst.bs)+((inst.bk?-1:1)-(inst.bs===undefined?1:inst.bs))*Math.min(1,dt*14),st=MOVE.step; // y el cambio de sentido es suave
     const C=THREE.MathUtils.clamp;
-    if(a.walk)a.walk.timeScale=back*st*C(speed/(CW*K()),.3,2);
-    if(a.run)a.run.timeScale=back*st*C(speed/(CR*K()),.5,2);
+    if(a.walk)a.walk.timeScale=bs*st*C(speed/(CW*K()),.3,2);
+    if(a.run)a.run.timeScale=bs*st*C(speed/(CR*K()),.5,2);
     if(a.shoot_back)a.shoot_back.timeScale=C(speed/(CB*K()),.5,1.6); // clip «inplace»: ya va hacia atrás por sí mismo
     if(a.shoot_fwd)a.shoot_fwd.timeScale=C(speed/(CF*K()),.7,1.6);
     inst.mixer.update(dt);}

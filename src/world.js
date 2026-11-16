@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { propSource } from './assets.js'; import { mulberry, WORLD_SEED } from './sim.js';
+import { TEST, LAYOUT } from './test.js'; import { propSource } from './assets.js'; import { mulberry, WORLD_SEED } from './sim.js';
 export const LUZ={}; // luces ajustables en vivo desde ?debug
 export const obstacles=[]; export const props=[]; export const FIELD=40;
 const dyn={}; const dummy=new THREE.Object3D(); const mm=new THREE.Matrix4();
@@ -12,11 +12,12 @@ export function buildWorld(scene,q){
   const ground=new THREE.Mesh(new THREE.PlaneGeometry(FIELD*2,FIELD*2),new THREE.MeshStandardMaterial({color:0x6f8a4e,roughness:1}));
   ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
   const plan={fence:26,barrel:14,barrier:12,crate:16,sack:14,car:5}; const rnd=mulberry(WORLD_SEED);
-  for(const [key,n] of Object.entries(plan)){
+  if(TEST)for(const k in plan)plan[k]=LAYOUT.props.filter(a=>a[0]===k).length; // mapa de prueba: solo lo de la lista
+  for(const [key,n] of Object.entries(plan)){ if(!n)continue; const fixed=TEST?LAYOUT.props.filter(a=>a[0]===key):null;
     const {c,meshes}=propSource(key);
     dyn[key]=meshes.map(m=>{const im=new THREE.InstancedMesh(m.geometry,m.material,n);im.castShadow=im.receiveShadow=true;im.frustumCulled=false;scene.add(im);return {im,m};});
-    for(let i=0;i<n;i++){let x,z;do{x=(rnd()-.5)*FIELD*1.7;z=(rnd()-.5)*FIELD*1.7;}while(Math.hypot(x,z)<5);
-      const p={id:'p'+props.length,key,x,z,r:c.radius||.5,idx:i,rot:rnd()*6.28,y:0,tx:0,vx:0,vy:0,vz:0,vr:0,fly:false}; props.push(p);obstacles.push(p);sync(p);}
+    for(let i=0;i<n;i++){let x,z;if(fixed){x=fixed[i][1];z=fixed[i][2];}else do{x=(rnd()-.5)*FIELD*1.7;z=(rnd()-.5)*FIELD*1.7;}while(Math.hypot(x,z)<5);
+      const p={id:'p'+props.length,key,x,z,r:c.radius||.5,idx:i,rot:fixed?fixed[i][3]:rnd()*6.28,y:0,tx:0,vx:0,vy:0,vz:0,vr:0,fly:false}; props.push(p);obstacles.push(p);sync(p);}
   }
   return sun;
 }

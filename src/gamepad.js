@@ -16,7 +16,8 @@ let prev=[];
 // zona muerta circular + sensibilidad (más sensibilidad = llegas antes al máximo)
 function stick(x,y){const l=Math.hypot(x,y);if(l<cfg.dead)return [0,0];const k=Math.min(1,(l-cfg.dead)/(1-cfg.dead)*cfg.sens)/l;return [x*k,y*k];}
 function release(){input.move.set(0,0);input.aim.set(0,0);input.nadeAim.set(0,0);input.aimActive=false;input.fire=false;input.aimHold=false;input.nadeHold=false;input.run=false;}
-export function pollPad(){
+const sm=[0,0];
+export function pollPad(dt){
   padState.start=false;
   const gps=navigator.getGamepads?navigator.getGamepads():[];let g=null;
   for(const p of gps)if(p&&p.connected){g=p;break;}
@@ -36,13 +37,15 @@ export function pollPad(){
   const ax=g.axes,A=cfg.map;input.pad=true;
   const L=stick(ax[0]||0,ax[1]||0),R=stick(ax[2]||0,ax[3]||0);
   const held=a=>now[A[a]],ed=a=>e(A[a]),rel=a=>!now[A[a]]&&!!last[A[a]];
+  {const k=1-Math.exp(-(dt||.016)/.045),tx=L[0],ty=L[1]; // filtro suave: quita el temblor del stick y los saltos entre cuadros
+   sm[0]+=(tx-sm[0])*k;sm[1]+=(ty-sm[1])*k;if(!tx&&!ty&&Math.hypot(sm[0],sm[1])<.03){sm[0]=0;sm[1]=0;}L[0]=sm[0];L[1]=sm[1];}
   // Granada: mantén el botón y apunta con el stick izquierdo (no caminas); al soltar, se lanza
   const gh=held('grenade'),gr=rel('grenade');
   input.nadeHold=gh||gr;
   if(gh){input.nadeAim.set(L[0],L[1]);}else if(!gr)input.nadeAim.set(0,0); // al soltar se conserva la última dirección ese cuadro
   if(gh||gr)input.move.set(0,0);else input.move.set(L[0],L[1]);
   if(gr)input.grenade=true;
-  input.aim.set(R[0],R[1]);input.aimActive=Math.hypot(R[0],R[1])>.25; // stick derecho: solo dirección
+  input.aim.set(R[0],R[1]);input.aimActive=Math.hypot(R[0],R[1])>.05; // stick derecho: solo dirección; cualquier inclinación fuera de la zona muerta cuenta
   input.fire=held('fire');input.aimHold=held('aim');
   input.run=held('run')&&Math.hypot(L[0],L[1])>.3&&!gh; // pulsar el stick izquierdo mientras caminas = correr
   if(ed('reload'))input.reload=true;
