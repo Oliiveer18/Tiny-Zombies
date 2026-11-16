@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Tiny Zombies</title>
 <style>
-html,body{margin:0;height:100%;background:#05080f;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;font-family:system-ui,sans-serif;color:#cfe}
+html,body{-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;margin:0;height:100%;background:#05080f;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;font-family:system-ui,sans-serif;color:#cfe}
 canvas{display:block}
 #vig{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,10,.75) 100%)}
 #hud{position:fixed;left:12px;top:max(12px,env(safe-area-inset-top));font-size:14px;pointer-events:none;text-shadow:0 1px 3px #000}
@@ -15,11 +15,13 @@ canvas{display:block}
 #sl{left:24px}#sr{right:24px}
 .btn{position:fixed;display:none;width:62px;height:62px;border-radius:50%;background:#fff2;border:2px solid #fff4;align-items:center;justify-content:center;font-size:12px}
 #bg{right:170px;bottom:max(40px,env(safe-area-inset-bottom))}#br{right:190px;bottom:max(115px,env(safe-area-inset-bottom))}
-body.touch .stick{display:block}body.touch .btn{display:flex}
+#brun{left:28px;bottom:max(190px,env(safe-area-inset-bottom))}.btn.on{background:#fff6;border-color:#fff}
+.stick{opacity:.55}body.touch .stick{display:block}body.touch .btn{display:flex}
 </style></head><body>
 <div id="vig"></div>
 <div id="hud"><div id="hp" class="bar"><i></i></div><div id="st" class="bar"><i></i></div><div id="info"></div></div>
 <div id="sl" class="stick"><b></b></div><div id="sr" class="stick"><b></b></div>
 <div id="bg" class="btn">GRAN.</div><div id="br" class="btn">RECAR.</div>
+<div id="brun" class="btn">CORRER</div>
 <div id="msg"></div>
 <script type="module" src="/src/main.js"></script></body></html>

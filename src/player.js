@@ -4,7 +4,7 @@ import { input } from './input.js';
 import { obstacles, FIELD } from './world.js';
 import { wp } from './weapons.js';
 // Velocidades (unidades/s). Tiny original: 4.2 / 7 con cámara a 16.4; con la cámara a 10.1 se ajustan para que la velocidad en pantalla sea parecida.
-export const MOVE={walk:2.1,run:3.4,mult:1,acc:9,dec:14,dead:.12};
+export const MOVE={walk:2.1,run:3.4,mult:1,acc:9,dec:14,dead:.12,curve:1.5};
 const vel=new THREE.Vector2();
 export const player={id:'j1',x:0,z:0,hp:100,stam:100,exhausted:false,aimX:0,aimZ:-1,ax:0,az:-6,inst:null,t:0,hurt:0,shootT:0,moving:false};
 const ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),0),hit=new THREE.Vector3();
@@ -16,6 +16,7 @@ export function updatePlayer(dt,cam){
   const m=input.move.clone();if(m.length()>1)m.normalize();
   const ml=m.length(); if(ml<MOVE.dead)m.set(0,0); else m.multiplyScalar((ml-MOVE.dead)/(1-MOVE.dead)/ml); // zona muerta: sin salto brusco
   player.exhausted=player.exhausted?player.stam<20:player.stam<=0;
+  {const ml2=m.length(); if(ml2>0)m.multiplyScalar(Math.pow(ml2,MOVE.curve)/ml2);} // curva: inclinaciones pequeñas = movimiento fino
   const run=input.run&&!player.exhausted&&m.length()>.1;
   player.stam=THREE.MathUtils.clamp(player.stam+(run?-28:16)*dt,0,100);
   const sp=(run?MOVE.run:MOVE.walk)*MOVE.mult*(input.fire?.8:1);
@@ -24,7 +25,7 @@ export function updatePlayer(dt,cam){
   vel.x+=(tx-vel.x)*k;vel.y+=(tz-vel.y)*k;
   const speed=vel.length(); player.moving=speed>.15||m.length()>.1;
   player.x+=vel.x*dt;player.z+=vel.y*dt;
-  for(const o of obstacles){if(o.fly)continue;const dx=player.x-o.x,dz=player.z-o.z,d=Math.hypot(dx,dz),min=o.r+.25;if(d<min&&d>1e-4){player.x=o.x+dx/d*min;player.z=o.z+dz/d*min;}}
+  for(const o of obstacles){if(o.fly)continue;const dx=player.x-o.x,dz=player.z-o.z,d=Math.hypot(dx,dz),min=o.r+.25;if(d<min&&d>1e-4){const nx=dx/d,nz=dz/d;player.x=o.x+nx*min;player.z=o.z+nz*min;const vn=vel.x*nx+vel.y*nz;if(vn<0){vel.x-=vn*nx;vel.y-=vn*nz;}}}
   const L=FIELD-2;player.x=THREE.MathUtils.clamp(player.x,-L,L);player.z=THREE.MathUtils.clamp(player.z,-L,L);
   // apuntado
   if(input.touch){ if(input.aimActive){const l=Math.hypot(input.aim.x,input.aim.y);player.aimX=input.aim.x/l;player.aimZ=input.aim.y/l;}
@@ -41,7 +42,8 @@ export function updatePlayer(dt,cam){
     if(wp.reload>0&&a.reload)clip='reload'; else if(input.fire&&a.shoot)clip='shoot';
     else if(speed>.15)clip=(speed>2.8&&a.run)||!a.walk?'run':'walk';
     play(player.inst,clip);
-    const act=a[clip]; if(act)act.timeScale=clip==='run'?THREE.MathUtils.clamp(speed/2.1,.6,2):clip==='walk'?THREE.MathUtils.clamp(speed/1.1,.5,2.2):1;
+    const back=(vel.x*player.aimX+vel.y*player.aimZ)<-.35*Math.max(speed,.01)?-1:1; // andar hacia atrás: la animación va al revés
+    const act=a[clip]; if(act)act.timeScale=back*(clip==='run'?THREE.MathUtils.clamp(speed/2.1,.6,2):clip==='walk'?THREE.MathUtils.clamp(speed/1.1,.5,2.2):1);
     player.inst.mixer.update(dt);}
   else{player.inst.body.position.y=player.moving?Math.abs(Math.sin(player.t))*.07:0;player.inst.body.rotation.x=player.moving?.12:0;player.inst.body.rotation.z=Math.sin(player.t)*(player.moving?.08:0);}
 }
