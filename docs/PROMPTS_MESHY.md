@@ -11,9 +11,9 @@ Objetivo: generar SOLO dos modelos (cuerpo base de jugador y zombi normal), comp
 
 ## Imagen 1 · cuerpo base del jugador
 ```
-Full body character concept, front view, A-pose, single character on a plain light grey background, soft even lighting. Stylized survival-game hero, compact proportions (big head, short body, about 3.5 heads tall), adult, neutral expression, short messy hair. Clothing: teal-green waterproof jacket with a small orange zipper, dark grey cargo trousers, tan work boots, fingerless dark gloves. Worn, slightly dirty fabric. No weapon, no backpack, no hat, no text. Clean silhouette readable from above, hands open, legs slightly apart.
+Full body character concept, front view, A-pose, single character on a plain light grey background, soft even lighting. Stylized survival-game hero, compact proportions (big head, short body, about 3.5 heads tall), adult, neutral expression, short messy hair. Clothing: close-fitting plain base layer, a long-sleeve top and slim trousers in muted teal and dark grey, simple boots, fingerless gloves, nothing loose or bulky (no hood, no jacket volume, no belts or straps). No weapon, no backpack, no hat, no text. Clean silhouette readable from above, hands open, legs slightly apart.
 ```
-Es el cuerpo neutro: el aspecto final de cada jugador sale de skins y accesorios.
+Es el cuerpo base: ropa AJUSTADA a propósito, porque cada «ropa» se hace después re-texturizando este mismo modelo (no cambia la silueta) y el volumen (capucha, chaleco, mochila, casco) va como accesorio. Ver el plan en `MODELOS_MESHY.md` («Creador de personaje: plan de producción»). Añadir al final de la prueba: un re-texturizado de este cuerpo (≈ 10 créditos) para comprobar que el mismo esqueleto y las mismas animaciones siguen valiendo.
 
 ## Imagen 2 · zombi normal
 ```

@@ -12,3 +12,4 @@
 | 2026-11-16 | Sonnet | A0b: medidor `?debug` (`src/debug.js`): fps, peor cuadro, CPU, triángulos de todas las pasadas, llamadas, recursos; build OK | pendiente de medir en iPhone 14 |
 | 2026-11-16 | Sonnet | A0c: `src/sim.js` (semilla, hash de enteros, reloj en ticks), ids en zombis/props/jugador, zombis con semilla propia; build OK | pendiente de medir en iPhone 14 |
 | 2026-11-16 | Sonnet | Fusionada y revisada la respuesta Fable 002 (A1 en 6 subpasos); ROADMAP y DISENO §3 actualizados; creado `docs/PROMPTS_MESHY.md` (prueba de tubería con 2 modelos). Créditos Meshy: 2 000 (sin gastar) | — |
+| 2026-11-16 | Sonnet | Plan de producción del creador de personaje (cuerpos + re-texturizados + accesorios) en MODELOS_MESHY; prompt del cuerpo base cambiado a ropa ajustada | — |

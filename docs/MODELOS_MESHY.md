@@ -63,3 +63,21 @@ No generar todo de golpe: cada modelo se decide cuando su paso del ROADMAP está
 - **Costes de referencia de Meshy** (página de ayuda de Meshy, «solo orientativos»; mirar siempre la cotización en pantalla antes de generar): Image to 3D 25 (Meshy 7), 20 (Meshy 6) o 10 (Meshy 6 Lite); Texture 10 (2K/4K) o 15 (8K); Retexture 10; Smart Topology 5. El coste del rigging y de las animaciones NO aparece en esa página: comprobarlo en la app antes de la prueba.
 - **Orden:** 1) prueba de tubería con el protagonista y el zombi normal (con 2-3 intentos cada uno); 2) si encajan en Tiny y en el móvil, el resto por prioridad de la lista de modelos.
 - **Reglas para no malgastar créditos:** máximo 2-3 generaciones por modelo; elegir la mejor imagen de referencia antes de generar; no texturizar en 8K; no generar un modelo hasta que su paso del ROADMAP esté cerca; apuntar en `coordinacion/REGISTRO.md` los créditos que quedan tras cada tanda.
+
+## Creador de personaje: plan de producción 💡 (16 nov 2026)
+Idea clave: **no se genera un modelo por cada aspecto posible.** Se generan pocas piezas y el creador las combina, así hay muchas combinaciones con poco arte y poco peso en el móvil.
+Aspecto de un jugador = `cuerpo` + `ropa` + `peinado` + `accesorios` (+ color de acento). En el perfil solo se guardan esos ids (unos bytes; vale para el online).
+| Capa | Cómo se hace | Cantidad inicial | Coste aprox. |
+|---|---|---|---|
+| **Cuerpo** (silueta, esqueleto y animaciones) | Image to 3D en Meshy, rigging humanoide una vez, ropa ajustada. Los cuerpos de jugador son distintos de los de NPC | 2-3 de jugador (p. ej. complexión delgada, media, fuerte) | ≈ 30 créditos cada uno + rig y animaciones (comprobar en la app) |
+| **Ropa y tono de piel** | **Re-texturizado** (Retexture de Meshy) del MISMO cuerpo: no cambia la malla, así que el esqueleto y las animaciones valen sin repetirlos. Los tonos de piel se hacen como variantes | 8-10 por cuerpo | ≈ 10 créditos cada una |
+| **Peinados** | Piezas pequeñas pegadas al hueso de la cabeza (se pueden teñir por código) | 6-8 | ≈ 10-20 cada una |
+| **Accesorios** con volumen (gorros, cascos, chalecos, mochilas, gafas, capuchas) | Modelos pequeños (≤ 300 triángulos) pegados a un hueso | 15-20 | ≈ 10-20 cada uno |
+| **Color de acento** | Tinte por código sobre accesorios y peinados | — | 0 |
+Con eso: 3 cuerpos × 8 ropas × 6 peinados × 15 accesorios ≈ 2 000+ combinaciones con unos 40 modelos.
+- **Los NPC** tienen su propio grupo (2-3 cuerpos y ropas por rol: médico, soldado…), de modo que ningún jugador se parece a un NPC.
+- **Zombis:** cuerpos propios (normal, corredor, tanque) con variantes de textura; mismo esqueleto.
+- **Regla de silueta:** los cuerpos llevan ropa ajustada. Lo voluminoso (capucha, chaleco, mochila, casco) es siempre accesorio, porque un re-texturizado no puede cambiar la forma.
+- **Rendimiento:** solo se cargan las ropas y accesorios de los jugadores visibles; texturas de 512-1024 en atlas; tope de personajes animados a la vez (norma 2). Se mide en el iPhone 14.
+- **Orden:** 1) prueba de tubería: cuerpo de jugador 1 + zombi normal + UN re-texturizado (comprobar que el esqueleto sigue valiendo); 2) si funciona, resto de cuerpos de jugador y las primeras ropas; 3) accesorios y peinados con el creador (paso F2, online) y antes algunas combinaciones fijas para el juego en solitario.
+- **Presupuesto estimado** (sin rig ni animación, que hay que comprobar en la app): 3 cuerpos de jugador ≈ 90 + 24 ropas ≈ 240 + peinados y accesorios ≈ 350 + NPC (3 cuerpos + 10 ropas) ≈ 190 + zombis ≈ 120 → ≈ 1 000 de 2 000 créditos. Se ajusta con el coste real de rig y animación.
