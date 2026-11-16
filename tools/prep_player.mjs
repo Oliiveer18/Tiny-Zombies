@@ -8,7 +8,7 @@ import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import { MeshoptSimplifier } from 'meshoptimizer';
 import sharp from 'sharp';
 import fs from 'node:fs';
-const [,, SRC, DST, TRIS='4000', TEX='1024'] = process.argv;
+const [,, SRC, DST, TRIS='4000', TEX='1024', ...EXTRA] = process.argv; // EXTRA: archivo.glb:nombre_logico (clips sueltos de Meshy, p. ej. el FBX convertido con FBX2glTF)
 const CLIPS = { // nombre de Meshy -> nombre lógico (models.config.js)
   Axe_Breathe_and_Look_Around:'idle', Walking:'walk', Running:'run', Standing_Reload:'reload', Dead:'die', Side_Shot:'shoot_side', Walk_Backward_While_Shooting_inplace:'shoot_back', Walk_Forward_While_Shooting:'shoot_fwd' };
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS); const doc = await io.read(SRC); const root = doc.getRoot();
@@ -34,6 +34,17 @@ const ibm = skin.getInverseBindMatrices(); const old = ibm.getArray(); const nib
 keep.forEach((j,i)=>{ nib.set(old.subarray(joints.indexOf(j)*16, joints.indexOf(j)*16+16), i*16); });
 ibm.setArray(nib);
 const dropped = joints.filter(j => !newIdx.has(j)); dropped.forEach(j => skin.removeJoint(j));
+// 3b) clips extra de otros GLB (mismo esqueleto Mixamo): se reasignan a los huesos por nombre; si la caderas vienen en centímetros (padre ×100) se pasan a metros
+for (const spec of EXTRA) { const [file, logical] = spec.split(':'); const d2 = await io.read(file); const r2 = d2.getRoot();
+  const buf = root.listBuffers()[0];
+  for (const a2 of r2.listAnimations()) { const na = doc.createAnimation(a2.getName()); CLIPS[a2.getName()] = logical;
+    for (const c2 of a2.listChannels()) { const tn = c2.getTargetNode(); const tgt = root.listNodes().find(x => nm(x) === nm(tn)); if (!tgt) continue;
+      const s2 = c2.getSampler(); const inp = doc.createAccessor().setType('SCALAR').setArray(s2.getInput().getArray().slice()).setBuffer(buf);
+      const o2 = s2.getOutput(); const arr = o2.getArray().slice(); const k = (c2.getTargetPath() === 'translation' && (tn.getParentNode()?.getScale?.()[0] || 1) > 10) ? tn.getParentNode().getScale()[0] : 1;
+      if (k !== 1) for (let i = 0; i < arr.length; i++) arr[i] *= k;
+      const out = doc.createAccessor().setType(o2.getType()).setArray(arr).setBuffer(buf);
+      const smp = doc.createAnimationSampler().setInput(inp).setOutput(out).setInterpolation(s2.getInterpolation()); na.addSampler(smp);
+      na.addChannel(doc.createAnimationChannel().setTargetNode(tgt).setTargetPath(c2.getTargetPath()).setSampler(smp)); } } }
 // 4) animaciones: solo las usadas, con nombre lógico; sin escala ni traslación salvo caderas; caderas sin avance en X/Z (menos 'die')
 for (const a of root.listAnimations()) {
   if (!CLIPS[a.getName()]) { a.listChannels().forEach(c=>c.dispose()); a.listSamplers().forEach(s=>s.dispose()); a.dispose(); continue; }

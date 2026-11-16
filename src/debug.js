@@ -1,6 +1,6 @@
 // Medidor ?debug: fps, peor cuadro, tiempo de CPU, triángulos y recursos. Sin ?debug no hace nada.
 import { renderer, OFF } from './renderer.js';
-import { MOVE } from './player.js';
+import { MOVE, topSpeed } from './player.js';
 import { LUZ } from './world.js';
 import { state } from './zombies.js';
 export const DEBUG=new URLSearchParams(location.search).has('debug');
@@ -19,7 +19,7 @@ if(DEBUG){renderer.info.autoReset=false;
   const info=()=>{inf.textContent='distancia '+Math.hypot(OFF.y,OFF.z).toFixed(1)+' · ángulo '+(Math.atan2(OFF.y,OFF.z)*57.3).toFixed(0)+'°';};
   row('Altura',2,30,'y');row('Atrás',0,20,'z');
   {const r=document.createElement('div'),l=document.createElement('span'),s=document.createElement('input');s.type='range';s.min=.3;s.max=2;s.step=.05;s.value=1;s.style.cssText='width:100%;margin:2px 0 6px';
-   const show=()=>{l.textContent='Velocidad ×'+MOVE.mult.toFixed(2)+' (andar '+(MOVE.walk*MOVE.mult).toFixed(1)+' · correr '+(MOVE.run*MOVE.mult).toFixed(1)+')';};show();s.oninput=()=>{MOVE.mult=Number(s.value);show();};r.append(l,s);box.append(r);}
+   const show=()=>{l.textContent='Velocidad ×'+MOVE.mult.toFixed(2)+' (máx '+topSpeed().toFixed(1)+')';};show();s.oninput=()=>{MOVE.mult=Number(s.value);show();};r.append(l,s);box.append(r);}
   const sl=(name,min,max,get,set,st=.05)=>{const r=document.createElement('div'),l=document.createElement('span'),s=document.createElement('input');s.type='range';s.min=min;s.max=max;s.step=st;s.value=get();s.style.cssText='width:100%;margin:2px 0 6px';
     const show=()=>{l.textContent=name+' '+Number(get()).toFixed(2);};show();s.oninput=()=>{set(Number(s.value));show();};r.append(l,s);box.append(r);};
   sl('Exposición',.3,1.6,()=>renderer.toneMappingExposure,v=>renderer.toneMappingExposure=v);
@@ -27,7 +27,7 @@ if(DEBUG){renderer.info.autoReset=false;
   sl('Ambiente',0,2,()=>LUZ.hemi?LUZ.hemi.intensity:0,v=>{if(LUZ.hemi)LUZ.hemi.intensity=v;});
   sl('Velocidad al apuntar ×',.2,1,()=>MOVE.aim,v=>MOVE.aim=v);
   sl('Paso (cadencia)',.5,1.6,()=>MOVE.step,v=>MOVE.step=v);
-  sl('Cambio a correr desde',.4,2.5,()=>MOVE.blendA,v=>{MOVE.blendA=v;MOVE.blendB=v+.5;});
+  sl('Tamaño del personaje ×',.8,2.2,()=>MOVE.size,v=>MOVE.size=v);
   info();
   // Paneles escondidos por defecto: un botón pequeño los muestra u oculta
   const btn=document.createElement('div');btn.textContent='⚙';btn.style.cssText='position:fixed;top:4px;right:4px;z-index:100;width:34px;height:34px;line-height:34px;text-align:center;font-size:20px;color:#fff;background:rgba(0,0,0,.35);border-radius:17px';
