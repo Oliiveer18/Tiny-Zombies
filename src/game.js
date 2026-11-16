@@ -3,11 +3,11 @@ import * as THREE from 'three';
 import { input, pollKeys } from './input.js';
 import { updateProps } from './world.js';
 import { updateEffects } from './effects.js';
-import { updatePlayer, player, resetPlayer } from './player.js';
+import { updatePlayer, player, resetPlayer,playDeath } from './player.js';
 import { updateZombies, resetZombies, state } from './zombies.js';
 import { updateWeapons, resetWeapons, wp } from './weapons.js';
 import { updateUI, showMsg, hideMsg } from './ui.js';
-import { play } from './assets.js'; import { touch, cam, comp, OFF } from './renderer.js'; import { debugStart, debugEnd } from './debug.js'; import { advanceClock, resetClock } from './sim.js';
+import { touch, cam, comp, OFF } from './renderer.js'; import { debugStart, debugEnd } from './debug.js'; import { advanceClock, resetClock } from './sim.js';
 export const G={run:false,over:false};let sun;
 export function setSun(s){sun=s;}
 export function start(){resetClock();resetPlayer();resetZombies();resetWeapons();G.run=true;G.over=false;hideMsg();}
@@ -19,7 +19,7 @@ const tgt=new THREE.Vector3();
 export function frame(dt){
   debugStart();pollKeys();
   if(G.run){advanceClock(dt);updatePlayer(dt,cam);updateWeapons(dt,true);}
-  if(!G.run&&G.over&&player.inst?.mixer){play(player.inst,'die',true);player.inst.mixer.update(dt);}
+  if(!G.run&&G.over)playDeath(dt);
   updateZombies(G.run?dt:dt*.3);updateProps(dt);updateEffects(dt);updateUI();
   tgt.set(player.x+(player.ax-player.x)*CAM_LEAD,0,player.z+(player.az-player.z)*CAM_LEAD);
   const s=wp.shake;cam.position.lerp(tgt.clone().add(OFF),1-Math.pow(.0005,dt));

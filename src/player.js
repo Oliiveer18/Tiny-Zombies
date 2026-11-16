@@ -4,14 +4,16 @@ import { input } from './input.js';
 import { obstacles, FIELD } from './world.js';
 import { wp } from './weapons.js';
 // Velocidades (unidades/s). Tiny original: 4.2 / 7 con cámara a 16.4; con la cámara a 10.1 se ajustan para que la velocidad en pantalla sea parecida.
-export const MOVE={walk:2.1,run:3.4,mult:1,acc:9,dec:14,dead:.12,curve:1.5};
+export const MOVE={walk:2.1,run:3.4,mult:1,acc:9,dec:14,dead:.12,curve:1.5,
+  // Velocidad (unidades del juego/s) que recorre cada animación al paso 1: medida en el GLB (andar 1,10 · correr ~3,4 · disparar 1,40 por 0,53 de escala).
+  clipWalk:.58,clipRun:1.8,clipShoot:.74,blendA:.8,blendB:1.3,step:1};
 const vel=new THREE.Vector2();
 export const player={id:'j1',x:0,z:0,hp:100,stam:100,exhausted:false,aimX:0,aimZ:-1,ax:0,az:-6,inst:null,t:0,hurt:0,shootT:0,moving:false};
 const ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),0),hit=new THREE.Vector3();
 export function initPlayer(scene){player.inst=instance('player');scene.add(player.inst.root);
   const ring=new THREE.Mesh(new THREE.RingGeometry(.22,.3,20),new THREE.MeshBasicMaterial({color:0xff5a3a,transparent:true,opacity:.8,depthTest:false}));
   ring.rotation.x=-Math.PI/2;ring.renderOrder=9;scene.add(ring);player.reticle=ring;}
-export function resetPlayer(){Object.assign(player,{x:0,z:0,hp:100,stam:100,exhausted:false,hurt:0});vel.set(0,0);}
+export function resetPlayer(){Object.assign(player,{x:0,z:0,hp:100,stam:100,exhausted:false,hurt:0});vel.set(0,0);if(player.inst){player.inst.blendReady=false;player.inst.dead=false;}}
 export function updatePlayer(dt,cam){
   const m=input.move.clone();if(m.length()>1)m.normalize();
   const ml=m.length(); if(ml<MOVE.dead)m.set(0,0); else m.multiplyScalar((ml-MOVE.dead)/(1-MOVE.dead)/ml); // zona muerta: sin salto brusco
@@ -38,12 +40,25 @@ export function updatePlayer(dt,cam){
   // animación: clips si existen, si no código
   player.t+=dt*(run?14:9);player.shootT=Math.max(0,player.shootT-dt);player.hurt=Math.max(0,player.hurt-dt);
   if(player.inst.mixer){
-    const a=player.inst.actions; let clip='idle';
-    if(wp.reload>0&&a.reload)clip='reload'; else if(input.fire&&a.shoot)clip='shoot';
-    else if(speed>.15)clip=(speed>2.8&&a.run)||!a.walk?'run':'walk';
-    play(player.inst,clip);
-    const back=(vel.x*player.aimX+vel.y*player.aimZ)<-.35*Math.max(speed,.01)?-1:1; // andar hacia atrás: la animación va al revés
-    const act=a[clip]; if(act)act.timeScale=back*(clip==='run'?THREE.MathUtils.clamp(speed/2.1,.6,2):clip==='walk'?THREE.MathUtils.clamp(speed/1.1,.5,2.2):1);
-    player.inst.mixer.update(dt);}
+    const inst=player.inst,a=inst.actions;
+    if(!inst.blendReady){for(const n in a){a[n].stop();a[n].enabled=true;a[n].setLoop(n==='die'?THREE.LoopOnce:THREE.LoopRepeat);a[n].clampWhenFinished=true;a[n].play();a[n].setEffectiveWeight(n==='idle'?1:0);}inst.cur=null;inst.blendReady=true;inst.w={idle:1};}
+    // Pesos objetivo: reload > shoot > locomoción (quieto / andar / correr mezclados por la velocidad real)
+    const tg={idle:0,walk:0,run:0,shoot:0,reload:0,die:0};
+    if(wp.reload>0&&a.reload)tg.reload=1; else if(input.fire&&a.shoot)tg.shoot=1;
+    else{const wi=THREE.MathUtils.clamp(1-speed/.25,0,1),tt=THREE.MathUtils.smoothstep(speed,MOVE.blendA,MOVE.blendB);tg.idle=wi;tg.walk=(1-wi)*(1-tt);tg.run=(1-wi)*tt;}
+    const k=Math.min(1,dt*12);
+    for(const n in a){inst.w[n]=(inst.w[n]||0)+(tg[n]-(inst.w[n]||0))*k;a[n].setEffectiveWeight(inst.w[n]);}
+    // Cadencia = velocidad real / velocidad que el clip recorre de verdad (medida en el GLB): los pies no patinan
+    const back=(vel.x*player.aimX+vel.y*player.aimZ)<-.35*Math.max(speed,.01)?-1:1,st=MOVE.step;
+    const C=THREE.MathUtils.clamp;
+    if(a.walk)a.walk.timeScale=back*st*C(speed/MOVE.clipWalk,.4,2.2);
+    if(a.run)a.run.timeScale=back*st*C(speed/MOVE.clipRun,.5,2.2);
+    if(a.shoot)a.shoot.timeScale=speed>.3?back*st*C(speed/MOVE.clipShoot,.5,2):1;
+    inst.mixer.update(dt);}
   else{player.inst.body.position.y=player.moving?Math.abs(Math.sin(player.t))*.07:0;player.inst.body.rotation.x=player.moving?.12:0;player.inst.body.rotation.z=Math.sin(player.t)*(player.moving?.08:0);}
 }
+
+// Animación de muerte: solo el clip «die», una vez y se queda en el suelo
+export function playDeath(dt){const inst=player.inst;if(!inst?.mixer||!inst.actions.die)return;
+  if(!inst.dead){for(const n in inst.actions)inst.actions[n].setEffectiveWeight(n==='die'?1:0);inst.actions.die.reset().play();inst.dead=true;}
+  inst.mixer.update(dt);}

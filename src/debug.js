@@ -25,6 +25,8 @@ if(DEBUG){renderer.info.autoReset=false;
   sl('Exposición',.3,1.6,()=>renderer.toneMappingExposure,v=>renderer.toneMappingExposure=v);
   sl('Sol',0,4,()=>LUZ.sun?LUZ.sun.intensity:0,v=>{if(LUZ.sun)LUZ.sun.intensity=v;});
   sl('Ambiente',0,2,()=>LUZ.hemi?LUZ.hemi.intensity:0,v=>{if(LUZ.hemi)LUZ.hemi.intensity=v;});
+  sl('Paso (cadencia)',.5,1.6,()=>MOVE.step,v=>MOVE.step=v);
+  sl('Cambio a correr desde',.4,2.5,()=>MOVE.blendA,v=>{MOVE.blendA=v;MOVE.blendB=v+.5;});
   info();
   // Paneles escondidos por defecto: un botón pequeño los muestra u oculta
   const btn=document.createElement('div');btn.textContent='⚙';btn.style.cssText='position:fixed;top:4px;right:4px;z-index:100;width:34px;height:34px;line-height:34px;text-align:center;font-size:20px;color:#fff;background:rgba(0,0,0,.35);border-radius:17px';
