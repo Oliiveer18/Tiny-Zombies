@@ -16,7 +16,11 @@ export async function loadAll(){
       const url=import.meta.env.BASE_URL+'models/'+c.file;
       const r=await fetch(url); if(!r.ok||(r.headers.get('content-type')||'').includes('html'))throw 0;
       const g=await loader.parseAsync(await r.arrayBuffer(),url.replace(/[^/]*$/,''));
-      g.scene.traverse(o=>{if(o.isMesh)o.castShadow=true;}); cache[k]=g;
+      g.scene.traverse(o=>{if(!o.isMesh)return; o.castShadow=true;
+        if(o.isSkinnedMesh)o.frustumCulled=false; // receta 003 §3: la caja de un modelo animado no sigue a los huesos
+        for(const m of [].concat(o.material)){ m.metalness=0; m.metalnessMap=null; // sin mapa de entorno, el metal sale negro
+          for(const t of [m.map,m.normalMap])if(t)t.anisotropy=4; m.needsUpdate=true; }});
+      cache[k]=g;
     }catch{ cache[k]=placeholder(c.placeholder); }
   }));
 }

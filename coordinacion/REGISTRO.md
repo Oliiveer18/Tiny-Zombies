@@ -14,3 +14,4 @@
 | 2026-11-16 | Sonnet | Fusionada y revisada la respuesta Fable 002 (A1 en 6 subpasos); ROADMAP y DISENO §3 actualizados; creado `docs/PROMPTS_MESHY.md` (prueba de tubería con 2 modelos). Créditos Meshy: 2 000 (sin gastar) | — |
 | 2026-11-16 | Sonnet | Plan de producción del creador de personaje (cuerpos + re-texturizados + accesorios) en MODELOS_MESHY; prompt del cuerpo base cambiado a ropa ajustada | — |
 | 2026-11-16 | Sonnet | Primera prueba de Meshy con el cuerpo base del jugador (445 460 → 36 722 adaptativo alto → 9 808 adaptativo medio, cara perdida con 10K). Créditos: 2 388. Redactada la petición 003 (receta de assets para iPhone 14) | — |
+| 2026-11-16 | Sonnet | A0d jugador: GLB de Meshy → `public/models/player.glb` (4 000 tris, 20 huesos, 613 KB, 6 clips), `tools/prep_player.mjs`, original en `arte_fuente/`; assets.js con metalness 0, anisotropía 4, frustumCulled false; build OK. Pendiente: boca (creador), zombi, medir en iPhone | — |

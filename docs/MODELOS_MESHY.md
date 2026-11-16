@@ -81,3 +81,8 @@ Con eso: 3 cuerpos × 8 ropas × 6 peinados × 15 accesorios ≈ 2 000+ combinac
 - **Rendimiento:** solo se cargan las ropas y accesorios de los jugadores visibles; texturas de 512-1024 en atlas; tope de personajes animados a la vez (norma 2). Se mide en el iPhone 14.
 - **Orden:** 1) prueba de tubería: cuerpo de jugador 1 + zombi normal + UN re-texturizado (comprobar que el esqueleto sigue valiendo); 2) si funciona, resto de cuerpos de jugador y las primeras ropas; 3) accesorios y peinados con el creador (paso F2, online) y antes algunas combinaciones fijas para el juego en solitario.
 - **Presupuesto estimado** (sin rig ni animación, que hay que comprobar en la app): 3 cuerpos de jugador ≈ 90 + 24 ropas ≈ 240 + peinados y accesorios ≈ 350 + NPC (3 cuerpos + 10 ropas) ≈ 190 + zombis ≈ 120 → ≈ 1 000 de 2 000 créditos. Se ajusta con el coste real de rig y animación.
+
+
+## Pendientes del jugador (16 nov)
+- Boca: línea muy fina en la textura; arreglar al hacer el creador de personaje (modelo alto `arte_fuente/jugador_meshy_alto_36k.glb`).
+- Versión de juego hecha con `tools/prep_player.mjs` (4 000 tris, 20 huesos, 613 KB).

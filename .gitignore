@@ -4,3 +4,4 @@ dist/
 *.log
 *.mp4
 .env
+arte_fuente/
