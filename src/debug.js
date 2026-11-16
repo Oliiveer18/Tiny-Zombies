@@ -16,5 +16,5 @@ export function debugEnd(){if(!DEBUG)return;const n=performance.now();cpu=n-t0;c
   worstWin=0;for(const h of hist)if(h[1]>worstWin)worstWin=h[1];
   const i=renderer.info,tri=i.render.triangles,bad=fps<58||worstWin>25||tri>40000;
   el.style.color=bad?'#f88':'#9f9';
-  el.textContent=`fps ${fps.toFixed(0)}  (meta ≥58)\npeor cuadro 5 s ${worstWin.toFixed(1)} ms (meta ≤25)\nCPU cuadro ${cpu.toFixed(1)} ms (máx ${cpuMax.toFixed(1)})\ntriángulos ${tri} (meta <40000, todas las pasadas)\nllamadas ${i.render.calls}\ngeometrías ${i.memory.geometries} · texturas ${i.memory.textures}\nzombis vivos ${state.alive}`;
+  el.textContent=`versión ${__BUILD__}\nfps ${fps.toFixed(0)}  (meta ≥58)\npeor cuadro 5 s ${worstWin.toFixed(1)} ms (meta ≤25)\nCPU cuadro ${cpu.toFixed(1)} ms (máx ${cpuMax.toFixed(1)})\ntriángulos ${tri} (meta <40000, todas las pasadas)\nllamadas ${i.render.calls}\ngeometrías ${i.memory.geometries} · texturas ${i.memory.textures}\nzombis vivos ${state.alive}`;
   cpuMax=0;}
