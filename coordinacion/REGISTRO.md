@@ -20,3 +20,4 @@
 | 2026-11-16 | Sonnet | M6 (apuntado parado) y C1 (callejón como datos, muros, luz de atardecer, farolas); build OK | pendiente de medir en iPhone 14 |
 
 - C3: vida y rotura de objetos; quitado toque-agacharse en táctil.
+| 2026-11-16 | Fable | Respuesta 006: almacén de personajes (ropa = pintura, piezas rígidas pegadas a un hueso, clips compartidos, presupuesto corregido, prueba pequeña de ≈ 125 créditos y pasos P1-P7). 2 preguntas al principio | — |

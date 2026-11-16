@@ -57,7 +57,7 @@
 - Fuera de alcance: código, arte final, IA completa de NPC, historia, el mundo por regiones, el online.
 
 
-### 006 · Almacén de personajes (jugador, NPC, rivales) con calidad HD en móvil y animaciones compartidas · estado: PENDIENTE
+### 006 · Almacén de personajes (jugador, NPC, rivales) con calidad HD en móvil y animaciones compartidas · estado: HECHA (ver `RESPUESTAS_FABLE/006_almacen_personajes.md`)
 - Contexto (decisión del usuario, 16 nov): quiere personajes de la calidad visual del juego de referencia (soldado táctico visto desde arriba: casco, chaleco, mochila, tela y metal con detalle fino, bien iluminado). El soldado actual (relleno de Tiny) pasa a ser NPC. Quiere un «almacén» de assets para crear muchos personajes, todos con Meshy, y que compartan animaciones.
 - Enfoque propuesto por Sonnet (validar o corregir): MIX. (a) Humanos jugador/NPC: cuerpo base con esqueleto compatible Mixamo + piezas intercambiables (cabeza/pelo, casco, chaleco, mochila, ropa, arma) definidas en un JSON por personaje, con tintes de color. (b) Protagonista y jefes: modelo entero hecho aparte. (c) Zombis y criaturas: esqueleto propio por familia. Hacer primero una PRUEBA pequeña (1 personaje + 1 pieza) para ver si las piezas de Meshy encajan en el cuerpo base.
 - Cifras de partida (💡 medir): jugador 10 000-20 000 triángulos, NPC 4 000-6 000; textura 2048 solo jugador, 1024 el resto; GLB con KTX2 + meshopt. El tope < 40 000 triángulos visibles es de CLAUDE.md norma 2 (queda pendiente decidir si cuenta la pasada de sombras, en C10).
