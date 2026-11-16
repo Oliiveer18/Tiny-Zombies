@@ -31,3 +31,4 @@
 - 2026-11-17 · Fable · Informe 008 (reorientación visual tipo Tiny Troopers): estado, diferencias, qué se aprovecha, pista R0-R8 y 5 decisiones. Nada implementado; espera aprobación del usuario.
 - 2026-11-17 · Fable · R0 (documentos de la reorientación) y R1 (cámaras A/B/C + Cerca + Tiny elegibles en Controles; build OK; probado en iPhone 14 simulado). Pendiente: elección del usuario en el móvil.
 - 2026-11-17 · Fable · El usuario elige la cámara «Tiny» (16,4 m · 58°) como definitiva; fijada en CLAUDE.md y REFERENCIA_VISUAL con criterios de proporciones, visibilidad y escala. R0 y R1 hechos; R2 en pausa hasta organizar el trabajo Fable–Sonnet. Solo documentos.
+- 2026-11-17 · Fable · Sistema de trabajo «Fable dirige, Sonnet implementa»: LEEME reescrito, DECISIONES.md nuevo, CONTINUAR convertido en tablero (el anterior, en docs/archivo), plan único por paquetes en ROADMAP, traspasos PAQ-01 y PAQ-02 LISTOS y ART-1 preparado. Sin cambios de código.

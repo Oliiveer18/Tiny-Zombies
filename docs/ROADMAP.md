@@ -1,6 +1,6 @@
 # ROADMAP · ruta más corta hasta tener el juego completo (reorganizado el 15 nov 2026; revisado con Fable 001 el mismo día)
 
-Estados: 💡 propuesta de Claude (el usuario la corrige). Esfuerzo: LOW o MEDIUM por subpaso. Cada subpaso = una rama `sonnet/<subpaso>` + `docs/SESION.md` + medida de fps en el móvil de referencia (iPhone 14, `?debug`). Los números de subpasos son una ESTIMACIÓN para comparar fases, no una promesa.
+Estados: 💡 propuesta de Claude (el usuario la corrige). Esfuerzo: LOW o MEDIUM. **Desde el 17 nov el trabajo va por paquetes (ver «Plan vigente»); los «subpasos» de los hitos de abajo se agruparán en paquetes cuando les llegue el turno.** Medida de fps en el móvil de referencia (iPhone 14, `?debug`). Los números de subpasos son una estimación para comparar fases.
 
 ## Principios para acabar lo antes posible
 1. **Cortes verticales jugables.** Cada hito se puede jugar de principio a fin aunque sea pobre, en vez de terminar capas sueltas. Así se detecta pronto lo que no funciona en el móvil.
@@ -11,34 +11,35 @@ Estados: 💡 propuesta de Claude (el usuario la corrige). Esfuerzo: LOW o MEDIU
 6. **Meshy corre en paralelo.** Los modelos son lo que más tarda y no dependen del código: se generan mientras se programa (`MODELOS_MESHY.md`). Los pasos A0a-A7 se programan con el relleno de Tiny; ningún hito se da por entregado con relleno.
 7. **Medir cada paso.** Nada pasa al siguiente si se rompen ≥ 58 fps, peor cuadro ≤ 25 ms, < 40 000 triángulos.
 
-## Estado a 16 nov 2026 (03:45)
-- **Hecho (en `main`, jugable en el móvil):** A0a módulos · A0b medidor · A0c ids/semilla/reloj · A0d jugador de Meshy (falta el zombi) · y, fuera del plan original y pedidos por el usuario: A0e movimiento · A0f calidad del jugador · A0g luz, cámara y paneles ocultos · A0h joysticks flotantes · A0i pies sin patinar · A0j movimiento táctico.
-- **Siguiente, sin decidir (esperando al usuario):** 004 táctico con Fable y qué propuestas tácticas entran; zombi de Meshy (A0d zombi); luz/tono final; A1a.
-- **Pendiente de Hito A:** A0d zombi · A1 (6 subpasos) · A2 · A3 · A4 · A6a · A5 ×2 · A6b · A7 · A8. Quedan ≈ 17 de ≈ 26 (los 6 extra de movimiento y calidad se añaden al total).
-- **Hitos B-F sin empezar.** Online (F) es lo último.
+## Plan vigente (17 nov 2026) · ESTA es la única lista de trabajo
+Estado al día: `docs/CONTINUAR.md` (tablero). Decisiones: `docs/DECISIONES.md`. Cómo se trabaja: `coordinacion/LEEME.md`.
+El trabajo se organiza en **paquetes** (`PAQ-nn`, código) y **tareas de arte** (`ART-n`, dependen de modelos o clips que aporta el usuario). Cada paquete tiene su documento en `coordinacion/TRASPASOS/`. Los nombres antiguos de pasos (C1-C10 de la 005, P1-P7 de la 006, V1-V9 de la 007, T1-T7 de la 004, R0-R8 de la 008, S1) **ya no se usan para planificar**: esta tabla dice dónde ha ido a parar cada uno. Nada está duplicado.
 
-## Reparto Sonnet / Fable (16 nov) · a Fable solo lo que exige pensar a fondo
-- **Sonnet (código, ajustes, medir, documentar):** todo subpaso de programación, los ajustes que dicta el usuario con las barras de `?debug` y los documentos de sesión. No pide permiso a Fable para ajustar cifras.
-- **Fable (documentos de diseño, nunca código), una petición cada vez y solo cuando el siguiente paso la necesita:**
-  1. **004 · Diseño táctico** (ahora, antes de A3): qué hace que se sienta táctico y de estrategia (cobertura, ruido y sigilo, visión, munición, ritmo del combate, órdenes a NPC), con reglas medibles y qué cambia en armas/zombis. Es lo que decide A3, A5 y B4.
-  2. **005 · Mundo y lugares** (antes de A2/A5): tipos de región, plantillas de lugar y tabla de botín como datos.
-  3. **006 · Refugio, NPC y economía** (antes de B1): piezas, estancias, consumo, rescate.
-  4. **007 · Online** (antes de F1): arquitectura servidor, validación, creador de personaje en perfil.
-  5. **Revisión de hito** al cerrar A, B, C: contradicciones y huecos (como la 001).
-- No se le piden: texturas, cifras que se afinan jugando, nada que el usuario pueda decidir con una barra en el móvil.
-- **Hecho en la rama de ajuste (16 nov, ver SESION):** A0d jugador de Meshy · A0e movimiento · A0f calidad · A0g cámara/luz/paneles ocultos. Falta A0d del zombi.
+### Hecho (en `main`)
+A0a-A0o · M1-M6 · C1, C2, C3, C3b, C4 · S1, S1b (suelo y calcos fijos: cubre parte de V2/V3) · P1, P2 · R0, R1 (cámara elegida: Tiny). **Nada medido aún en el iPhone 14.**
 
-## Pista R · Reorientación visual tipo Tiny Troopers (aprobada por el usuario el 17 nov; detalle y criterios en `coordinacion/RESPUESTAS_FABLE/008_reorientacion_visual.md`)
-Se intercala en el trabajo del mapa de prueba; el Hito A no cambia. Entregas agrupadas, validando con el usuario entre grupos.
-| Entrega | Estado |
-|---|---|
-| R0 documentos (referencia, norma de cámara, pausa de Meshy) | HECHO 17 nov |
-| R1 cámara elevada: 3 propuestas + Cerca + Tiny elegibles en el móvil | HECHO y VALIDADO 17 nov · **el usuario eligió «Tiny» (16,4 m · 58°) como definitiva** · resto de R1: dejarla como cámara por defecto y retirar las otras del menú (pendiente, pequeño); fps en iPhone sin medir (R8) |
-| R2 prueba de compatibilidad con Mixamo (0 créditos) | pendiente (necesita un clip descargado por el usuario) |
-| R3 primer personaje del estilo nuevo | pendiente (créditos en pausa hasta cerrar R1 y proporciones) |
-| R4 `anim.js` (dos mitades, sin giro de 90°) · R5 capa procedural · R6 zombis y NPC | pendiente |
-| R7 muros que no tapan + escala · R8 medición en iPhone 14 | pendiente |
-IK pospuesto ✅. Tamaño del mapa de prueba: sin fijar hasta ver cámara, escala y visibilidad.
+### Paquetes de código (en orden; no necesitan modelos nuevos)
+| Paquete | Contenido | Viene de | Depende de | Esf. |
+|---|---|---|---|---|
+| **PAQ-01** Cámara definitiva y lectura del escenario | Tiny por defecto y menú limpio; muros que no tapan al jugador; aro del jugador; personajes lejanos apagados | flecos de R1, R7, parte de R6 | — | MED |
+| **PAQ-02** Interacción y reja | Barras de física en `?debug`; acción «Usar» (empujar, forzar, abrir); reja con bisagra y candado | C5, C6, V4 | PAQ-01 | MED ×2 |
+| **PAQ-03** Ruido y zombis que despiertan | Lista de ruido con muros; zombis dormido/despertando/persigue/deambula; disparadores; medidor de ruido; reaparición en prueba | V5, V6, T1, T2 | PAQ-02 | MED ×2 |
+| **PAQ-04** Puntería, cobertura y sigilo | Dispersión por postura y calor; cobertura; rematar y señuelo; luz y sombra | T3, T4, T5, T6 | PAQ-03 | MED ×2 |
+| **PAQ-05** NPC del campamento | Neutral, hostil, botín soltado, recoger y hablar | C7, C8, V7 | PAQ-04 | MED ×2 |
+| **PAQ-06** Sonido sintetizado | WebAudio sin archivos + interruptor | V8 | PAQ-03 | LOW |
+| **PAQ-07** Mapa de prueba v1 | Lugar `calle_reja_01` a su tamaño definitivo, suelos que falten | V1, resto de V2/V3 | **decisión del usuario sobre el tamaño** + ART-2 (escala) | MED |
+
+### Tareas de arte (en paralelo; cada una empieza cuando el usuario aporta lo que falta)
+| Tarea | Contenido | Viene de | Necesita |
+|---|---|---|---|
+| **ART-1** Prueba de Mixamo | Un clip de Mixamo sobre el cuerpo actual; decide de dónde salen las animaciones | R2 | un clip descargado por el usuario (gratis) |
+| **ART-2** Personaje de referencia | Proporciones definitivas, texto de Meshy, primer personaje nuevo pasado por las herramientas, tabla de escala | R3 | ART-1 hecha; visto bueno del usuario al personaje; créditos de Meshy |
+| **ART-3** Sistema de animación | `anim.js` (dos mitades, sin giro de 90°), capa por código, personaje por piezas, arma en la mano | R4, R5, V9, P3, P4 | ART-2 + clips nuevos |
+| **ART-4** Resto de personajes | Zombis y NPC sobre `anim.js`, cuerpo de NPC, metal y rugosidad | resto de R6, P5, P6 | ART-3 + modelos |
+| **ART-5** Objetos y escala | Objetos de Meshy, recorte por zonas, escala aplicada | 007 §2 y §8 | ART-2 + modelos |
+| **MED** Medición en iPhone 14 | Captura de `?debug` tras cada paquete aceptado; la primera, ya | R8, C10, P7 | el usuario |
+
+Movidos a los hitos de abajo: C9 (aliado reclutable) → B4 · T7 (munición limitada) → A5. Después de PAQ-07 y ART-5 se retoma el **Hito A** tal como está (A1 regiones, …).
 
 ## Hito A · Núcleo jugable (≈ 20 subpasos)
 Objetivo: explorar un mundo infinito, disparar, saquear, beber y comer, y no morir de hambre ni de zombis.

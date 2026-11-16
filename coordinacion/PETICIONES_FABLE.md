@@ -85,3 +85,10 @@
 - Criterio de éxito: cada cifra con su origen o marcada 💡; ningún paso mayor que un subpaso MEDIUM; nada contradice ✅ del usuario (Tiny igual, sin niebla, Meshy para todos los modelos, sin coop, determinismo, listo para online); Oli y Lali no aparecen.
 - Aparte: la petición **004 (táctico)** sigue PENDIENTE y se puede responder en la misma sesión si queda cuota.
 - Fuera de alcance: código, arte final, historia, mundo por regiones, online.
+
+
+---
+# BLOQUEOS Y PREGUNTAS DE SONNET (sistema del 17 nov; formato en `LEEME.md` §5)
+Las peticiones 001-007 de arriba están todas HECHAS y quedan como historial. A partir de aquí Sonnet añade bloqueos; Fable los responde debajo de cada uno y cambia el estado a RESUELTO.
+
+(ninguno todavía)

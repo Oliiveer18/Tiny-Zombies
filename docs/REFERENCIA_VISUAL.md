@@ -9,7 +9,7 @@
 - **Créditos de Meshy: en pausa** hasta validar cámara y proporciones.
 - **Criterios que salen de la cámara elegida** (✅ la cámara; 💡 las cifras, a validar con el primer personaje nuevo):
   - **Tamaño en pantalla:** personaje ≈ 1/16 del alto → unos 49 píxeles en el iPhone 14 apaisado (780 de alto); la cabeza, 10-12 píxeles.
-  - **Lo que se ve:** ≈ 24 m de ancho × 14 m de fondo de escenario alrededor del jugador.
+  - **Lo que se ve:** ≈ 21 m de ancho en la parte baja de la pantalla y 33 m en la alta × 14 m de fondo (5,4 m por detrás del jugador y 8,7 m por delante).
   - **Proporciones:** dentro del 4-5 cabezas aprobado, tirar a **4-4,5** 💡: a 49 píxeles una cabeza algo mayor se lee mejor. Manos, botas y arma un poco gruesas por la misma razón; sin llegar a juguete.
   - **Visibilidad de personajes:** se distinguen por **silueta y bloques de color**, no por textura fina: casco, chaleco, mochila y arma con volumen propio y un color distinto al del cuerpo; contraste claro con el suelo oscuro; cada bando con un color dominante; aro en el suelo para jugador, NPC y hostiles. Prueba de aceptación de cada modelo: reconocerlo en una captura a tamaño real de juego, no de cerca.
   - **Detalle y presupuesto:** rasgos de menos de ~4 cm no se ven (menos de 1 píxel). Triángulos orientativos: jugador 2 500 + piezas 1 000 · NPC 1 500 + piezas 500 · zombi 600. Texturas: jugador 512, resto 256. El modelo alto se guarda para el creador de personaje. Sustituye a las cifras de la 006 §3 y del informe 008, pensadas para un personaje más grande.
