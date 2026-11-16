@@ -1,5 +1,5 @@
 // Arranque: carga de recursos, creación del mundo y bucle de animación.
-import { loadAll } from './assets.js'; import { initInput } from './input.js';
+import { loadAll } from './assets.js'; import { initInput } from './input.js'; import { initControls } from './controls.js';
 import { buildWorld } from './world.js'; import { initEffects } from './effects.js';
 import { initPlayer, player } from './player.js';
 import { initZombies, state } from './zombies.js';
@@ -7,7 +7,7 @@ import { initWeapons, wp } from './weapons.js'; import { showMsg } from './ui.js
 import { touch, renderer, scene, cam, OFF } from './renderer.js';
 import { G, setSun, die, frame } from './game.js';
 async function main(){
-  showMsg('Cargando…');await loadAll();initInput(renderer.domElement);
+  showMsg('Cargando…');await loadAll();initInput(renderer.domElement);initControls();
   setSun(buildWorld(scene,{shadow:touch?1024:2048}));initEffects(scene);initPlayer(scene);initZombies(scene);initWeapons(scene);
   state.onHurt=d=>{if(!G.run)return;player.hp-=d;player.hurt=.25;if(player.hp<=0)die();};wp.onSelfHit=state.onHurt;
   state.onWave=()=>{wp.grenades=Math.min(wp.grenades+1,5);};

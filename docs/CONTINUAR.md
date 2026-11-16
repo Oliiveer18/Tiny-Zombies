@@ -31,6 +31,8 @@ El usuario aportó una captura y un vídeo de un juego cenital con el estilo obj
 1. Mientras llegan los modelos de Meshy: ¿se avanza ya con los pasos que no dependen de ellos (mundo por regiones, semilla, guardado, necesidades, tiempo y clima), o se espera a tenerlos? Esos pasos se ven sin personajes finales solo con el relleno técnico de Tiny, que no cuenta como aspecto del juego.
 2. Cifras concretas de hambre, sed, mochila, duración exacta de día y estaciones y qué entra en la ventaja inicial: se fijan al construirlo y se ajustan midiendo.
 
+## Hecho el 16 nov: M1 mando de PlayStation + menú Controles (falta probar en el iPhone; ver SESION.md)
+
 ## Primer subpaso propuesto (cuando el usuario diga «hazlo»)
 Orden completo en `ROADMAP.md`. A0a, A0b y A0c HECHOS (falta medir en el iPhone 14). A0d HECHO solo para el jugador (player.glb de Meshy en el juego, 613 KB; el zombi falta; ver SESION). Fable entregó la 002 (diseño de A1 en 6 subpasos A1a-A1f, revisado el 16 nov). Siguiente: A1a (hash, generador de regiones y prueba con node) y, cuando haya modelos, A0d (prueba de tubería Meshy; textos en `docs/PROMPTS_MESHY.md`); antes de A1 hay que pedir a Fable la petición 002. A1 (MEDIUM) se describe abajo.
 

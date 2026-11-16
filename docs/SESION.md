@@ -131,3 +131,13 @@ Cámara: Altura 7,6 · Atrás 4,9 (distancia 9,0 · ángulo 57°). Velocidad: an
 **Resumen fácil:** el personaje cruzaba el suelo rápido pero las piernas se movían despacio. Ahora la velocidad sale de la propia animación de andar (un poco por encima del paso natural) y el personaje es 1.4× más grande, así los pies encajan con el suelo. Para probarlo: abre `…/Tiny-Zombies/?debug&v=N`, camina y mira que los pies no patinen; en ⚙ hay un deslizador «Tamaño del personaje ×».
 
 Técnico: `MOVE={size:1.4,top:1.15,...}`; `K()=player.base*MOVE.size`; `topSpeed()=top*CW*K()*mult` con CW=1.10 (u/s del clip walk). Cadencias de clips = velocidad / (velocidad natural del clip × K()). Colisión escalada con `size`. Mezcla idle/walk basada en velocidad natural. Eliminado el correr (`run=false`) y el deslizador de «cambio a correr». Verificado: compila y arranca sin errores en headless. NO verificado en iPhone.
+
+## M1 · Mando de PlayStation + pantalla Controles (16 nov 2026, MEDIUM)
+**Resumen fácil:** ya puedes jugar con el mando de PlayStation por Bluetooth. Con el mando conectado desaparecen los joysticks táctiles. Hay un engranaje arriba a la derecha (o el botón Options del mando) que abre «Controles»: ahí cambias qué botón dispara, recarga, lanza granada o se agacha, intercambias los sticks y ajustas zona muerta y sensibilidad. Prueba en el iPhone: conecta el mando en Ajustes > Bluetooth, abre el juego y pulsa un botón; con ✕ empiezas la partida.
+
+**Detalle técnico**
+- Nuevo `src/gamepad.js`: lee la Gamepad API cada cuadro (`pollPad`, llamado desde `game.js` tras `pollKeys`). Stick izq. = mover, der. = apuntar (intercambiables). Inclinar el stick de apuntar dispara (`aimActive`), además del botón asignado a «Disparar» (por defecto R2). Por defecto: ✕ recargar, ○ granada, L3 agacharse. Options (botón 9) queda reservado para abrir/cerrar el menú. Ajustes en `localStorage` (`tz_pad`).
+- Nuevo `src/controls.js`: engranaje `#gear` y menú `#cfgm` (DOM por código, CSS en `index.html`). Pausa el juego mientras está abierto (`game.js` pinta sin simular). Asignar: tocar la acción y pulsar un botón del mando; si estaba en otra acción, se intercambian.
+- Con mando conectado: `body.pad` oculta los joysticks y botones táctiles y `floatStick` ignora los toques; tocar el engranaje no empieza partida (`.ui`).
+- Comprobado: `npm run build` compila; prueba automática en Chromium con mando simulado (detecta mando, ✕ empieza, stick mueve, Options abre, reasignar Recargar a △ se guarda, engranaje y Cerrar funcionan, menú cabe en horizontal), sin errores propios en consola.
+- NO comprobado: mando real en iPhone (Safari, DualShock/DualSense), tacto de zona muerta y sensibilidad, y el apuntado con mando a mano.

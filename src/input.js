@@ -32,7 +32,7 @@ function floatStick(id,inZone,cb,onStart,onEnd){
   const upd=t=>{mv=Math.max(mv,Math.hypot(t.clientX-sx,t.clientY-sy));let dx=t.clientX-ox,dy=t.clientY-oy;const d=Math.hypot(dx,dy);
     if(d>R){const k=(d-R)/d;ox+=dx*k;oy+=dy*k;place();dx=t.clientX-ox;dy=t.clientY-oy;} // si el dedo se aleja, el centro lo sigue: nunca «se sale»
     knob.style.transform=`translate(${dx*K/R}px,${dy*K/R}px)`;cb(dx/R,dy/R,true);};
-  document.addEventListener('touchstart',e=>{if(tid!==null)return;if(e.target.closest&&e.target.closest('.btn'))return;
+  document.addEventListener('touchstart',e=>{if(tid!==null)return;if(document.body.classList.contains('pad')||(e.target.closest&&e.target.closest('.btn,.ui')))return;
     for(const t of e.changedTouches){if(!inZone(t.clientX,t.clientY))continue;tid=t.identifier;ox=t.clientX;oy=t.clientY;sx=ox;sy=oy;mv=0;t0=performance.now();place();el.style.opacity='1';onStart&&onStart();upd(t);e.preventDefault();break;}},{passive:false});
   document.addEventListener('touchmove',e=>{for(const t of e.changedTouches)if(t.identifier===tid){e.preventDefault();upd(t);}},{passive:false});
   const end=e=>{for(const t of e.changedTouches)if(t.identifier===tid){tid=null;onEnd&&onEnd(performance.now()-t0,mv);knob.style.transform='';el.style.left=el.style.top=el.style.right=el.style.bottom='';el.style.opacity='';cb(0,0,false);}};
