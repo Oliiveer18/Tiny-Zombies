@@ -9,6 +9,9 @@ Objetivo: generar SOLO dos modelos (cuerpo base de jugador y zombi normal), comp
 - Colores propios: NO se copian los de la referencia (casco claro, chaleco oscuro y camuflaje claro).
 - Se generan 3-4 imágenes y se elige la mejor ANTES de gastar créditos en Meshy.
 
+## Cómo generar las imágenes (💡 recomendado: dentro de Meshy, sin otra herramienta)
+Meshy tiene **Text to Image** en su «Image Workspace» (según su ayuda, nov 2026): eliges un modelo de imagen, pegas el texto, pones **Pose = A-Pose** y generas varias; eliges la mejor y la mandas directo a **Image to 3D**. Coste por imagen según su ayuda: 3 (Nano Banana), 6 (Nano Banana 2) o 9 créditos (Nano Banana Pro / GPT Image 2); 4 imágenes de la más cara = 36. Para la prueba basta el modelo barato o el medio. En Image to 3D hay además un interruptor A-Pose / T-Pose que, según su ayuda, cuesta 0 créditos (plan Pro o superior). Fuentes: [Text to Image](https://help.meshy.ai/en/articles/13696156-how-to-use-the-text-to-image-feature) · [Poses](https://help.meshy.ai/en/articles/10255659-how-to-generate-3d-models-with-a-pose-t-pose-or-custom-poses). Si prefieres otro generador de imágenes, vale cualquiera con los mismos textos.
+
 ## Imagen 1 · cuerpo base del jugador
 ```
 Full body character concept, front view, A-pose, single character on a plain light grey background, soft even lighting. Stylized survival-game hero, compact proportions (big head, short body, about 3.5 heads tall), adult, neutral expression, short messy hair. Clothing: close-fitting plain base layer, a long-sleeve top and slim trousers in muted teal and dark grey, simple boots, fingerless gloves, nothing loose or bulky (no hood, no jacket volume, no belts or straps). No weapon, no backpack, no hat, no text. Clean silhouette readable from above, hands open, legs slightly apart.
