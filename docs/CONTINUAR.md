@@ -50,3 +50,5 @@ Quitar la arena fija y generar un mundo por regiones con semilla: claro inicial 
 - Respuestas 004 y 007 de Fable recibidas (plan de 18 pasos en 007 §10; decisiones del usuario en 007 §11 y 004 §4). Hecho ya de ese plan: C4 y parte de V2/V3 (suelo S1, calcos fijos). Siguiente: V1 (mapa calle_reja_01) cuando el usuario responda las decisiones.
 
 - Decisión del usuario (16 nov, 22:10): mapa de prueba COMPACTO (~14x20 m) y modelos de Meshy PRIMERO (ver docs/MESHY_PEDIDOS.md). V1 se rehace en versión compacta cuando haya modelos; no construir más mapa largo. Las 6 decisiones de 007/004 siguen sin contestar.
+
+- Estilo decidido (16 nov 22:20): semi-realista, proporciones normales. docs/MESHY_PEDIDOS.md reescrito; sustituye el estilo «toy-like» de 003/005/006/007. El soldado actual (juguete) pasará a NPC o se sustituye. Pendiente: acercar luz y suelo al vídeo (oscuro azulado + charcos cálidos) sin perder legibilidad.

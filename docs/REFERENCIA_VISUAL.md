@@ -31,3 +31,7 @@ El usuario aclaró que NO se copian los colores ni la vestimenta del juego de la
 - Es la guía para el arte de Meshy (`MODELOS_MESHY.md`): proporciones compactas, silueta clara, equipo legible.
 - Es la guía de luz y suelo para los hitos A2 y C del `ROADMAP.md`.
 - No se copian ni el nombre, ni el logo, ni los rótulos, ni modelos del juego de la referencia: se hace arte propio.
+
+
+## Corrección (16 nov, 22:20, tras revisar el vídeo con el usuario)
+Los personajes de la referencia son **semi-realistas, de proporciones normales y pequeños en pantalla**; la nota anterior de «cabeza grande, cuerpo corto» era una lectura imprecisa. El usuario eligió **semi-realista con proporciones normales** para personajes y objetos. La luz de la referencia es casi negra azulada con charcos cálidos de farola; el suelo, placas industriales oscuras con pintura vial. Pendiente: ajustar luz y suelo hacia eso SIN perder legibilidad (el usuario ya pidió antes que no estuviera demasiado oscuro).
