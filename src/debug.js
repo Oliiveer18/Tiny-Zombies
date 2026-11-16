@@ -1,11 +1,23 @@
 // Medidor ?debug: fps, peor cuadro, tiempo de CPU, triángulos y recursos. Sin ?debug no hace nada.
-import { renderer } from './renderer.js';
+import { renderer, OFF } from './renderer.js';
 import { state } from './zombies.js';
 export const DEBUG=new URLSearchParams(location.search).has('debug');
 let el,t0=0,last=0,frames=0,acc=0,shown=0,cpu=0,cpuMax=0,worst=0;const hist=[];let fps=0,worstWin=0,cpuWin=0;
 if(DEBUG){renderer.info.autoReset=false;
   el=document.createElement('div');el.style.cssText='position:fixed;top:4px;right:4px;z-index:99;pointer-events:none;font:11px/1.35 monospace;color:#9f9;background:rgba(0,0,0,.6);padding:4px 6px;border-radius:4px;white-space:pre;text-align:left';
-  document.body.appendChild(el);}
+  document.body.appendChild(el);
+  // Ajuste de cámara: altura (Y) y distancia hacia atrás (Z). Mueve OFF en vivo; el usuario dicta los números.
+  const box=document.createElement('div');
+  box.style.cssText='position:fixed;left:50%;top:92px;transform:translateX(-50%);width:58%;z-index:99;font:13px/1.3 monospace;color:#fff;background:rgba(0,0,0,.55);padding:6px 10px;border-radius:8px';
+  const row=(name,min,max,key)=>{const r=document.createElement('div');const l=document.createElement('span');
+    const s=document.createElement('input');s.type='range';s.min=min;s.max=max;s.step=.1;s.value=OFF[key];s.style.cssText='width:100%;margin:2px 0 6px';
+    const show=()=>{l.textContent=name+' '+Number(OFF[key]).toFixed(1);};show();
+    s.oninput=()=>{OFF[key]=Number(s.value);show();info();};r.append(l,s);box.append(r);};
+  const inf=document.createElement('div');inf.style.cssText='opacity:.8';box.append(inf);
+  const info=()=>{inf.textContent='distancia '+Math.hypot(OFF.y,OFF.z).toFixed(1)+' · ángulo '+(Math.atan2(OFF.y,OFF.z)*57.3).toFixed(0)+'°';};
+  row('Altura',2,30,'y');row('Atrás',0,20,'z');info();
+  for(const ev of ['pointerdown','touchstart','touchmove'])box.addEventListener(ev,e=>e.stopPropagation(),{passive:true});
+  document.body.appendChild(box);}
 export function debugStart(){if(!DEBUG)return;const n=performance.now();t0=n;
   if(last){const d=n-last;frames++;acc+=d;hist.push([n,d]);if(d>worst)worst=d;}
   last=n;renderer.info.reset();}
