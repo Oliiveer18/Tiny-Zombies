@@ -65,3 +65,12 @@
 ## Deslizadores de cámara en ?debug (16 nov 2026, LOW)
 **Resumen fácil:** con `?debug` aparecen dos barras (Altura y Atrás) con su número, más la distancia y el ángulo resultantes. El usuario las mueve en vivo y dicta los números que le gustan. Código en `debug.js` (mueve `OFF`). Queda por fijar el valor elegido en `renderer.js`.
 **Observación:** al acercar la cámara a la mitad, la velocidad aparente en pantalla se duplicó: eso explica parte de «se mueve muy rápido». Pendiente subpaso A0e (movimiento táctil, velocidad, animaciones conectadas) a pedir al usuario.
+
+## A0e · Movimiento del jugador (16 nov 2026, MEDIUM)
+**Resumen fácil:** el personaje ya no arranca ni frena en seco, va más lento (con barra «Velocidad» en `?debug` para ajustarla), la cámara lo mantiene siempre en el centro (como el vídeo de referencia) y usa todas las animaciones: quieto, andar, correr, disparar, recargar y morir. Cámara fijada en tus medidas: Altura 8,3 · Atrás 5,8.
+
+**Detalle técnico**
+- `player.js`: `MOVE={walk:2.6,run:4.3,mult,acc:9,dec:14,dead:.12}`; velocidad suavizada (`vel`, aceleración/frenada exponencial), zona muerta del joystick con reescalado; el apuntado automático al caminar usa la dirección del stick. Joystick ya era analógico en Tiny (magnitud 0–1).
+- Animaciones: reload si `wp.reload>0`, shoot si `input.fire`, run si velocidad>3,2, walk si >0,15, idle; `timeScale` según la velocidad (cosmético). Morir: `game.js` reproduce `die` una vez al terminar la partida.
+- Cámara: `CAM_LEAD=0` en `game.js` (Tiny: .12, la cámara se adelantaba hacia donde apuntas y por eso el personaje se salía del centro). Excepción decidida por el usuario.
+- Comprobado: build OK, arranca sin errores, personaje centrado en captura. NO comprobado: tacto real en el iPhone, deslizamiento de pies, atascos con vallas (no tocado; la colisión sigue siendo la de Tiny), clip `shoot` (es una carrera disparando; parado puede verse raro).

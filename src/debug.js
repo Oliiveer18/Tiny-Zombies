@@ -1,5 +1,6 @@
 // Medidor ?debug: fps, peor cuadro, tiempo de CPU, triángulos y recursos. Sin ?debug no hace nada.
 import { renderer, OFF } from './renderer.js';
+import { MOVE } from './player.js';
 import { state } from './zombies.js';
 export const DEBUG=new URLSearchParams(location.search).has('debug');
 let el,t0=0,last=0,frames=0,acc=0,shown=0,cpu=0,cpuMax=0,worst=0;const hist=[];let fps=0,worstWin=0,cpuWin=0;
@@ -15,7 +16,10 @@ if(DEBUG){renderer.info.autoReset=false;
     s.oninput=()=>{OFF[key]=Number(s.value);show();info();};r.append(l,s);box.append(r);};
   const inf=document.createElement('div');inf.style.cssText='opacity:.8';box.append(inf);
   const info=()=>{inf.textContent='distancia '+Math.hypot(OFF.y,OFF.z).toFixed(1)+' · ángulo '+(Math.atan2(OFF.y,OFF.z)*57.3).toFixed(0)+'°';};
-  row('Altura',2,30,'y');row('Atrás',0,20,'z');info();
+  row('Altura',2,30,'y');row('Atrás',0,20,'z');
+  {const r=document.createElement('div'),l=document.createElement('span'),s=document.createElement('input');s.type='range';s.min=.3;s.max=2;s.step=.05;s.value=1;s.style.cssText='width:100%;margin:2px 0 6px';
+   const show=()=>{l.textContent='Velocidad ×'+MOVE.mult.toFixed(2)+' (andar '+(MOVE.walk*MOVE.mult).toFixed(1)+' · correr '+(MOVE.run*MOVE.mult).toFixed(1)+')';};show();s.oninput=()=>{MOVE.mult=Number(s.value);show();};r.append(l,s);box.append(r);}
+  info();
   for(const ev of ['pointerdown','touchstart','touchmove'])box.addEventListener(ev,e=>e.stopPropagation(),{passive:true});
   document.body.appendChild(box);}
 export function debugStart(){if(!DEBUG)return;const n=performance.now();t0=n;

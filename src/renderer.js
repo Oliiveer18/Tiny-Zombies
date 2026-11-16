@@ -9,7 +9,7 @@ export const renderer=new THREE.WebGLRenderer({antialias:false,powerPreference:'
 renderer.setPixelRatio(touch?Math.min(dpr,1.5):dpr);renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;document.body.prepend(renderer.domElement);
 export const scene=new THREE.Scene();export const cam=new THREE.PerspectiveCamera(38,innerWidth/innerHeight,.5,120);
-export const OFF=new THREE.Vector3(0,7.4,4.6); // pitch ≈ 58°; más cerca por petición del usuario (referencia en vídeo). Tiny original: (0,14,8.6)
+export const OFF=new THREE.Vector3(0,8.3,5.8); // medidas elegidas por el usuario con las barras de ?debug (16 nov). Tiny original: (0,14,8.6)
 export const comp=new EffectComposer(renderer);comp.addPass(new RenderPass(scene,cam));
 const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth/2,innerHeight/2),touch?.25:.4,.6,.85);comp.addPass(bloom);comp.addPass(new OutputPass());
 addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);comp.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();});
