@@ -3,14 +3,16 @@
 Actualizado: 17 nov 2026 por Fable. Cómo se usa: `coordinacion/LEEME.md`. El estado anterior a esta fecha está en `docs/archivo/CONTINUAR_hasta_2026-11-17.md`.
 
 ## Ahora mismo
-- **Le toca a: SONNET** → implementar **PAQ-01** (está `LISTO`). Después PAQ-02 (también `LISTO`).
-- **Le toca al usuario (cuando pueda, no bloquea a Sonnet):** (1) una captura del medidor `?debug` en el iPhone con la cámara Tiny → primera medición real; (2) descargar un clip de Mixamo para ART-1 (instrucciones en `coordinacion/TRASPASOS/ART-1_prueba_mixamo.md`).
+- **Le toca a: SONNET** → implementar **PAQ-01**, después **PAQ-G1** y después **PAQ-02** (los tres `LISTO`, en ese orden).
+- **Le toca al usuario (cuando pueda, no bloquea a Sonnet):** (1) confirmar si la orientación oficial es vertical; (2) cuando Sonnet entregue PAQ-G1, pasar la prueba `?carga` y enviar la captura de la tabla a Fable; (3) descargar dos clips de Mixamo para ART-1 (`coordinacion/TRASPASOS/ART-1_prueba_mixamo.md`).
+- **Calidad gráfica:** el tope de 40 000 triángulos está RETIRADO. Manda `docs/CALIDAD_GRAFICA.md`: calidad máxima, límites solo por medición.
 - **Fable:** al próximo «Sigue», revisar lo entregado y preparar PAQ-03 y PAQ-04.
 
 ## Paquetes de código
 | Paquete | Estado | Traspaso | Notas |
 |---|---|---|---|
 | PAQ-01 Cámara definitiva y lectura del escenario | **LISTO** | `coordinacion/TRASPASOS/PAQ-01_camara_y_lectura.md` | Base: `48aec15` o posterior |
+| PAQ-G1 Prueba de carga gráfica | **LISTO** | `coordinacion/TRASPASOS/PAQ-G1_prueba_de_carga.md` | Requiere PAQ-01 ENTREGADO. Su resultado (captura del usuario) fija los presupuestos reales |
 | PAQ-02 Interacción y reja | **LISTO** | `coordinacion/TRASPASOS/PAQ-02_interaccion_y_reja.md` | Requiere PAQ-01 ENTREGADO |
 | PAQ-03 Ruido y zombis que despiertan | PLANIFICADO | — (diseño: 007 §4, 004 T1-T2) | Lo prepara Fable en su siguiente turno |
 | PAQ-04 Puntería, cobertura y sigilo | PLANIFICADO | — (diseño: 004 T3-T6) | |
@@ -26,7 +28,7 @@ Actualizado: 17 nov 2026 por Fable. Cómo se usa: `coordinacion/LEEME.md`. El es
 | ART-3 Sistema de animación | PLANIFICADO | ART-2 + clips |
 | ART-4 Resto de personajes | PLANIFICADO | ART-3 + modelos |
 | ART-5 Objetos y escala | PLANIFICADO | ART-2 + modelos |
-| MED Medición en iPhone 14 | ESPERA AL USUARIO | Nunca se ha medido nada en el móvil real |
+| MED Medición en iPhone 14 | PRIMERA HECHA (17 nov) | 58 fps · CPU 2,0 ms · 30 404 triángulos · peor cuadro 27 ms con el panel abierto (repetir con el panel cerrado). Tabla en `coordinacion/mediciones/MOVIL_REFERENCIA.md`. Falta la prueba de carga |
 
 ## Hecho y en `main`
 - Base de Tiny en módulos, medidor `?debug`, ids, semilla y reloj (A0a-A0c).
@@ -37,13 +39,13 @@ Actualizado: 17 nov 2026 por Fable. Cómo se usa: `coordinacion/LEEME.md`. El es
 - Diseños de Fable disponibles: 001-008 en `coordinacion/RESPUESTAS_FABLE/`.
 
 ## Lo que NO es verdad todavía (para no darlo por hecho)
-- Nada está medido en el iPhone 14: todos los «≥ 58 fps» son objetivos.
+- Solo hay UNA medición en el iPhone (escena de relleno). El techo real del móvil no se conoce hasta pasar la prueba de carga (PAQ-G1).
 - Zombis y objetos son relleno (cápsulas y cajas). Solo el jugador es un modelo real, y su estilo está descartado.
 - La cámara Tiny aún no es la que sale por defecto (lo hace PAQ-01).
 - No hay NPC, ni ruido, ni reja, ni botón de usar, ni sonido.
 
 ## Decisiones que son del usuario y siguen abiertas
 1. Tamaño del mapa de prueba (cuando haya personaje de referencia).
-2. Si el tope de 40 000 triángulos cuenta las sombras (con la primera medición con modelos).
+2. Orientación oficial del juego: ¿vertical (como en tu captura) u horizontal? Cambia cuánto escenario se ve a los lados (≈ 5-7 m en vertical, 21-33 m en horizontal).
 3. Visto bueno a las proporciones (4,5 cabezas) al ver el primer personaje.
 4. Umbral del joystick derecho para apuntar sin disparar (se prueba en PAQ-04).

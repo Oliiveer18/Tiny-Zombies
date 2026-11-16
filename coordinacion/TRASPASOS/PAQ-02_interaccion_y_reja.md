@@ -2,6 +2,7 @@
 
 - **Estado:** ver `docs/CONTINUAR.md` · **Esfuerzo:** MEDIUM × 2 (un solo paquete, una sola entrega) · **Base:** PAQ-01 ENTREGADO · **Depende de:** PAQ-01
 - **Decisiones que aplica:** `docs/DECISIONES.md` 4.3, 4.8 · **Diseño de fondo:** 005 §1 y §5, 007 §3 (leer solo esas secciones)
+- **Calidad gráfica:** este paquete no toca resolución, antialias, bloom, sombras, modelos ni texturas. Si no llega a los fps no se rebaja nada: bloqueo (`docs/CALIDAD_GRAFICA.md` §4). Pruebas en vertical 390 × 844 (así juega el usuario) y en horizontal.
 - **Objetivo:** que el jugador pueda actuar sobre el escenario con un botón (empujar, forzar, abrir) y que exista la reja con candado, todo dentro del callejón actual `callejon_01`. Es la pieza central del mapa de prueba (calle → **reja** → campamento → patio).
 
 ## Archivos que se tocan

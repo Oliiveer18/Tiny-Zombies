@@ -41,6 +41,7 @@ Un cuerpo base con el mismo esqueleto y las mismas animaciones, y varias skins, 
 - El rigging no sirve en mallas sin textura. La vía gratis es Image to 3D con Meshy 6 Lite.
 - Para personajes animados (jugadores, zombis, NPC) hace falta plan de pago y rigging humanoide.
 
+## ⚠️ Presupuestos: ANULADOS el 17 nov (ver `CALIDAD_GRAFICA.md`; no hay tope de 40 000 ni cifras por modelo). Texto antiguo:
 ## Presupuestos propuestos 💡 (a aprobar por el usuario; Tiny aguanta menos que un juego de casillas por usar bloom y sombras)
 Jugador ≈ 2 500 triángulos con textura 1024; NPC ≈ 1 200 y 512; zombi ≤ 500 y 256-512; objeto de decorado ≤ 300. Con muchos zombis en pantalla a la vez, el límite manda el total visible (< 40 000 triángulos).
 

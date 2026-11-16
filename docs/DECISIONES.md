@@ -16,19 +16,22 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 ## 2. Cámara y presentación
 | # | Decisión | Quién · fecha |
 |---|---|---|
-| 2.1 | **Cámara definitiva «Tiny»: 16,4 m, 58°, campo de visión 38°, centrada en el jugador, sin adelanto.** Personaje ≈ 1/16 del alto. Solo se revisa si una prueba importante demuestra un problema | U · 17 nov (sustituye a «cerca», 16 nov) |
-| 2.2 | Lo que se ve con ella: ≈ 21 m de ancho abajo y 33 m arriba × 14 m de fondo (5,4 m por detrás del jugador y 8,7 m por delante). Es la medida para diseñar lugares y combates | F · 17 nov (cálculo) |
+| 2.1 | **Cámara definitiva «Tiny»: 16,4 m, 58°, campo de visión 38°, centrada en el jugador, sin adelanto.** Personaje ≈ 1/16 del alto (≈ 105 píxeles en vertical). Solo se revisa si una prueba importante demuestra un problema | U · 17 nov (sustituye a «cerca», 16 nov) |
+| 2.2 | Lo que se ve con ella: 14 m de fondo (5,4 m por detrás del jugador y 8,7 m por delante). De ancho, en **vertical** ≈ 4,6 m abajo y 7,1 m arriba; en horizontal ≈ 21 m y 33 m. Es la medida para diseñar lugares y combates | F · 17 nov (cálculo; corregido tras ver la captura en vertical) |
 | 2.3 | Los muros no pueden tapar al jugador: el muro que queda entre la cámara y él se vuelve translúcido | F · 17 nov |
 | 2.4 | Sin niebla general. Luz que cambia con hora y clima. Mundo plano | U · 15-16 nov |
-| 2.5 | Rendimiento: ≥ 58 fps, peor cuadro ≤ 25 ms, < 40 000 triángulos, iPhone 14. No se baja calidad sin decisión del usuario | U |
-| 2.6 | ¿Los 40 000 cuentan la pasada de sombras? **Sin decidir**: se decide con la primera medición real con modelos | pendiente (U) |
+| 2.5 | **Calidad máxima con rendimiento fluido.** Requisitos: ≥ 58 fps y peor cuadro ≤ 25 ms en iPhone 14. No se recortan polígonos, texturas, sombras ni detalle para cumplir un número arbitrario | U · 17 nov |
+| 2.6 | **El tope de 40 000 triángulos queda retirado.** Era de escena completa, solo existía como texto y como aviso de color en el medidor, venía heredado de otro proyecto y nunca se probó. Triángulos, llamadas y memoria pasan a ser indicadores | U + F · 17 nov (cierra la duda de las sombras) |
+| 2.7 | Los presupuestos de escena saldrán de una prueba de carga en el móvil (PAQ-G1), fijados al 60 % del techo medido. Hasta entonces no hay presupuesto numérico | F · 17 nov |
+| 2.8 | Nadie rebaja calidad por su cuenta: si falta rendimiento, Sonnet abre un bloqueo; las rebajas las decide el usuario con dos capturas. Antes se elimina el desperdicio que no se ve. Orden completo en `docs/CALIDAD_GRAFICA.md` §4 | F · 17 nov |
+| 2.9 | Orientación de juego: la medición del usuario está en **vertical**; los criterios de tamaño y visibilidad se dan para vertical. **Falta confirmar** si vertical es la orientación oficial | pendiente (U) |
 
 ## 3. Arte y personajes
 | # | Decisión | Quién · fecha |
 |---|---|---|
 | 3.1 | Referencia: Tiny Troopers (Joint Ops / Global Ops), con identidad propia; nada copiado | U · 17 nov |
 | 3.2 | Personajes compactos, no infantiles ni de juguete, 4-5 cabezas, cabeza algo grande, equipo militar reconocible, acabado 3D moderno | U · 17 nov |
-| 3.3 | Dentro de ese margen se apunta a **4,5 cabezas**, con manos, botas y arma algo gruesas (se leen mejor a 49 píxeles). Se confirma con el primer personaje | F · 17 nov · a validar por U |
+| 3.3 | Dentro de ese margen se apunta a **4,5 cabezas**. Se confirma con el primer personaje | F · 17 nov · a validar por U |
 | 3.4 | El jugador actual (juguete, ~3 cabezas) no es referencia. Sigue en el juego como relleno hasta que haya personaje nuevo | U · 17 nov |
 | 3.5 | El primer personaje nuevo es la referencia visual del resto | U · 17 nov |
 | 3.6 | **Créditos de Meshy en pausa** hasta cerrar ART-1 (Mixamo) y aprobar las proporciones | U · 17 nov |
@@ -37,7 +40,7 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 | 3.9 | IK pospuesto | U · 17 nov |
 | 3.10 | Ropa = pintura sobre el cuerpo; casco, chaleco, mochila, pelo y arma = piezas rígidas pegadas a un hueso; animaciones compartidas en un archivo por familia | F (006) · aceptada al implementar P1-P2 |
 | 3.11 | El personaje va sin nada en las manos; el arma es una pieza | U · 16 nov |
-| 3.12 | Presupuesto por modelo con la cámara Tiny: jugador 2 500 + piezas 1 000 triángulos · NPC 1 500 + 500 · zombi 600 · texturas 512 / 256. Los personajes se juzgan a tamaño de juego | F · 17 nov (sustituye a 006 §3) |
+| 3.12 | Sin tope de triángulos ni de textura por modelo. Los modelos se hacen con lo que necesiten para verse bien a tamaño de juego (≈ 105 píxeles de alto); guía orientativa en `docs/CALIDAD_GRAFICA.md` §6. De Meshy se guarda siempre el modelo alto | U + F · 17 nov (sustituye a las cifras rebajadas del mismo día y a 006 §3) |
 
 ## 4. Juego (mapa de prueba y táctica)
 | # | Decisión | Quién · fecha |
@@ -56,7 +59,9 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 - Cámara «más cerca y centrada» (16 nov) → 2.1.
 - Estilo «chunky toy-like» de las recetas 003, 005 §7, 006 §4 y 007 §8, y la prueba «semi-realista» → 3.1-3.3.
 - Mapa compacto de 14 × 20 m (16 nov) y mapa largo de la 007 §2 → 4.2.
-- Cifras de triángulos de la 006 §3 y del informe 008 §4.2 → 3.12.
+- Tope de 40 000 triángulos (norma 2 antigua) → 2.5-2.8.
+- Cifras de triángulos de la 003 §1, la 006 §3, el informe 008 §4.2 y las «jugador 2 500 / zombi 600» del 17 nov → 3.12.
+- «Personaje ≈ 49 píxeles» y «se ven 21-33 m de ancho» como criterio único (calculados para horizontal) → 2.1, 2.2, 2.9.
 - Cámaras A, B, C y «cerca» de R1 → descartadas (2.1).
 - «Fable no edita código, salvo R0-R8» → Fable no programa (1.2).
 - Nombres de pasos C*, P*, V*, T*, R*, S* → paquetes del «Plan vigente» (`ROADMAP.md`).

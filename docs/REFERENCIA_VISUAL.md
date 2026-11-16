@@ -7,14 +7,15 @@
 - **Cámara DEFINITIVA ✅ (elegida por el usuario en el iPhone, 17 nov): «Tiny», 16,4 m y 58°, centrada en el jugador.** Las demás quedan solo como historial. Medido en iPhone 14 apaisado: Cerca 9,0 m / 57° → personaje 1/8 del alto · **A** 10,7 m / 58° → 1/10 · **B** 10,7 m / 61° → 1/11 · **C** 10,5 m / 64° → 1/12 · Tiny original 16,4 m / 58° → 1/16.
 - **Como el personaje se ve pequeño**, el detalle debe estar en la forma y en el contraste de color de las piezas, no en textura fina.
 - **Créditos de Meshy: en pausa** hasta validar cámara y proporciones.
-- **Criterios que salen de la cámara elegida** (✅ la cámara; 💡 las cifras, a validar con el primer personaje nuevo):
-  - **Tamaño en pantalla:** personaje ≈ 1/16 del alto → unos 49 píxeles en el iPhone 14 apaisado (780 de alto); la cabeza, 10-12 píxeles.
-  - **Lo que se ve:** ≈ 21 m de ancho en la parte baja de la pantalla y 33 m en la alta × 14 m de fondo (5,4 m por detrás del jugador y 8,7 m por delante).
-  - **Proporciones:** dentro del 4-5 cabezas aprobado, tirar a **4-4,5** 💡: a 49 píxeles una cabeza algo mayor se lee mejor. Manos, botas y arma un poco gruesas por la misma razón; sin llegar a juguete.
-  - **Visibilidad de personajes:** se distinguen por **silueta y bloques de color**, no por textura fina: casco, chaleco, mochila y arma con volumen propio y un color distinto al del cuerpo; contraste claro con el suelo oscuro; cada bando con un color dominante; aro en el suelo para jugador, NPC y hostiles. Prueba de aceptación de cada modelo: reconocerlo en una captura a tamaño real de juego, no de cerca.
-  - **Detalle y presupuesto:** rasgos de menos de ~4 cm no se ven (menos de 1 píxel). Triángulos orientativos: jugador 2 500 + piezas 1 000 · NPC 1 500 + piezas 500 · zombi 600. Texturas: jugador 512, resto 256. El modelo alto se guarda para el creador de personaje. Sustituye a las cifras de la 006 §3 y del informe 008, pensadas para un personaje más grande.
+- **Prioridad de calidad ✅ (usuario, 17 nov):** máxima calidad visual con rendimiento fluido. No se rebajan polígonos, texturas, sombras ni detalle para cumplir un número; el antiguo tope de 40 000 triángulos está retirado. Estrategia y reglas en `CALIDAD_GRAFICA.md`.
+- **Criterios que salen de la cámara elegida** (✅ la cámara; 💡 las cifras). Corregidos tras ver la captura del usuario, que juega en **vertical** (pendiente de confirmar como orientación oficial):
+  - **Tamaño en pantalla:** personaje ≈ 1/16 del alto → en vertical ≈ **105 píxeles** (cabeza ≈ 23); en horizontal serían ≈ 49.
+  - **Lo que se ve:** 14 m de fondo (5,4 m por detrás del jugador y 8,7 m por delante). De ancho, en vertical ≈ 4,6 m abajo y 7,1 m arriba; en horizontal ≈ 21 m y 33 m.
+  - **Proporciones:** dentro del 4-5 cabezas aprobado, apuntar a **4,5** 💡; se confirma con el primer personaje.
+  - **Visibilidad de personajes:** primero silueta y bloques de color (casco, chaleco, mochila y arma con volumen y color propios, contraste con el suelo, un color dominante por bando, aro en el suelo); a 105 píxeles **también se ve el detalle medio** (bolsillos, correas, hebillas, cara), así que se modela y se pinta, sin escatimar. Cada modelo se aprueba en una captura a tamaño real de juego.
+  - **Detalle y presupuesto:** sin tope por modelo; guía orientativa en `CALIDAD_GRAFICA.md` §6. El modelo alto de Meshy se guarda siempre.
   - **Efectos:** chispas, fogonazo y retícula ya se agrandan solos con esta cámara (R1).
-  - **Rendimiento:** se ven más cosas a la vez; siguen siendo obligatorias las reglas de la 007 §2 (objetos por zona con recorte, personajes a más de 26 m apagados).
+  - **Rendimiento:** no se dibuja ni se anima lo que no se ve; es ahorro sin pérdida de calidad.
 - **Escala del mundo 💡 (a validar con el primer personaje nuevo):** personaje 1,5 m (el actual mide 1,26-1,48 m según la pose) · puerta 1,9 m · muro 3,2 m · caja 0,8 m · barrera 0,6 m de alto · coche 3,4 m de largo (hoy 2,6 m, escala de juguete). Tamaño del mapa de prueba: sin fijar.
 
 

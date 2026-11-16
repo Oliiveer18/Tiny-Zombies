@@ -1,7 +1,8 @@
 # PAQ-01 · Cámara definitiva y lectura del escenario
 
 - **Estado:** ver `docs/CONTINUAR.md` · **Esfuerzo:** MEDIUM · **Base:** `48aec15` o posterior · **Depende de:** nada
-- **Decisiones que aplica:** `docs/DECISIONES.md` 2.1, 2.2, 2.3, 3.4
+- **Decisiones que aplica:** `docs/DECISIONES.md` 2.1, 2.2, 2.3, 2.5, 2.6, 2.8, 3.4
+- **Calidad gráfica (confirmado por Fable, 17 nov):** este paquete NO reduce calidad ni introduce presupuestos. No toca resolución, antialias, bloom, sombras, modelos ni texturas. Apagar personajes a más de 26 m solo afecta a lo que está fuera de pantalla (lo más lejano visible está a ≈ 19 m). Si algo no llegara a los fps, no se rebaja nada: se abre un bloqueo (`docs/CALIDAD_GRAFICA.md` §4).
 - **Objetivo:** que el juego arranque siempre con la cámara Tiny y que, con ella, el jugador se vea siempre y los personajes lejanos no cuesten nada. Sin cambiar física, armas, zombis, suelo ni mando.
 
 ## Archivos que se tocan
@@ -13,6 +14,8 @@
 - Se deja de leer y escribir `localStorage['tz_cam']` (quien tuviera guardada otra cámara debe ver Tiny). El parámetro `?cam=` desaparece.
 - En `controls.js`: se quita la fila «Cámara» y su temporizador.
 - En `debug.js`: se conservan las barras Altura / Atrás / Velocidad (sirven para pruebas) y la línea «personaje 1/N del alto»; al cargar deben mostrar 14,0 y 8,6.
+- **Medidor sin tope de triángulos** (`DECISIONES.md` 2.6): el texto pasa de «triángulos N (meta <40000, todas las pasadas)» a «triángulos N (todas las pasadas)» y deja de ponerse en rojo por los triángulos; el rojo queda solo para fps < 58 o peor cuadro > 25 ms. Añadir una línea con la memoria estimada de texturas en MB (ancho × alto × 4 × 1,33 de cada textura cargada).
+- **Dos fallos del panel vistos en la captura del usuario** (solo de rótulos, se arreglan aquí): «Velocidad ×1.00 (máx NaN)» y «Sol 0.00 / Ambiente 0.00» al abrir. Las barras se crean antes de que existan el jugador y las luces: deben leer el valor real al mostrarse el panel.
 - **No cambiar** el campo de visión (38°), el seguimiento ni el adelanto (0).
 
 ### 2. Muros que no tapan al jugador
@@ -36,7 +39,7 @@ Hoy cada tramo de muro es una caja de 3,2 m de alto con un material compartido (
 ### Fuera de este paquete (no hacer)
 Recorte de objetos por zonas, tabla de escala, cambios en el mapa, aros para NPC, nada de animación, nada de `?debug` de física (va en PAQ-02).
 
-## Pruebas (todas obligatorias; automáticas en Chromium con el viewport de iPhone 14 apaisado 844 × 390, como las de R1, usando `window.__tz` del mapa de prueba)
+## Pruebas (todas obligatorias; automáticas en Chromium con el viewport de iPhone 14 **en vertical 390 × 844, que es como juega el usuario, y también en horizontal 844 × 390**, usando `window.__tz` del mapa de prueba)
 | # | Prueba | Aceptación |
 |---|---|---|
 | 1 | `npm run build` | Compila sin avisos nuevos |
@@ -48,11 +51,12 @@ Recorte de objetos por zonas, tabla de escala, cambios en el mapa, aros para NPC
 | 7 | Mover al jugador a 30 m del grupo de zombis del fondo y luego a 10 m | A 30 m esos zombis tienen `visible=false`; a 10 m, `true`. Su `x`, `z` y vida no cambian |
 | 8 | Disparar, lanzar una granada, romper una caja y un bidón | Funcionan como antes; 0 errores en consola |
 | 9 | Triángulos y llamadas del medidor antes y después, misma posición | Apuntar las dos cifras en el informe (el aro añade 1 llamada) |
+| 10 | Medidor `?debug` | No aparece «meta <40000»; con el panel abierto se lee una velocidad máxima numérica y los valores reales de Sol y Ambiente; hay línea de memoria de texturas |
 
 **No se puede comprobar aquí y hay que decirlo así:** fps y aspecto en el iPhone real. Pedir al usuario una captura de `?debug`.
 
 ## Criterios de aceptación del paquete
-1. Pruebas 1-8 superadas y documentadas, con las cifras de la 9.
+1. Pruebas 1-8 y 10 superadas y documentadas, con las cifras de la 9.
 2. Ningún archivo fuera de la lista modificado (salvo `docs/SESION.md`, `REGISTRO.md`, este traspaso y el estado en `CONTINUAR.md`).
 3. El resumen fácil para el usuario dice cómo comprobarlo en el móvil: «acércate a un muro por detrás y verás que se vuelve transparente».
 
@@ -61,7 +65,7 @@ Recorte de objetos por zonas, tabla de escala, cambios en el mapa, aros para NPC
 - Commit(s):
 - Qué se hizo:
 - Decisiones secundarias tomadas:
-- Resultado de cada prueba (1-9):
+- Resultado de cada prueba (1-10):
 - No comprobado:
 
 ## Revisión de Fable

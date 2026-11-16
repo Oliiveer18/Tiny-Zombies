@@ -15,6 +15,8 @@ El usuario trabaja con dos chats que no se ven entre sí. **Todo lo que uno nece
 | `CLAUDE.md` | Normas permanentes | Fable |
 | `docs/CONTINUAR.md` | **Tablero**: hecho, listo, en curso, pendiente, esperando al usuario | Fable; Sonnet cambia SOLO el estado de su paquete |
 | `docs/DECISIONES.md` | Decisiones definitivas vigentes (y las sustituidas) | Fable |
+| `docs/CALIDAD_GRAFICA.md` | Estrategia de calidad y rendimiento; presupuestos medidos | Fable |
+| `coordinacion/mediciones/` | Capturas y tabla de mediciones del iPhone | Fable (las capturas las aporta el usuario) |
 | `docs/ROADMAP.md` | Hoja de ruta única («Plan vigente» + hitos) | Fable |
 | `docs/DISENO.md`, `REFERENCIA_VISUAL.md`, `MESHY_PEDIDOS.md`, `MODELOS_MESHY.md` | Diseño del juego y del arte | Fable |
 | `coordinacion/TRASPASOS/PAQ-nn_*.md` | Instrucciones de un paquete | Fable; Sonnet rellena SOLO la sección «Informe de Sonnet»; Fable la sección «Revisión de Fable» |
@@ -48,6 +50,7 @@ Ninguno edita los archivos del otro. Si Sonnet ve un error en un documento de Fa
 2. Leer `CLAUDE.md` → `docs/CONTINUAR.md` → el traspaso del paquete → solo las secciones que el traspaso cita.
 3. En `docs/CONTINUAR.md`, poner el paquete `EN CURSO` (fecha y commit de partida) y publicar ese cambio ya, para que se vea que está cogido.
 4. Implementar el paquete completo. Sin micropasos ni pedir permiso para lo secundario.
+   - **Calidad gráfica (regla fija, `docs/CALIDAD_GRAFICA.md`):** nunca reducir resolución, antialias, bloom, sombras, triángulos, texturas ni efectos para ganar fps o para cumplir una cifra. No hay tope de triángulos. Si algo va lento: medir, anotar y abrir un bloqueo.
 5. Ejecutar TODAS las pruebas del traspaso y `npm run build`.
 6. Rellenar «Informe de Sonnet» en el traspaso, añadir la entrada en `docs/SESION.md` y una línea en `REGISTRO.md`; poner el paquete `ENTREGADO`.
 7. **Publicar:** `git fetch origin main`; si `main` avanzó, `git merge origin/main` (nunca forzar), volver a compilar; `git push origin HEAD:main`.

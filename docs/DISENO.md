@@ -117,7 +117,7 @@ Vehículos (bici, moto, coche, camioneta, barca) abandonados y averiados, con co
 Título (Continuar / Nueva partida), juego, pausa, fin de partida; HUD con vida, estamina, hambre, sed, hora y clima, arma y munición; inventario; modo construcción; minimapa. Sin tutorial. Para el móvil vertical y el pulgar. **Interactuar (H2, 💡):** lo pequeño se recoge al pisarlo; un único botón contextual «USAR» aparece junto a contenedores, pozo, puertas y NPC. Detalle en `PANTALLAS.md`.
 
 ## 12. Rendimiento y técnica (obligatorio)
-Ver las normas 2 y 3 de `CLAUDE.md`. Presupuestos: ≥ 58 fps, peor cuadro ≤ 25 ms, < 40 000 triángulos visibles. Medidor `?debug` desde el primer subpaso. Todo trabajo por región, solo lo visible y con presupuesto por cuadro. Cada subpaso se mide en el móvil antes de darlo por bueno.
+Ver las normas 2 y 3 de `CLAUDE.md`. Requisitos: ≥ 58 fps y peor cuadro ≤ 25 ms; el tope de 40 000 triángulos se retiró el 17 nov (`CALIDAD_GRAFICA.md`): los presupuestos salen de medir. Medidor `?debug` desde el primer subpaso. Todo trabajo por región, solo lo visible y con presupuesto por cuadro. Cada subpaso se mide en el móvil antes de darlo por bueno.
 
 ## 13. Qué NO se trae del otro proyecto
 Su motor HD-2D por casillas, el suelo con shader y el horneado por chunk, los assets pixelados, Three r128 en un solo archivo, los 20 pasos de su hoja de ruta tal cual, el autoapuntado, «el mundo se endurece con el tiempo» y las zonas por distancia al claro. Se conservan como consulta en `referencia_carretera_zombi/`.

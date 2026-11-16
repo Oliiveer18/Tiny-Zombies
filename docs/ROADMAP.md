@@ -9,7 +9,7 @@ Estados: 💡 propuesta de Claude (el usuario la corrige). Esfuerzo: LOW o MEDIU
 4. **Una pieza simple de cada cosa y luego se amplía.** 6 piezas de refugio antes que 30; 3 lugares abiertos antes que 40; NPC con 2 roles antes que 7.
 5. **Lo caro se aplaza con una versión pequeña ya dentro:** los interiores con puerta, los vehículos, los animales y los grupos hostiles no bloquean el núcleo. El cooperativo no se prepara (idea lejana, E4).
 6. **Meshy corre en paralelo.** Los modelos son lo que más tarda y no dependen del código: se generan mientras se programa (`MODELOS_MESHY.md`). Los pasos A0a-A7 se programan con el relleno de Tiny; ningún hito se da por entregado con relleno.
-7. **Medir cada paso.** Nada pasa al siguiente si se rompen ≥ 58 fps, peor cuadro ≤ 25 ms, < 40 000 triángulos.
+7. **Medir cada paso.** Nada pasa al siguiente si se rompen ≥ 58 fps y peor cuadro ≤ 25 ms (el tope de 40 000 triángulos se retiró el 17 nov: `CALIDAD_GRAFICA.md`).
 
 ## Plan vigente (17 nov 2026) · ESTA es la única lista de trabajo
 Estado al día: `docs/CONTINUAR.md` (tablero). Decisiones: `docs/DECISIONES.md`. Cómo se trabaja: `coordinacion/LEEME.md`.
@@ -22,6 +22,7 @@ A0a-A0o · M1-M6 · C1, C2, C3, C3b, C4 · S1, S1b (suelo y calcos fijos: cubre 
 | Paquete | Contenido | Viene de | Depende de | Esf. |
 |---|---|---|---|---|
 | **PAQ-01** Cámara definitiva y lectura del escenario | Tiny por defecto y menú limpio; muros que no tapan al jugador; aro del jugador; personajes lejanos apagados | flecos de R1, R7, parte de R6 | — | MED |
+| **PAQ-G1** Prueba de carga gráfica | Modo `?carga` que mide en el iPhone el techo real de geometría, personajes, luces y calidad (`CALIDAD_GRAFICA.md`) | nuevo (sustituye a medir «a ojo» en R8/C10/P7) | PAQ-01 | MED |
 | **PAQ-02** Interacción y reja | Barras de física en `?debug`; acción «Usar» (empujar, forzar, abrir); reja con bisagra y candado | C5, C6, V4 | PAQ-01 | MED ×2 |
 | **PAQ-03** Ruido y zombis que despiertan | Lista de ruido con muros; zombis dormido/despertando/persigue/deambula; disparadores; medidor de ruido; reaparición en prueba | V5, V6, T1, T2 | PAQ-02 | MED ×2 |
 | **PAQ-04** Puntería, cobertura y sigilo | Dispersión por postura y calor; cobertura; rematar y señuelo; luz y sombra | T3, T4, T5, T6 | PAQ-03 | MED ×2 |
@@ -37,7 +38,7 @@ A0a-A0o · M1-M6 · C1, C2, C3, C3b, C4 · S1, S1b (suelo y calcos fijos: cubre 
 | **ART-3** Sistema de animación | `anim.js` (dos mitades, sin giro de 90°), capa por código, personaje por piezas, arma en la mano | R4, R5, V9, P3, P4 | ART-2 + clips nuevos |
 | **ART-4** Resto de personajes | Zombis y NPC sobre `anim.js`, cuerpo de NPC, metal y rugosidad | resto de R6, P5, P6 | ART-3 + modelos |
 | **ART-5** Objetos y escala | Objetos de Meshy, recorte por zonas, escala aplicada | 007 §2 y §8 | ART-2 + modelos |
-| **MED** Medición en iPhone 14 | Captura de `?debug` tras cada paquete aceptado; la primera, ya | R8, C10, P7 | el usuario |
+| **MED** Medición en iPhone 14 | Captura de `?debug` tras cada paquete aceptado (primera hecha el 17 nov: 58 fps, 30 404 triángulos) y captura de la tabla de `?carga` cuando exista PAQ-G1 | R8, C10, P7 | el usuario |
 
 Movidos a los hitos de abajo: C9 (aliado reclutable) → B4 · T7 (munición limitada) → A5. Después de PAQ-07 y ART-5 se retoma el **Hito A** tal como está (A1 regiones, …).
 
