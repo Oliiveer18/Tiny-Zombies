@@ -220,3 +220,8 @@ Técnico: `MOVE={size:1.4,top:1.15,...}`; `K()=player.base*MOVE.size`; `topSpeed
 **Resumen fácil:** la bala y el fogonazo salen siempre del mismo punto, un poco delante del personaje, mirando hacia donde apuntas. Antes el punto se movía con la dispersión y a veces parecía salir de otro sitio. Cuando haya arma, ese punto pasará a ser el cañón.
 **Probar:** dispara en distintas direcciones y andando; la línea de la bala debe arrancar siempre delante del personaje.
 **Técnico:** `weapons.js` `MUZZLE=.55`; el rayo de impacto parte del centro (no se salta nada delante del cuerpo), el trazador y el fogonazo del punto fijo. Comprobado en headless que sigue rompiendo cajas y bidones; el aspecto en el iPhone NO está comprobado.
+
+## P1 · Animaciones compartidas (006)
+**Resumen fácil:** he separado el personaje en dos archivos: el cuerpo y las animaciones. Así, cuando haya más personajes (NPC, rivales), todos podrán usar las mismas animaciones sin repetirlas. En el juego no cambia nada: se ve y se mueve igual.
+**Probar:** abre el juego; el jugador debe verse y moverse como antes.
+**Técnico:** `tools/split_anims.mjs` crea `public/models/personajes/cuerpos/jugador_a.glb` (1,12 MB, sin clips) y `anims/humano.glb` (0,54 MB, solo esqueleto+8 clips). `assets.js` lee la clave `anims` de `models.config.js`. El `player.glb` original está en `docs/archivo/`. Comprobado en headless: 8 clips cargan y la captura es idéntica a la versión anterior. Nota honesta: el total de archivos sube (1,66 MB frente a 1,21 MB, los clips sueltos pesan más sin comprimir); el ahorro llega cuando varios cuerpos comparten `humano.glb`. NO comprobado en iPhone. La pose encorvada en reposo ya existía antes (clip `idle`).

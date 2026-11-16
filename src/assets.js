@@ -20,6 +20,8 @@ export async function loadAll(){
       const url=import.meta.env.BASE_URL+'models/'+c.file;
       const r=await fetch(url); if(!r.ok||(r.headers.get('content-type')||'').includes('html'))throw 0;
       const g=await loader.parseAsync(await r.arrayBuffer(),url.replace(/[^/]*$/,''));
+      if(c.anims){const ua=import.meta.env.BASE_URL+'models/'+c.anims,ra=await fetch(ua); if(!ra.ok||(ra.headers.get('content-type')||'').includes('html'))throw 0;
+        g.animations=(await loader.parseAsync(await ra.arrayBuffer(),ua.replace(/[^/]*$/,''))).animations;} // clips compartidos (006 P1): vienen de un GLB aparte
       g.scene.traverse(o=>{if(!o.isMesh)return; o.castShadow=true;
         if(o.isSkinnedMesh)o.frustumCulled=false; // receta 003 §3: la caja de un modelo animado no sigue a los huesos
         for(const m of [].concat(o.material)){ m.metalness=0; m.metalnessMap=null; // sin mapa de entorno, el metal sale negro

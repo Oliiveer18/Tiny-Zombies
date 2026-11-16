@@ -21,3 +21,5 @@
 
 - C3: vida y rotura de objetos; quitado toque-agacharse en táctil.
 - C3b: origen de bala fijo.
+
+- P1: clips compartidos en anims/humano.glb; 006 de Fable recibida.
