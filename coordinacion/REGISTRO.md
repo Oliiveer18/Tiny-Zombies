@@ -13,3 +13,4 @@
 | 2026-11-16 | Sonnet | A0c: `src/sim.js` (semilla, hash de enteros, reloj en ticks), ids en zombis/props/jugador, zombis con semilla propia; build OK | pendiente de medir en iPhone 14 |
 | 2026-11-16 | Sonnet | Fusionada y revisada la respuesta Fable 002 (A1 en 6 subpasos); ROADMAP y DISENO §3 actualizados; creado `docs/PROMPTS_MESHY.md` (prueba de tubería con 2 modelos). Créditos Meshy: 2 000 (sin gastar) | — |
 | 2026-11-16 | Sonnet | Plan de producción del creador de personaje (cuerpos + re-texturizados + accesorios) en MODELOS_MESHY; prompt del cuerpo base cambiado a ropa ajustada | — |
+| 2026-11-16 | Sonnet | Primera prueba de Meshy con el cuerpo base del jugador (445 460 → 36 722 adaptativo alto → 9 808 adaptativo medio, cara perdida con 10K). Créditos: 2 388. Redactada la petición 003 (receta de assets para iPhone 14) | — |
