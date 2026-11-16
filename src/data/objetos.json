@@ -1,8 +1,108 @@
 {
- "crate":   {"mat":"madera",  "forma":"caja",   "hx":0.4,  "hz":0.4,   "masa":15},
- "barrel":  {"mat":"metal",   "forma":"circulo","r":0.4,                "masa":18},
- "barrier": {"mat":"hormigon","forma":"caja",   "hx":0.7,  "hz":0.175, "masa":600},
- "fence":   {"mat":"madera",  "forma":"caja",   "hx":0.8,  "hz":0.1,   "masa":25},
- "sack":    {"mat":"tela",    "forma":"circulo","r":0.4,                "masa":30},
- "car":     {"mat":"metal",   "forma":"caja",   "hx":1.3,  "hz":0.65,  "masa":1200,"mu":0.15}
+ "crate": {
+  "mat": "madera",
+  "forma": "caja",
+  "hx": 0.4,
+  "hz": 0.4,
+  "masa": 15,
+  "vida": 6,
+  "rompe": {
+   "n": 5,
+   "tipo": "tabla"
+  }
+ },
+ "barrel": {
+  "mat": "metal",
+  "forma": "circulo",
+  "r": 0.4,
+  "masa": 18,
+  "vuelca": 20,
+  "alto": 0.9,
+  "hl": 0.35
+ },
+ "bidon": {
+  "modelo": "barrel",
+  "escala": 0.85,
+  "mat": "metal",
+  "forma": "circulo",
+  "r": 0.3,
+  "masa": 25,
+  "vida": 4,
+  "explota": true,
+  "vuelca": 25,
+  "alto": 0.77,
+  "hl": 0.3
+ },
+ "papelera": {
+  "modelo": "barrel",
+  "escala": 0.65,
+  "mat": "metal",
+  "forma": "circulo",
+  "r": 0.25,
+  "masa": 8,
+  "vuelca": 8,
+  "alto": 0.6,
+  "hl": 0.23
+ },
+ "carton": {
+  "modelo": "crate",
+  "escala": 0.62,
+  "mat": "carton",
+  "forma": "caja",
+  "hx": 0.25,
+  "hz": 0.25,
+  "masa": 1,
+  "vida": 3,
+  "rompe": {
+   "n": 4,
+   "tipo": "trozo"
+  },
+  "pasa": true
+ },
+ "fence": {
+  "mat": "madera",
+  "forma": "caja",
+  "hx": 0.8,
+  "hz": 0.1,
+  "masa": 25,
+  "vida": 10,
+  "rompe": {
+   "n": 4,
+   "tipo": "tabla"
+  },
+  "vuelca": 40,
+  "alto": 0.8,
+  "hl": 0.1
+ },
+ "barrier": {
+  "mat": "hormigon",
+  "forma": "caja",
+  "hx": 0.7,
+  "hz": 0.175,
+  "masa": 600
+ },
+ "sack": {
+  "mat": "tela",
+  "forma": "circulo",
+  "r": 0.4,
+  "masa": 30
+ },
+ "car": {
+  "mat": "metal",
+  "forma": "caja",
+  "hx": 1.3,
+  "hz": 0.65,
+  "masa": 1200,
+  "mu": 0.15
+ },
+ "contenedor": {
+  "modelo": "car",
+  "escala": 0.7,
+  "mat": "metal",
+  "forma": "caja",
+  "hx": 0.9,
+  "hz": 0.5,
+  "masa": 250,
+  "mu": 0.15
+ }
 }

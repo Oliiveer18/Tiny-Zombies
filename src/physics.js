@@ -11,7 +11,7 @@ export function createPhysics(mats,objs){
     const mass=statico?Infinity:o.masa,hx=circ?o.r:o.hx,hz=circ?o.r:o.hz;
     const I=statico?Infinity:(circ?mass*hx*hx/2:mass*(4*hx*hx+4*hz*hz)/12);
     const b={id,key,circ,hx,hz,rad:sq(hx*hx+hz*hz),x,z,cx:Math.cos(rot),cz:-Math.sin(rot),vx:0,vz:0,w:0,y:0,vy:0,m:mass,invM:statico?0:1/mass,invI:statico?0:1/I,
-      mu:o.mu!==undefined?o.mu:m.mu,e:m.e,transf:m.transf,statico:!!statico,asleep:!!statico,still:0,dirty:false,prop:null};
+      vuelca:o.vuelca||0,tumbado:false,mu:o.mu!==undefined?o.mu:m.mu,e:m.e,transf:m.transf,statico:!!statico,asleep:!!statico,still:0,dirty:false,prop:null};
     bodies.push(b);return b;}
   const norm=b=>{const l=sq(b.cx*b.cx+b.cz*b.cz)||1;b.cx/=l;b.cz/=l;};
   // ---- detección de contacto: devuelve {nx,nz,pen,px,pz} con la normal de A hacia B, o null
@@ -76,15 +76,16 @@ export function createPhysics(mats,objs){
   }
   return {bodies,params:P,
     addProp(p){const o=objs[p.key];if(!o)return null;const b=mk(p.id,p.key,p.x,p.z,p.rot,o,false);b.prop=p;p.body=b;return b;},
+    remove(b){const i=bodies.indexOf(b);if(i>=0)bodies.splice(i,1);},
     addBox(id,x,z,hx,hz,rot){return mk(id,'muro',x,z,rot,{mat:'hormigon',forma:'caja',hx,hz,masa:1},true);},
     step(dt){acc+=dt;let n=0;while(acc>=H&&n<2){sub();acc-=H;n++;}if(acc>H)acc=H;return n;}, // máximo 2 pasos por cuadro: si el móvil va lento, la física se atrasa
     hit(b,dx,dz,hx,hz){ // impulso de una bala en (hx,hz) con dirección unidad (dx,dz)
       if(!b||b.statico)return;const J=P.gBala*P.kBala*b.transf,dv=Math.min(J*b.invM,P.topeBala),Je=dv*b.m;
-      b.asleep=false;b.still=0;b.vx+=dx*dv;b.vz+=dz*dv;
+      b.asleep=false;b.still=0;b.vx+=dx*dv;b.vz+=dz*dv;if(b.vuelca&&Je>b.vuelca&&!b.tumbado){b.tumbado=true;b.mu*=.4;} // vuelco: un impulso fuerte lo acuesta y rueda más
       const rx=hx-b.x,rz=hz-b.z,dw=(rx*dz-rz*dx)*Je*b.invI;b.w=Math.max(-P.topeW,Math.min(P.topeW,b.w+dw));},
     blast(x,z,R,J0){for(const b of bodies){if(b.statico)continue;const dx=b.x-x,dz=b.z-z,d=sq(dx*dx+dz*dz);if(d>=R)continue;
       const J=J0*(1-d/R),dv=Math.min(J*b.invM,P.topeGranada),ux=d>1e-6?dx/d:1,uz=d>1e-6?dz/d:0;
-      b.asleep=false;b.still=0;b.vx+=ux*dv;b.vz+=uz*dv;b.vy=Math.min(8,.5*dv);if(b.vy>0&&b.y===0)b.y=.001;
+      if(b.vuelca&&J>b.vuelca&&!b.tumbado){b.tumbado=true;b.mu*=.4;}b.asleep=false;b.still=0;b.vx+=ux*dv;b.vz+=uz*dv;b.vy=Math.min(8,.5*dv);if(b.vy>0&&b.y===0)b.y=.001;
       b.w=Math.max(-10,Math.min(10,b.w+(ux*b.cz-uz*b.cx)*dv*1.5));}},
     state(){return bodies.filter(b=>!b.statico).map(b=>[b.id,+b.x.toFixed(5),+b.z.toFixed(5),+b.cx.toFixed(5),+b.cz.toFixed(5),b.asleep?1:0].join(',')).join(';');}};
 }

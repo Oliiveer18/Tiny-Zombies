@@ -12,7 +12,7 @@ export function initInput(canvas){
   if(input.touch){
     // Joysticks flotantes: aparecen donde pones el pulgar (mitad izquierda = mover, derecha = apuntar/disparar)
     // Toque corto en la mitad izquierda = agacharse / levantarse
-    floatStick('sl',(x,y)=>x<innerWidth*.5&&y>innerHeight*.18,(x,y)=>input.move.set(x,y),null,(dur,moved)=>{if(dur<220&&moved<14)input.crouchToggle=true;});
+    floatStick('sl',(x,y)=>x<innerWidth*.5&&y>innerHeight*.18,(x,y)=>input.move.set(x,y),null,null); // sin toque-para-agacharse: se activaba solo al mover y deformaba al personaje (agacharse queda en mando ○ y teclado C)
     floatStick('sr',(x,y)=>x>=innerWidth*.5&&y>innerHeight*.18,(x,y,on)=>{input.aim.set(x,y);input.aimActive=on&&Math.hypot(x,y)>.25;input.fire=input.aimActive;});
     // Sin zoom, sin menú de mantener pulsado, sin gestos del navegador
     for(const ev of ['gesturestart','gesturechange','gestureend','dblclick'])document.addEventListener(ev,e=>e.preventDefault());

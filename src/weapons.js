@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { input } from './input.js';
 import { player } from './player.js';
 import { zombies, hurt } from './zombies.js';
-import { obstacles, blast, bump } from './world.js';
+import { obstacles, blast, hitProp, hooks, OBJ } from './world.js';
 import { muzzle, impact, tracer, explosion } from './effects.js';
 // Temblor de cámara. Tiny original: disparo .04, explosión .6. Disparo sin temblor por petición del usuario (16 nov); explosión más suave porque la cámara está más cerca.
 const SHAKE_SHOT=0,SHAKE_BOOM=.2;
@@ -14,10 +14,11 @@ function shoot(){
   const sp=(Math.random()-.5)*.06*(input.aimHold?.35:1),c=Math.cos(sp),s=Math.sin(sp);
   const dx=player.aimX*c-player.aimZ*s,dz=player.aimX*s+player.aimZ*c;
   const ox=player.x+dx*.5,oz=player.z+dz*.5;let best=28,hz=null,wall=false,bo=null;
-  for(const o of obstacles){if(o.fly||o.key==='sack')continue;const t=rayCircle(ox,oz,dx,dz,o.x,o.z,o.r*.8);if(t!==null&&t<best){best=t;wall=true;bo=o;}}
+  const thru=[];for(const o of obstacles){if(o.fly||o.key==='sack')continue;const t=rayCircle(ox,oz,dx,dz,o.x,o.z,o.r*.8);if(t===null)continue;if(OBJ[o.key]&&OBJ[o.key].pasa){thru.push([o,t]);continue;}if(t<best){best=t;wall=true;bo=o;}} // el cartón no frena la bala: la traspasa y se rompe
   for(const z of zombies){if(!z.alive)continue;const t=rayCircle(ox,oz,dx,dz,z.x,z.z,z.t.r+.12);if(t!==null&&t<best){best=t;hz=z;wall=false;bo=null;}}
   tracer(ox,oz,ox+dx*best,oz+dz*best);muzzle(ox,.75,oz,dx,dz);
-  if(hz){hurt(hz,1,dx,dz);impact(ox+dx*best,.7,oz+dz*best,[.5,.9,.3]);}else if(wall){impact(ox+dx*best,.5,oz+dz*best);bump(bo,dx,dz,ox+dx*best,oz+dz*best);}
+  if(hz){hurt(hz,1,dx,dz);impact(ox+dx*best,.7,oz+dz*best,[.5,.9,.3]);}else if(wall){if(!hitProp(bo,dx,dz,ox+dx*best,oz+dz*best))impact(ox+dx*best,.5,oz+dz*best);}
+  for(const [o,t] of thru)if(t<best)hitProp(o,dx,dz,ox+dx*t,oz+dz*t);
   wp.ammo--;wp.cd=.11;wp.shake=Math.max(wp.shake,SHAKE_SHOT);player.shootT=.1;
 }
 function rayCircle(ox,oz,dx,dz,cx,cz,r){const fx=cx-ox,fz=cz-oz,t=fx*dx+fz*dz;if(t<0)return null;const px=fx-dx*t,pz=fz-dz*t,d2=px*px+pz*pz;if(d2>r*r)return null;return t-Math.sqrt(r*r-d2);}
@@ -32,6 +33,7 @@ export function updateWeapons(dt,active){
   for(const n of nades){if(!n.on)continue;n.t+=dt/.9;const k=Math.min(n.t,1);n.m.position.set(n.x0+(n.x1-n.x0)*k,.6+Math.sin(k*Math.PI)*3,n.z0+(n.z1-n.z0)*k);n.m.rotation.x+=dt*10;
     if(n.t>=1){n.on=false;n.m.visible=false;detonate(n.x1,n.z1);}}
 }
+hooks.boom=(x,z)=>detonate(x,z); // bidón explosivo: misma explosión que la granada
 function detonate(x,z){
   explosion(x,z);blast(x,z,7,16);wp.shake=SHAKE_BOOM;
   for(const zb of zombies){if(!zb.alive)continue;const dx=zb.x-x,dz=zb.z-z,d=Math.hypot(dx,dz);if(d<6){hurt(zb,Math.ceil(14*(1-d/6)),dx/(d||1)*14,dz/(d||1)*14);}}

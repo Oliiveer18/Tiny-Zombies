@@ -5,7 +5,6 @@ let on=false;
 try{const m=/[?&]prueba=(\d)/.exec(location.search);if(m)localStorage.setItem('tz_prueba',m[1]==='1'?'1':'');on=localStorage.getItem('tz_prueba')==='1';}catch(e){}
 export const TEST=on;
 export function setTest(v){try{localStorage.setItem('tz_prueba',v?'1':'');}catch(e){}}
-// x: derecha, z: hacia abajo en pantalla; el jugador empieza en (0,0). Clases que aún no tienen modelo propio usan el relleno de Tiny (hasta C3 y los modelos de Meshy).
-const RELLENO={contenedor:'car',bidon:'barrel',papelera:'barrel',carton:'crate'};
+// x: derecha, z: hacia abajo en pantalla; el jugador empieza en (0,0).
 export const LUGAR=callejon;
-export const LAYOUT={props:callejon.props.filter(a=>a[0]!=='farola').map(a=>[RELLENO[a[0]]||a[0],a[1],a[2],a[3]]),zombies:callejon.zombies};
+export const LAYOUT={props:callejon.props,zombies:callejon.zombies};

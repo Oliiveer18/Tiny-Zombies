@@ -14,7 +14,7 @@ export function initEffects(scene){
 function emit(x,y,z,vx,vy,vz,r,g,b,l,s,gr=0){const i=head++%MAX;pos.set([x,y,z],i*3);vel.set([vx,vy,vz],i*3);col.set([r,g,b],i*3);life[i]=mx[i]=l;siz[i]=s;grav[i]=gr;}
 const R=()=>Math.random()-.5;
 export function muzzle(x,y,z,dx,dz){emit(x,y,z,dx*2,0,dz*2,1,.8,.4,.06,.6);for(let i=0;i<3;i++)emit(x,y,z,dx*8+R()*3,Math.random()*2,dz*8+R()*3,1,.7,.2,.15,.14);}
-export function impact(x,y,z,c=[.9,.25,.1]){for(let i=0;i<5;i++)emit(x,y,z,R()*5,Math.random()*4,R()*5,...c,.35,.14,10);}
+export function impact(x,y,z,c=[.9,.25,.1],n=5){for(let i=0;i<n;i++)emit(x,y,z,R()*5,Math.random()*4,R()*5,...c,.35,.14,10);}
 export function tracer(x0,z0,x1,z1){tracers.push({x0,z0,x1,z1,t:.07});}
 export function explosion(x,z){
   for(let i=0;i<60;i++){const a=Math.random()*6.28,s=Math.random()*9;emit(x,.4,z,Math.cos(a)*s,Math.random()*5,Math.sin(a)*s,1,.5+Math.random()*.3,.1,.5+Math.random()*.4,1.4+Math.random());}

@@ -18,3 +18,5 @@
 | 2026-11-16 | Sonnet | M1-M5: mando PlayStation + menú Controles, versión visible, apuntado/movimiento más finos, mapa de prueba (zombis quietos). Redactada la petición 005 (callejón, física de objetos, impactos, interacción y NPC) | pendiente de probar en iPhone |
 | 2026-11-16 | Fable | Respuesta 005 (callejón, física, impactos, interacción y NPC; subpasos C1-C10), fusionada en main | — |
 | 2026-11-16 | Sonnet | M6 (apuntado parado) y C1 (callejón como datos, muros, luz de atardecer, farolas); build OK | pendiente de medir en iPhone 14 |
+
+- C3: vida y rotura de objetos; quitado toque-agacharse en táctil.

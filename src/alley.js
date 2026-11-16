@@ -1,4 +1,5 @@
 // Callejón (lugar de prueba y futuro lugar del juego real): muros, luz de atardecer y farolas, leídos de src/data/lugares/callejon_01.json.
+import { spawnDebris } from './debris.js';
 // Los objetos y los zombis los coloca world.js / zombies.js desde el mismo archivo (vía test.js).
 import * as THREE from 'three';
 import { LUGAR } from './test.js';
@@ -27,7 +28,7 @@ export function buildAlley(scene,ground){
       const pole=new THREE.Mesh(new THREE.CylinderGeometry(.08,.1,3.6,8),new THREE.MeshStandardMaterial({color:0x1b1c20,roughness:.8}));pole.position.set(l.x,1.8,l.z);pole.castShadow=true;scene.add(pole);
       const lamp=new THREE.Mesh(new THREE.SphereGeometry(.22,10,8),new THREE.MeshBasicMaterial({color:new THREE.Color(l.color).multiplyScalar(2.2)}));lamp.position.set(l.x,3.7,l.z);scene.add(lamp);
       const pl=new THREE.PointLight(new THREE.Color(l.color),LUZ.farola||60,l.radio,2);pl.position.set(l.x,3.4,l.z);scene.add(pl);LUZ['farola'+(n++)]=pl;
-      obstacles.push({id:'f_'+l.id,key:'lamp',x:l.x,z:l.z,r:.2,fly:false,wall:true});
+      obstacles.push({id:'f_'+l.id,key:'lamp',x:l.x,z:l.z,r:.3,fly:false,wall:true,mat:'metal',vida:2,onBreak:()=>{pl.intensity=0;lamp.material.color.set(0x15151a);spawnDebris(l.x,l.z,'esquirla',0xcfd8e8,8);}}); // al romperse la farola se apaga
       const g=glow(l.radio*.7,new THREE.Color(l.color));g.position.set(l.x,.03,l.z);scene.add(g);
     }else{const g=glow(l.radio,new THREE.Color(l.color));g.position.set(l.x,.03,l.z);scene.add(g);}
   }

@@ -38,3 +38,5 @@ Orden completo en `ROADMAP.md`. A0a, A0b y A0c HECHOS (falta medir en el iPhone 
 
 ### A1 · MEDIUM
 Quitar la arena fija y generar un mundo por regiones con semilla: claro inicial con ventaja ligera, carga y descarga de regiones alrededor del jugador, niebla de Tiny ocultando el borde, y los zombis/cámara/armas de Tiny funcionando igual. Medir fps en el móvil con `?debug`. Entrega: ZIP + `docs/SESION.md`.
+
+- C3 hecho (vida/rotura/bidón/farola). Siguiente: arma visible y salida de bala desde el cañón (pedido del usuario 16 nov), luego C4 marcas.
