@@ -11,7 +11,7 @@ const nades=[];
 export function initWeapons(scene){for(let i=0;i<4;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),new THREE.MeshStandardMaterial({color:0x445533}));m.visible=false;m.castShadow=true;scene.add(m);nades.push({m,on:false,t:0,x0:0,z0:0,x1:0,z1:0});}}
 export function resetWeapons(){Object.assign(wp,{ammo:30,cd:0,reload:0,grenades:3,shake:0});for(const n of nades){n.on=false;n.m.visible=false;}}
 function shoot(){
-  const sp=(Math.random()-.5)*.06,c=Math.cos(sp),s=Math.sin(sp);
+  const sp=(Math.random()-.5)*.06*(input.aimHold?.35:1),c=Math.cos(sp),s=Math.sin(sp);
   const dx=player.aimX*c-player.aimZ*s,dz=player.aimX*s+player.aimZ*c;
   const ox=player.x+dx*.5,oz=player.z+dz*.5;let best=28,hz=null,wall=false;
   for(const o of obstacles){if(o.fly||o.key==='sack')continue;const t=rayCircle(ox,oz,dx,dz,o.x,o.z,o.r*.8);if(t!==null&&t<best){best=t;wall=true;}}
@@ -22,7 +22,8 @@ function shoot(){
 }
 function rayCircle(ox,oz,dx,dz,cx,cz,r){const fx=cx-ox,fz=cz-oz,t=fx*dx+fz*dz;if(t<0)return null;const px=fx-dx*t,pz=fz-dz*t,d2=px*px+pz*pz;if(d2>r*r)return null;return t-Math.sqrt(r*r-d2);}
 export function updateWeapons(dt,active){
-  wp.cd-=dt;wp.shake=Math.max(0,wp.shake-dt*1.5);
+  wp.cd-=dt;input.weapon=false; // «cambiar arma»: de momento solo hay un arma
+  wp.shake=Math.max(0,wp.shake-dt*1.5);
   if(input.reload){input.reload=false;if(active&&!wp.reload&&wp.ammo<wp.mag)wp.reload=1.5;}
   if(wp.reload>0){wp.reload-=dt;if(wp.reload<=0){wp.ammo=wp.mag;wp.reload=0;}}
   else if(active&&input.fire&&wp.cd<=0){if(wp.ammo>0)shoot();else wp.reload=1.5;}

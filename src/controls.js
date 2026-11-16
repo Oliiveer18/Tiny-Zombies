@@ -9,18 +9,16 @@ export function initControls(){
   const setOpen=v=>{padState.open=v;padState.listen=null;menu.style.display=v?'flex':'none';render();};
   const render=()=>{
     if(!padState.open)return;
-    const rows=ACTIONS.map(([k,n])=>`<div class="r"><span>${n}</span><button data-a="${k}">${padState.listen===k?'Pulsa un botón…':NAMES[cfg.map[k]]||('B'+cfg.map[k])}</button></div>`).join('');
+    const rows=ACTIONS.map(([k,n])=>`<div class="r c"><span>${n}</span><button data-a="${k}">${padState.listen===k?'Pulsa un botón…':NAMES[cfg.map[k]]||('B'+cfg.map[k])}</button></div>`).join('');
     menu.innerHTML=`<div class="r"><h3>Controles</h3><span><button data-x="reset">Restaurar</button> <button data-x="close">Cerrar</button></span></div><div class="s">${padState.on?'Mando conectado ✔':'Sin mando: conéctalo por Bluetooth y pulsa un botón'}</div>
-      ${rows}
-      <div class="r"><span>Moverte / apuntar</span><button data-sw="1">${cfg.swap?'Izq. apunta · Der. mueve':'Izq. mueve · Der. apunta'}</button></div>
+      <div class="g">${rows}</div>
       <div class="r"><span>Zona muerta ${Math.round(cfg.dead*100)}%</span><input type="range" data-k="dead" min="0.05" max="0.4" step="0.01" value="${cfg.dead}"></div>
       <div class="r"><span>Sensibilidad ${cfg.sens.toFixed(2)}</span><input type="range" data-k="sens" min="0.5" max="1.5" step="0.05" value="${cfg.sens}"></div>
-      <div class="s">Options abre y cierra este menú. Inclinar el stick de apuntar también dispara.</div>`;
+      <div class="s">Stick izq. camina · stick der. apunta · pulsar el stick izq. mientras caminas = correr. Granada: mantén el botón, apunta con el stick izq. y suelta para lanzar. Options abre y cierra este menú.</div>`;
   };
   menu.addEventListener('click',e=>{
     const t=e.target.closest('button');if(!t)return;
     if(t.dataset.a){padState.listen=padState.on?t.dataset.a:null;render();if(!padState.on)menu.querySelector('.s').textContent='Primero conecta el mando y pulsa un botón';}
-    else if(t.dataset.sw){cfg.swap=!cfg.swap;save();render();}
     else if(t.dataset.x==='reset'){resetCfg();render();}
     else if(t.dataset.x==='close')setOpen(false);
   });

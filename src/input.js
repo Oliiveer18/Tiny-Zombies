@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-export const input={move:new THREE.Vector2(),aim:new THREE.Vector2(),aimActive:false,fire:false,run:false,crouchToggle:false,crouch:false,reload:false,grenade:false,touch:false,mouse:new THREE.Vector2()};
+export const input={move:new THREE.Vector2(),aim:new THREE.Vector2(),aimActive:false,fire:false,run:false,pad:false,aimHold:false,nadeHold:false,nadeAim:new THREE.Vector2(),weapon:false,crouchToggle:false,crouch:false,reload:false,grenade:false,touch:false,mouse:new THREE.Vector2()};
 const keys={};
 export function initInput(canvas){
   input.touch=matchMedia('(pointer:coarse)').matches||'ontouchstart' in window; document.body.classList.toggle('touch',input.touch);

@@ -141,3 +141,14 @@ Técnico: `MOVE={size:1.4,top:1.15,...}`; `K()=player.base*MOVE.size`; `topSpeed
 - Con mando conectado: `body.pad` oculta los joysticks y botones táctiles y `floatStick` ignora los toques; tocar el engranaje no empieza partida (`.ui`).
 - Comprobado: `npm run build` compila; prueba automática en Chromium con mando simulado (detecta mando, ✕ empieza, stick mueve, Options abre, reasignar Recargar a △ se guarda, engranaje y Cerrar funcionan, menú cabe en horizontal), sin errores propios en consola.
 - NO comprobado: mando real en iPhone (Safari, DualShock/DualSense), tacto de zona muerta y sensibilidad, y el apuntado con mando a mano.
+
+## M2 · Esquema de mando nuevo (16 nov 2026, LOW)
+**Resumen fácil:** el mando ahora va así: stick izquierdo camina (pulsarlo mientras caminas = correr), stick derecho apunta, R2 dispara, L2 apunta con precisión (vas más lento y el disparo es más certero), R1 granada (mantén para elegir la dirección con el stick izquierdo y suelta para lanzarla), □ recarga, ○ agacharse, △ cambiar arma. Todo se puede cambiar en el engranaje. Prueba en el iPhone: corre y mira que la barra azul de estamina baja; mantén R1 y mueve el stick izquierdo para ver dónde caerá la granada.
+
+**Detalle técnico**
+- `gamepad.js`: nuevo mapa (`fire`, `aim`, `grenade`, `run`, `reload`, `crouch`, `weapon`), clave de guardado `tz_pad2` (los ajustes de M1 se descartan). Se quita el intercambio de sticks y el disparo por inclinar el stick derecho. Granada: `input.nadeHold/nadeAim`, se lanza al soltar (`input.grenade` en el cuadro de la suelta). Correr: `input.run` mientras se mantiene el botón (L3) y el stick está inclinado.
+- `player.js`: `MOVE.runMult=2.1` (entra el clip `run`), correr gasta estamina (-28/s, se recupera +16/s, agotado hasta 20; sin correr agachado, apuntando ni con granada). En mando, «apuntando» (más lento) = L2 o disparo; la dirección sale del stick derecho. Con la granada mantenida, la dirección y la distancia (3-12) salen del stick izquierdo.
+- `weapons.js`: L2 reduce la dispersión del disparo al 35 %. `input.weapon` se consume sin efecto: solo hay un arma.
+- Excepción a la norma «sin correr» (decisión del usuario del 16 nov: ahora correr con L3).
+- Comprobado: build compila; prueba en Chromium con mando simulado: correr baja la estamina, granada no sale mientras se mantiene y sale al soltar, R2 dispara, menú cabe en horizontal.
+- NO comprobado: mando real en iPhone, la sensación de correr (2.1×) y la distancia de la granada.
