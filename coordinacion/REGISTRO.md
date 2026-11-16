@@ -16,3 +16,5 @@
 | 2026-11-16 | Sonnet | Primera prueba de Meshy con el cuerpo base del jugador (445 460 → 36 722 adaptativo alto → 9 808 adaptativo medio, cara perdida con 10K). Créditos: 2 388. Redactada la petición 003 (receta de assets para iPhone 14) | — |
 | 2026-11-16 | Sonnet | A0d jugador: GLB de Meshy → `public/models/player.glb` (4 000 tris, 20 huesos, 613 KB, 6 clips), `tools/prep_player.mjs`, original en `arte_fuente/`; assets.js con metalness 0, anisotropía 4, frustumCulled false; build OK. Pendiente: boca (creador), zombi, medir en iPhone | — |
 | 2026-11-16 | Sonnet | M1-M5: mando PlayStation + menú Controles, versión visible, apuntado/movimiento más finos, mapa de prueba (zombis quietos). Redactada la petición 005 (callejón, física de objetos, impactos, interacción y NPC) | pendiente de probar en iPhone |
+| 2026-11-16 | Fable | Respuesta 005 (callejón, física, impactos, interacción y NPC; subpasos C1-C10), fusionada en main | — |
+| 2026-11-16 | Sonnet | M6 (apuntado parado) y C1 (callejón como datos, muros, luz de atardecer, farolas); build OK | pendiente de medir en iPhone 14 |

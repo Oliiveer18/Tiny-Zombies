@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { TEST, LAYOUT } from './test.js'; import { propSource } from './assets.js'; import { mulberry, WORLD_SEED } from './sim.js';
+import { TEST, LAYOUT } from './test.js'; import { buildAlley } from './alley.js'; import { propSource } from './assets.js'; import { mulberry, WORLD_SEED } from './sim.js';
 export const LUZ={}; // luces ajustables en vivo desde ?debug
 export const obstacles=[]; export const props=[]; export const FIELD=40;
 const dyn={}; const dummy=new THREE.Object3D(); const mm=new THREE.Matrix4();
@@ -19,6 +19,7 @@ export function buildWorld(scene,q){
     for(let i=0;i<n;i++){let x,z;if(fixed){x=fixed[i][1];z=fixed[i][2];}else do{x=(rnd()-.5)*FIELD*1.7;z=(rnd()-.5)*FIELD*1.7;}while(Math.hypot(x,z)<5);
       const p={id:'p'+props.length,key,x,z,r:c.radius||.5,idx:i,rot:fixed?fixed[i][3]:rnd()*6.28,y:0,tx:0,vx:0,vy:0,vz:0,vr:0,fly:false}; props.push(p);obstacles.push(p);sync(p);}
   }
+  if(TEST)buildAlley(scene,ground); // callejón: muros, luz de atardecer y farolas
   return sun;
 }
 function sync(p){

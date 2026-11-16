@@ -188,3 +188,14 @@ Técnico: `MOVE={size:1.4,top:1.15,...}`; `K()=player.base*MOVE.size`; `topSpeed
 - Comprobado: build OK; prueba en Chromium con mando simulado en cuatro direcciones (la mano de apuntar y la cabeza van hacia donde sale la bala; la mano de apoyo queda a su izquierda, como en el clip).
 - Residuo: el arma del clip queda ~8° girada hacia -Z; no se corrige. NO comprobado en iPhone con táctil.
 - Sin resolver: en táctil, un toque corto en la mitad izquierda alterna agacharse y el agachado provisional deforma el cuerpo (encoge e inclina); puede confundirse con un fallo.
+
+## C1 · Callejón como datos, muros, luz de atardecer y farolas (16 nov 2026, LOW) · diseño: RESPUESTAS_FABLE/005
+**Resumen fácil:** el mapa de prueba ya es el callejón: una calle estrecha en forma de L con muros a los lados, de atardecer (azul oscuro con luz naranja), con dos farolas que iluminan la zona y un charco de luz azul. Hay zona de tiro, de cobertura y de explosivos, con cajas, barriles, barreras, vallas, sacos y coches, y zombis quietos. Los muros no se pueden atravesar y paran las balas. Prueba en el iPhone: Controles > Mapa de prueba > Activar, y camina hacia el fondo (arriba); a la derecha del fondo gira el pasillo.
+
+**Detalle técnico**
+- Nuevo `src/data/lugares/callejon_01.json` (formato de la 005 §4: muros, zonas, props, zombis, npc, luces, salidas); `test.js` lo carga (`LUGAR`, `LAYOUT`). Clases sin modelo aún (contenedor, bidón, papelera, cartón) usan el relleno de Tiny (`RELLENO` en `test.js`); los NPC del JSON aún no se usan (C7).
+- Nuevo `src/alley.js` (`buildAlley`, llamado desde `world.js` solo en el mapa de prueba): luz de atardecer sin niebla (hemisférica 1.0 fría, sol 1.0 naranja), suelo gris azulado, muros (una caja por tramo + círculos de colisión de r 0,5 cada 0,6 m que también paran balas, como el resto de obstáculos), 2 farolas (PointLight real sin sombra, alcance 9) y un charco de luz falso aditivo. `LUZ.farola` ajustable.
+- Los círculos de los muros son provisionales: C2 los sustituye por cajas estáticas del motor de física.
+- `main.js` expone `window.__tz` (jugador, obstáculos, zombis) solo en el mapa de prueba, para las pruebas automáticas.
+- Comprobado: build OK; ningún zombi solapado con objetos o muros (script con `__tz`); capturas en Chromium en cuatro puntos del callejón con las farolas y el charco; sin errores propios en consola.
+- NO comprobado: fps y luces en el iPhone 14 (a medir en C10); que el pasillo lateral y la salida oeste se vean bien a mano; la luz puede necesitar ajuste (hay barra `LUZ`, aún sin conectar al panel `?debug`).
