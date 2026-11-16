@@ -4,7 +4,7 @@ import { input } from './input.js';
 import { obstacles, FIELD } from './world.js';
 import { wp } from './weapons.js';
 // Velocidades (unidades/s). Tiny original: 4.2 / 7 con cámara a 16.4; con la cámara a 10.1 se ajustan para que la velocidad en pantalla sea parecida.
-export const MOVE={walk:2.6,run:4.3,mult:1,acc:9,dec:14,dead:.12};
+export const MOVE={walk:2.1,run:3.4,mult:1,acc:9,dec:14,dead:.12};
 const vel=new THREE.Vector2();
 export const player={id:'j1',x:0,z:0,hp:100,stam:100,exhausted:false,aimX:0,aimZ:-1,ax:0,az:-6,inst:null,t:0,hurt:0,shootT:0,moving:false};
 const ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),0),hit=new THREE.Vector3();
@@ -39,9 +39,9 @@ export function updatePlayer(dt,cam){
   if(player.inst.mixer){
     const a=player.inst.actions; let clip='idle';
     if(wp.reload>0&&a.reload)clip='reload'; else if(input.fire&&a.shoot)clip='shoot';
-    else if(speed>.15)clip=(speed>3.2&&a.run)||!a.walk?'run':'walk';
+    else if(speed>.15)clip=(speed>2.8&&a.run)||!a.walk?'run':'walk';
     play(player.inst,clip);
-    const act=a[clip]; if(act)act.timeScale=clip==='run'?THREE.MathUtils.clamp(speed/2.6,.6,2):clip==='walk'?THREE.MathUtils.clamp(speed/1.1,.5,2.2):1;
+    const act=a[clip]; if(act)act.timeScale=clip==='run'?THREE.MathUtils.clamp(speed/2.1,.6,2):clip==='walk'?THREE.MathUtils.clamp(speed/1.1,.5,2.2):1;
     player.inst.mixer.update(dt);}
   else{player.inst.body.position.y=player.moving?Math.abs(Math.sin(player.t))*.07:0;player.inst.body.rotation.x=player.moving?.12:0;player.inst.body.rotation.z=Math.sin(player.t)*(player.moving?.08:0);}
 }

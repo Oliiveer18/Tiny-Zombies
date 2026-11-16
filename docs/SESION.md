@@ -74,3 +74,6 @@
 - Animaciones: reload si `wp.reload>0`, shoot si `input.fire`, run si velocidad>3,2, walk si >0,15, idle; `timeScale` según la velocidad (cosmético). Morir: `game.js` reproduce `die` una vez al terminar la partida.
 - Cámara: `CAM_LEAD=0` en `game.js` (Tiny: .12, la cámara se adelantaba hacia donde apuntas y por eso el personaje se salía del centro). Excepción decidida por el usuario.
 - Comprobado: build OK, arranca sin errores, personaje centrado en captura. NO comprobado: tacto real en el iPhone, deslizamiento de pies, atascos con vallas (no tocado; la colisión sigue siendo la de Tiny), clip `shoot` (es una carrera disparando; parado puede verse raro).
+
+## Ajuste con las medidas del usuario (16 nov 2026, LOW)
+Cámara: Altura 7,6 · Atrás 4,9 (distancia 9,0 · ángulo 57°). Velocidad: andar 2,1 · correr 3,4 (barra ×0,80 sobre 2,6/4,3). Fijadas en `renderer.js` y `player.js` (`MOVE`); la barra de `?debug` parte de ×1,00 sobre estos valores. Provisional hasta que el usuario lo vuelva a ajustar.
