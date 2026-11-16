@@ -252,3 +252,7 @@ Técnico: `MOVE={size:1.4,top:1.15,...}`; `K()=player.base*MOVE.size`; `topSpeed
 **Corrección sobre el informe 008:** las cámaras propuestas allí (13-18 m) dejaban al personaje a 1/13-1/20 del alto, fuera del criterio (1/10-1/12). Se recalcularon midiendo: A 10,7 m/58° = 1/9,9 · B 10,7 m/61° = 1/10,9 · C 10,5 m/64° = 1/11,7. «Tiny» (16,4 m/58°, 1/16) queda como referencia de «muy lejos».
 **Pruebas:** `npm run build` compila. En Chromium simulando iPhone 14 apaisado: las 5 cámaras cargan sin errores, la fila del menú cambia la cámara y la guarda, moverse y disparar funcionan con cada una. **NO comprobado:** fps y aspecto en el iPhone real; si la velocidad resulta cómoda (barra «Velocidad» en `?debug`).
 **Aceptación de R1:** personaje a 1/10-1/12 ✔ (medido) · fps igual que antes: sin medir en el móvil · elección del usuario: pendiente.
+
+## Cámara definitiva (17 nov 2026, solo documentos)
+**Resumen fácil:** has elegido la cámara «Tiny» (16,4 m · 58°) y queda como la definitiva. Lo he dejado escrito en las normas y en la referencia visual, junto con lo que implica: el personaje ocupa 1/16 del alto de la pantalla, así que los modelos nuevos se juzgarán por su silueta y sus bloques de color vistos a ese tamaño. No he cambiado nada del juego.
+**Técnico:** `CLAUDE.md` norma 1, `REFERENCIA_VISUAL.md` (criterios de tamaño, visibilidad, presupuesto y escala), `ROADMAP.md` (R1 validado), `CONTINUAR.md` (estado y pendientes). Sin cambios de código: «Tiny» aún no es la cámara por defecto (fleco de R1 anotado).

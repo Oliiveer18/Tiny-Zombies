@@ -30,3 +30,4 @@
 - Respuestas 004 y 007 de Fable copiadas a main.
 - 2026-11-17 · Fable · Informe 008 (reorientación visual tipo Tiny Troopers): estado, diferencias, qué se aprovecha, pista R0-R8 y 5 decisiones. Nada implementado; espera aprobación del usuario.
 - 2026-11-17 · Fable · R0 (documentos de la reorientación) y R1 (cámaras A/B/C + Cerca + Tiny elegibles en Controles; build OK; probado en iPhone 14 simulado). Pendiente: elección del usuario en el móvil.
+- 2026-11-17 · Fable · El usuario elige la cámara «Tiny» (16,4 m · 58°) como definitiva; fijada en CLAUDE.md y REFERENCIA_VISUAL con criterios de proporciones, visibilidad y escala. R0 y R1 hechos; R2 en pausa hasta organizar el trabajo Fable–Sonnet. Solo documentos.

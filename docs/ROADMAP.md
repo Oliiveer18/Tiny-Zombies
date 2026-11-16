@@ -33,7 +33,7 @@ Se intercala en el trabajo del mapa de prueba; el Hito A no cambia. Entregas agr
 | Entrega | Estado |
 |---|---|
 | R0 documentos (referencia, norma de cámara, pausa de Meshy) | HECHO 17 nov |
-| R1 cámara elevada: 3 propuestas + Cerca + Tiny elegibles en el móvil | HECHO 17 nov · **falta que el usuario elija en el iPhone** |
+| R1 cámara elevada: 3 propuestas + Cerca + Tiny elegibles en el móvil | HECHO y VALIDADO 17 nov · **el usuario eligió «Tiny» (16,4 m · 58°) como definitiva** · resto de R1: dejarla como cámara por defecto y retirar las otras del menú (pendiente, pequeño); fps en iPhone sin medir (R8) |
 | R2 prueba de compatibilidad con Mixamo (0 créditos) | pendiente (necesita un clip descargado por el usuario) |
 | R3 primer personaje del estilo nuevo | pendiente (créditos en pausa hasta cerrar R1 y proporciones) |
 | R4 `anim.js` (dos mitades, sin giro de 90°) · R5 capa procedural · R6 zombis y NPC | pendiente |
