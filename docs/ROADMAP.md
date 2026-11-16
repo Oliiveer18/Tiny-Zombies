@@ -11,6 +11,17 @@ Estados: 💡 propuesta de Claude (el usuario la corrige). Esfuerzo: LOW o MEDIU
 6. **Meshy corre en paralelo.** Los modelos son lo que más tarda y no dependen del código: se generan mientras se programa (`MODELOS_MESHY.md`). Los pasos A0a-A7 se programan con el relleno de Tiny; ningún hito se da por entregado con relleno.
 7. **Medir cada paso.** Nada pasa al siguiente si se rompen ≥ 58 fps, peor cuadro ≤ 25 ms, < 40 000 triángulos.
 
+## Reparto Sonnet / Fable (16 nov) · a Fable solo lo que exige pensar a fondo
+- **Sonnet (código, ajustes, medir, documentar):** todo subpaso de programación, los ajustes que dicta el usuario con las barras de `?debug` y los documentos de sesión. No pide permiso a Fable para ajustar cifras.
+- **Fable (documentos de diseño, nunca código), una petición cada vez y solo cuando el siguiente paso la necesita:**
+  1. **004 · Diseño táctico** (ahora, antes de A3): qué hace que se sienta táctico y de estrategia (cobertura, ruido y sigilo, visión, munición, ritmo del combate, órdenes a NPC), con reglas medibles y qué cambia en armas/zombis. Es lo que decide A3, A5 y B4.
+  2. **005 · Mundo y lugares** (antes de A2/A5): tipos de región, plantillas de lugar y tabla de botín como datos.
+  3. **006 · Refugio, NPC y economía** (antes de B1): piezas, estancias, consumo, rescate.
+  4. **007 · Online** (antes de F1): arquitectura servidor, validación, creador de personaje en perfil.
+  5. **Revisión de hito** al cerrar A, B, C: contradicciones y huecos (como la 001).
+- No se le piden: texturas, cifras que se afinan jugando, nada que el usuario pueda decidir con una barra en el móvil.
+- **Hecho en la rama de ajuste (16 nov, ver SESION):** A0d jugador de Meshy · A0e movimiento · A0f calidad · A0g cámara/luz/paneles ocultos. Falta A0d del zombi.
+
 ## Hito A · Núcleo jugable (≈ 20 subpasos)
 Objetivo: explorar un mundo infinito, disparar, saquear, beber y comer, y no morir de hambre ni de zombis.
 

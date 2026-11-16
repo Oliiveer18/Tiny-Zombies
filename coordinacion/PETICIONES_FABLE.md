@@ -33,3 +33,10 @@
   6. Lista de comprobaciones medibles para A0d con el medidor `?debug` en el iPhone 14 (triángulos de las dos pasadas, ms de CPU, fps).
 - Criterio de éxito: cada recomendación lleva una cifra o un ajuste concreto, dice de dónde sale (documentación de Meshy, de Three.js o razonamiento propio) y marca como 💡 lo que haya que medir en el iPhone. Buscar en la web solo lo necesario; citar las fuentes.
 - Fuera de alcance: código; cambiar decisiones ✅ (Tiny igual, Meshy para todos los modelos, mundo plano, sin coop).
+
+### 004 · Diseño táctico: cómo hacer que el juego se sienta táctico y de estrategia · estado: PENDIENTE
+- Contexto nuevo (decisión del usuario, 16 nov): el juego será MUY táctico y de estrategia (sigue siendo Tiny en cámara y controles táctiles, con cámara cercana y centrada en el jugador, sin niebla general, ritmo más lento y deliberado). Las velocidades actuales son provisionales: andar 2,1 · correr 3,4 (unidades/s) y cámara a 9,0 de distancia y 57°.
+- Leer: `CLAUDE.md`, `docs/DISENO.md` §2, §3, §7-§9 (combate, zombis, ruido), `docs/TINY_ACTUAL.md`, `docs/SESION.md` (A0d-A0g), `src/player.js`, `src/weapons.js`, `src/zombies.js`.
+- Entregar `RESPUESTAS_FABLE/004_diseno_tactico.md`, máximo 3 páginas: (1) lista corta (5-8 mecánicas) de lo que hace táctico el juego, ordenada por impacto/coste, con qué paso del ROADMAP las lleva; (2) para cada una, reglas con cifras que se puedan medir y ajustar con barras (`MOVE`, ruido por acción, radio de alerta, cono de visión, cobertura, retroceso/dispersión, munición); (3) qué cambia en los tres zombis y en las armas; (4) qué tiene que ser jugable en el móvil con dos pulgares (nada que exija más de dos botones nuevos); (5) qué se prueba primero para saber si «se siente táctico» (3 pruebas de 2 minutos).
+- Criterio: cada mecánica es implementable por Sonnet en 1 subpaso LOW/MEDIUM, cabe en el presupuesto (≥58 fps) y no contradice ✅ del usuario.
+- Fuera de alcance: código, arte, mundo por regiones, online.

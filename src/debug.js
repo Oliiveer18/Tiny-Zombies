@@ -1,11 +1,12 @@
 // Medidor ?debug: fps, peor cuadro, tiempo de CPU, triángulos y recursos. Sin ?debug no hace nada.
 import { renderer, OFF } from './renderer.js';
 import { MOVE } from './player.js';
+import { LUZ } from './world.js';
 import { state } from './zombies.js';
 export const DEBUG=new URLSearchParams(location.search).has('debug');
 let el,t0=0,last=0,frames=0,acc=0,shown=0,cpu=0,cpuMax=0,worst=0;const hist=[];let fps=0,worstWin=0,cpuWin=0;
 if(DEBUG){renderer.info.autoReset=false;
-  el=document.createElement('div');el.style.cssText='position:fixed;top:4px;right:4px;z-index:99;pointer-events:none;font:11px/1.35 monospace;color:#9f9;background:rgba(0,0,0,.6);padding:4px 6px;border-radius:4px;white-space:pre;text-align:left';
+  el=document.createElement('div');el.style.cssText='position:fixed;top:44px;right:4px;z-index:99;pointer-events:none;font:11px/1.35 monospace;color:#9f9;background:rgba(0,0,0,.6);padding:4px 6px;border-radius:4px;white-space:pre;text-align:left';
   document.body.appendChild(el);
   // Ajuste de cámara: altura (Y) y distancia hacia atrás (Z). Mueve OFF en vivo; el usuario dicta los números.
   const box=document.createElement('div');
@@ -19,11 +20,21 @@ if(DEBUG){renderer.info.autoReset=false;
   row('Altura',2,30,'y');row('Atrás',0,20,'z');
   {const r=document.createElement('div'),l=document.createElement('span'),s=document.createElement('input');s.type='range';s.min=.3;s.max=2;s.step=.05;s.value=1;s.style.cssText='width:100%;margin:2px 0 6px';
    const show=()=>{l.textContent='Velocidad ×'+MOVE.mult.toFixed(2)+' (andar '+(MOVE.walk*MOVE.mult).toFixed(1)+' · correr '+(MOVE.run*MOVE.mult).toFixed(1)+')';};show();s.oninput=()=>{MOVE.mult=Number(s.value);show();};r.append(l,s);box.append(r);}
+  const sl=(name,min,max,get,set,st=.05)=>{const r=document.createElement('div'),l=document.createElement('span'),s=document.createElement('input');s.type='range';s.min=min;s.max=max;s.step=st;s.value=get();s.style.cssText='width:100%;margin:2px 0 6px';
+    const show=()=>{l.textContent=name+' '+Number(get()).toFixed(2);};show();s.oninput=()=>{set(Number(s.value));show();};r.append(l,s);box.append(r);};
+  sl('Exposición',.3,1.6,()=>renderer.toneMappingExposure,v=>renderer.toneMappingExposure=v);
+  sl('Sol',0,4,()=>LUZ.sun?LUZ.sun.intensity:0,v=>{if(LUZ.sun)LUZ.sun.intensity=v;});
+  sl('Ambiente',0,2,()=>LUZ.hemi?LUZ.hemi.intensity:0,v=>{if(LUZ.hemi)LUZ.hemi.intensity=v;});
   info();
+  // Paneles escondidos por defecto: un botón pequeño los muestra u oculta
+  const btn=document.createElement('div');btn.textContent='⚙';btn.style.cssText='position:fixed;top:4px;right:4px;z-index:100;width:34px;height:34px;line-height:34px;text-align:center;font-size:20px;color:#fff;background:rgba(0,0,0,.35);border-radius:17px';
+  let on=false;const vis=()=>{el.style.display=on?'':'none';box.style.display=on?'':'none';};vis();
+  const tog=e=>{e.stopPropagation();e.preventDefault();on=!on;vis();};btn.addEventListener('touchstart',tog,{passive:false});btn.addEventListener('click',tog);
+  document.body.appendChild(btn);
   for(const ev of ['pointerdown','touchstart','touchmove'])box.addEventListener(ev,e=>e.stopPropagation(),{passive:true});
   document.body.appendChild(box);}
 export function debugStart(){if(!DEBUG)return;const n=performance.now();t0=n;
-  if(last){const d=n-last;frames++;acc+=d;hist.push([n,d]);if(d>worst)worst=d;}
+  if(last&&n>6000){const d=n-last;frames++;acc+=d;hist.push([n,d]);if(d>worst)worst=d;}
   last=n;renderer.info.reset();}
 export function debugEnd(){if(!DEBUG)return;const n=performance.now();cpu=n-t0;cpuMax=Math.max(cpuMax,cpu);
   while(hist.length&&n-hist[0][0]>5000)hist.shift();

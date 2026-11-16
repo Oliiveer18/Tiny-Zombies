@@ -8,7 +8,7 @@ export const touch=matchMedia('(pointer:coarse)').matches; const dpr=Math.min(de
 export const renderer=new THREE.WebGLRenderer({antialias:false,powerPreference:'high-performance'});
 const Q=new URLSearchParams(location.search); // ?res=1.5|2|3 y ?msaa=0|4 para comparar calidad en el móvil
 renderer.setPixelRatio(Number(Q.get('res'))||(touch?Math.min(dpr,2):dpr));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;document.body.prepend(renderer.domElement);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=0.85;document.body.prepend(renderer.domElement);
 export const scene=new THREE.Scene();export const cam=new THREE.PerspectiveCamera(38,innerWidth/innerHeight,.5,120);
 export const OFF=new THREE.Vector3(0,7.6,4.9); // medidas elegidas por el usuario con las barras de ?debug (16 nov, 2.ª vuelta). Tiny original: (0,14,8.6)
 // Antialiasing real (MSAA) en el post-proceso: sin él, con antialias:false el personaje sale con bordes de sierra y «pixelado».
