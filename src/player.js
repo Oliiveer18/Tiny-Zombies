@@ -4,9 +4,9 @@ import { input } from './input.js';
 import { obstacles, FIELD } from './world.js';
 import { wp } from './weapons.js';
 // Velocidades (unidades/s). Tiny original: 4.2 / 7 con cámara a 16.4; con la cámara a 10.1 se ajustan para que la velocidad en pantalla sea parecida.
-export const MOVE={walk:.9,run:3,aim:.5,runAt:.85,mult:1,acc:9,dec:14,dead:.12,curve:1.5,
+export const MOVE={walk:1.4,run:1.4,aim:.5,runAt:.85,mult:1,acc:9,dec:14,dead:.12,curve:1.5,
   // Velocidad (unidades del juego/s) que recorre cada animación al paso 1: medida en el GLB (andar 1,10 · correr ~3,4 · disparar 1,40 por 0,53 de escala).
-  clipWalk:.58,clipRun:1.8,clipShoot:.74,blendA:1.4,blendB:1.9,step:1};
+  clipWalk:.58,clipRun:1.8,clipShoot:.74,blendA:.7,blendB:1.2,step:1};
 const vel=new THREE.Vector2();
 export const player={id:'j1',x:0,z:0,hp:100,stam:100,exhausted:false,aimX:0,aimZ:-1,ax:0,az:-6,inst:null,t:0,hurt:0,shootT:0,moving:false};
 const ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),0),hit=new THREE.Vector3();
@@ -22,8 +22,6 @@ export function updatePlayer(dt,cam){
   const aiming=input.aimActive||input.fire; // apuntando: más lento y sin correr, para ser preciso
   const run=input.run&&!aiming&&!player.exhausted&&m.length()>.1;
   player.stam=THREE.MathUtils.clamp(player.stam+(run?-28:16)*dt,0,100);
-  {const mag=m.length();if(mag>0){const lim=Math.pow((MOVE.runAt-MOVE.dead)/(1-MOVE.dead),MOVE.curve); // dentro del aro: velocidad según la inclinación (hasta «andar»); fuera: correr
-    m.multiplyScalar((run?1:Math.min(1,mag/lim))/mag);}}
   const sp=(run?MOVE.run:MOVE.walk)*MOVE.mult*(aiming?MOVE.aim:1);
   // aceleración y frenada suaves
   const tx=m.x*sp,tz=m.y*sp,k=Math.min(1,dt*(m.length()>0?MOVE.acc:MOVE.dec));
