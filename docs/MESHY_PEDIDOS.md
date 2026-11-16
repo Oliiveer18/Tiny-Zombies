@@ -5,16 +5,26 @@ Decidido por el usuario el 16 nov (22:20): **semi-realista con proporciones norm
 **Arranque común de OBJETOS** (pegar antes de cada texto):
 `3D game asset, semi-realistic stylized, PBR materials, worn and grimy with scratches and rust, dark muted palette with small warm orange accents, single object, three-quarter view seen from above, plain light grey background, soft studio lighting, clean readable silhouette, no text, no logos.`
 
-**Arranque común de PERSONAJES:**
-`3D game character, full body, front view, A-pose, plain light grey background, soft studio lighting. Semi-realistic stylized proportions, adult human about 7 heads tall, readable silhouette from above, PBR materials, worn gear, muted dark palette. No weapon in hands, no text, no logos.`
+**Arranque común de PERSONAJES** (límite de Meshy: 800 caracteres en total; lección de la v1: sin «3D rendered» salió una ilustración 2D):
+`3D rendered game character, full body, front view, A-pose, plain light grey background, soft studio lighting. Semi-realistic stylized proportions, adult human about 7 heads tall, readable silhouette seen from above, matte painted PBR materials, worn, muted dark palette. NOT a 2D illustration, NOT a cartoon. No weapon, no text, no logos.`
 
-## Orden (más efecto visual primero)
-1. **Bidón de combustible:** `Steel fuel drum, upright, two raised rings, screw cap on top, scratched dull red paint with rust streaks, small hazard diamond without text.`
-2. **Caja de madera:** `Heavy wooden supply crate, rough planks, metal corner brackets, chipped paint, one cracked plank, stencil-free.`
-3. **Contenedor de basura grande:** `Large rectangular metal dumpster on four small wheels, closed two-part lid, dark green chipped paint, rust at the edges, dented side.`
-4. **Reja (una hoja):** `One single flat gate leaf made of vertical iron bars, 1.5 m wide and 2 m tall, thick square frame, two horizontal crossbars, spear-shaped tips, two hinge pins on the left edge, flaking dark green paint, rust. Standing upright, seen from the front, nothing behind it.`
-5. **Farola:** `Old street lamp post, thin dark iron pole with square base, single hanging glass lantern at the top, slightly bent, rust.`
-6. **Zombi A (personaje, textura PBR):** `Zombie office worker: pale grey-green skin, sunken eyes, open mouth, torn white shirt with one sleeve missing, loose dark tie, grey trousers, one shoe missing, hunched but symmetrical.` (con el arranque de personajes)
+## 1º · ZOMBI A (es lo primero: hoy es una cápsula verde y es lo más visto)
+**Paso 1 · imagen** (texto completo, ≈ 640 caracteres, pegar entero):
+```
+3D rendered game character, full body, front view, A-pose, plain light grey background, soft studio lighting. Semi-realistic stylized proportions, adult human about 7 heads tall, readable silhouette seen from above, matte painted PBR materials, worn, muted dark palette. NOT a 2D illustration, NOT a cartoon. Zombie office worker: pale grey-green skin, sunken eyes, slightly open mouth, torn dirty white shirt with one sleeve missing, loose dark tie, grey trousers, one bare foot, one shoe. Arms slightly away from body, legs slightly apart, hunched but symmetrical. No weapon, no text, no logos.
+```
+**Paso 2 · Image to 3D** con la imagen elegida (Meshy 6 o 6 Lite; con textura PBR). Malla baja: objetivo ≈ 800 triángulos (yo lo reduzco si sale más).
+**Paso 3 · Rigging humanoide** (esqueleto automático). Comprobar que brazos y piernas quedan bien separados (el zombi usa el MISMO esqueleto que el jugador).
+**Paso 4 · Animaciones** de la biblioteca de Meshy: `idle`, `walk`, `run`, `attack`, `die` (zombi; si no hay `attack`, vale un golpe o arañazo).
+**Paso 5 · Descargar en GLB** como `zombie.glb` y mandármelo, con los créditos que te queden. Yo lo paso por las herramientas, te digo triángulos y KB y lo pruebo.
+Tanque (más ancho) y corredor (más delgado) se hacen después con la misma base.
+
+## Después, objetos (en este orden)
+2. **Bidón de combustible:** `Steel fuel drum, upright, two raised rings, screw cap on top, scratched dull red paint with rust streaks, small hazard diamond without text.`
+3. **Caja de madera:** `Heavy wooden supply crate, rough planks, metal corner brackets, chipped paint, one cracked plank, stencil-free.`
+4. **Contenedor de basura grande:** `Large rectangular metal dumpster on four small wheels, closed two-part lid, dark green chipped paint, rust at the edges, dented side.`
+5. **Reja (una hoja):** `One single flat gate leaf made of vertical iron bars, 1.5 m wide and 2 m tall, thick square frame, two horizontal crossbars, spear-shaped tips, two hinge pins on the left edge, flaking dark green paint, rust. Standing upright, seen from the front, nothing behind it.`
+6. **Farola:** `Old street lamp post, thin dark iron pole with square base, single hanging glass lantern at the top, slightly bent, rust.`
 7. **Después:** papelera, caja de cartón, barrera de obra naranja, valla de tablones, coche, cuerpo base de NPC calvo (ropa ajustada), chaleco, casco, mochila, rifle, zombi B.
 
 ## Consejos
