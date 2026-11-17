@@ -3,6 +3,7 @@
 import callejon from './data/lugares/callejon_01.json';
 let on=false;
 try{const m=/[?&]prueba=(\d)/.exec(location.search);if(m)localStorage.setItem('tz_prueba',m[1]==='1'?'1':'');on=localStorage.getItem('tz_prueba')==='1';}catch(e){}
+if(/[?&]carga/.test(location.search))on=true; // ?carga fuerza el mapa de prueba sin guardarlo (PAQ-G1: el jugador no recibe daño y los zombis están quietos)
 export const TEST=on;
 export function setTest(v){try{localStorage.setItem('tz_prueba',v?'1':'');}catch(e){}}
 // x: derecha, z: hacia abajo en pantalla; el jugador empieza en (0,0).

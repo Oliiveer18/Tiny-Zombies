@@ -16,4 +16,7 @@ async function main(){
   cam.position.copy(OFF);cam.lookAt(0,0,0);let last=performance.now();
   renderer.setAnimationLoop(t=>{const dt=Math.min((t-last)/1000,.05);last=t;frame(dt);});
 }
-main();
+const CARGA=/[?&]carga/.test(location.search);
+async function main2(){await main();if(CARGA){const { initCarga }=await import('./carga.js');const c=initCarga();renderer.setAnimationLoop(t=>{const dt=Math.min((t-last2)/1000,.05);last2=t;c.frame(dt,frame);});}}
+let last2=performance.now();
+main2();

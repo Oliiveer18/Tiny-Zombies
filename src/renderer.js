@@ -18,5 +18,11 @@ export const CAM={k:Math.hypot(CAM_Y,CAM_Z)/Math.hypot(7.6,4.9),vel:1.55}; // k 
 const msaa=Q.has('msaa')?Number(Q.get('msaa')):4;
 const rt=new THREE.WebGLRenderTarget(innerWidth*renderer.getPixelRatio(),innerHeight*renderer.getPixelRatio(),{type:THREE.HalfFloatType,samples:msaa});
 export const comp=new EffectComposer(renderer,rt);comp.addPass(new RenderPass(scene,cam));
-const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth/2,innerHeight/2),touch?.25:.4,.6,.85);comp.addPass(bloom);comp.addPass(new OutputPass());
+export const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth/2,innerHeight/2),touch?.25:.4,.6,.85);comp.addPass(bloom);comp.addPass(new OutputPass());
 addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);comp.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();});
+// Solo para la prueba de carga (?carga, PAQ-G1): cambia resolución, MSAA y bloom en vivo. El juego normal no lo llama.
+export function setCalidad({res,msaa:m,bloomOn}){
+  if(res!==undefined){renderer.setPixelRatio(res);comp.setPixelRatio(res);comp.setSize(innerWidth,innerHeight);}
+  if(m!==undefined){for(const t of [comp.renderTarget1,comp.renderTarget2]){t.samples=m;t.dispose();}}
+  if(bloomOn!==undefined)bloom.enabled=bloomOn;}
+export const calidadActual=()=>({res:renderer.getPixelRatio(),msaa:comp.renderTarget1.samples,bloomOn:bloom.enabled});

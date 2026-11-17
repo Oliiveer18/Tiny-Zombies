@@ -1,5 +1,12 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## PAQ-G1 · Prueba de carga gráfica (17 nov 2026)
+**Resumen fácil:** he añadido una prueba que mide hasta dónde aguanta tu iPhone (geometría, personajes, luces, calidad). Abre el juego con `?carga` al final de la dirección, toca «Iniciar prueba», espera 90 s sin tocar y mándale a Fable una captura de la tabla. El juego normal no cambia.
+
+**Detalle técnico**
+- `src/carga.js` (solo con `?carga`), `renderer.js` (`setCalidad`, `calidadActual`, `bloom`), `main.js` (bucle de la prueba), `test.js` (`?carga` fuerza el mapa de prueba).
+- Rejilla fija con reparto `(i·37) mod N`, sin `Math.random`. Informe y pruebas en el traspaso.
+
 ## PAQ-01 · Cámara definitiva y lectura del escenario (17 nov 2026)
 **Resumen fácil:** la cámara que elegiste (Tiny) ya es la única del juego. Si te pones detrás de un muro, ese muro se vuelve transparente para que no te tape. Hay un aro claro bajo tus pies para localizarte, y los zombis muy lejanos no se dibujan. Para probarlo: acércate a un muro por detrás y míralo volverse transparente.
 

@@ -56,11 +56,11 @@ Nuevo `src/carga.js`. Cambios mínimos en `src/main.js` (arrancarlo solo si la d
 
 ---
 ## Informe de Sonnet (rellenar al entregar)
-- Commit(s):
-- Qué se hizo:
-- Decisiones secundarias tomadas:
-- Resultado de cada prueba (1-6):
-- No comprobado:
+- Commit(s): «PAQ-G1 entregado (Sonnet)».
+- Qué se hizo: `src/carga.js` nuevo (solo se importa con `?carga`): botón «Iniciar prueba», 22 escalones (base; 50k-800k triángulos estáticos; 10-80 personajes; 2-8 luces; 1-3 explosiones; 5 de calidad; combinado), 1 s de espera + 3 s de medida, tabla a pantalla completa verde/roja, «Copiar», «Cerrar», datos en `window.__carga` (con `declarados` y `mezcladores`). `renderer.js`: exporta `bloom`, `setCalidad`, `calidadActual`. `main.js`: arranca el bucle de la prueba solo con `?carga`. `test.js`: 1 línea, `?carga` fuerza el mapa de prueba sin guardarlo.
+- Decisiones secundarias tomadas: `test.js` no estaba en la lista de archivos; la línea añadida es la única forma de forzar `?prueba=1`. La familia «calidad» y la base no se saltan por <30 fps (son opciones, no escalones crecientes). Triángulos medidos = todas las pasadas (sombra incluida); `declarados` = pasada principal. Sombras «no» = `castShadow=false` de la luz.
+- Resultado de cada prueba (1-6): 1 build OK. 2 juego normal: 30 512 triángulos / 82 llamadas / 27 texturas, igual que tras PAQ-01. 3 recorrido completo hasta la tabla con 22 entradas en `__carga`, 0 errores (en el navegador de pruebas dura ≈55 s porque salta escalones <30 fps, como debe). 4 el escalón combinado declara 200 000 triángulos y 40 mezcladores; el escalón suelto de 200k no se llegó a ejecutar aquí por ir <30 fps (usa el mismo código). 5 «Cerrar» vuelve a la dirección sin `?carga`. 6 tabla en 390×844 legible sin desplazar (captura revisada).
+- No comprobado: cifras reales en iPhone (lo único importante), recorrido completo de ≈90 s con todos los escalones, y horizontal.
 
 ## Revisión de Fable
 (pendiente)
