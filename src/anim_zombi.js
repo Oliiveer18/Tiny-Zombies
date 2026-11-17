@@ -73,8 +73,9 @@ export function anima(inst,dt,o){const c=inst.ctl,A=inst.actions;if(!c||dt<=0)re
     let d=o.ang-c.ang;while(d>Math.PI)d-=6.2831853;while(d<-Math.PI)d+=6.2831853;c.giro+=(d/dt-c.giro)*k;}
   c.px=o.x;c.pz=o.z;c.ang=o.ang;
   const anda=c.v>.12*c.escala,t={idle:0,stand:0,walk:0,run:0,attack:0};let wake=0;
-  if(c.muerto){}else if(o.estado==='dormido')t.idle=1;else if(o.estado==='despertando'){wake=1;if(c.est!=='despertando'){A.wake.reset().play();A.wake.timeScale=CLIPS.wake.dur/Math.max(.3,o.tDesp||1);}}
-  else if(o.cerca)t.attack=1;else if(!anda)t.stand=1;else if(o.estado==='deambula')t.walk=1;else t.run=1;
+  if(c.muerto){}else if(o.estado==='dormido')t.idle=1;else if(o.estado==='despertando'&&o.alerta){t.stand=1;if(c.est!=='despertando')c.fl=.6;} // ya despierto: se sobresalta y se queda quieto mirando
+  else if(o.estado==='despertando'){wake=1;if(c.est!=='despertando'){A.wake.reset().play();A.wake.timeScale=CLIPS.wake.dur/Math.max(.3,o.tDesp||1);}}
+  else if(o.cerca)t.attack=1;else if(!anda)t.stand=1;else if(o.estado==='deambula'||o.estado==='investiga')t.walk=1;else t.run=1;
   if(o.cerca&&c.w.attack<.05)A.attack.time=0; // el zarpazo empieza desde el principio
   c.est=o.estado;
   for(const n of BUCLES){c.w[n]+=(t[n]-c.w[n])*Math.min(1,dt/TAU[n]);A[n].setEffectiveWeight(c.w[n]);}
@@ -90,4 +91,5 @@ export function anima(inst,dt,o){const c=inst.ctl,A=inst.actions;if(!c||dt<=0)re
   suma(c.h.Spine,-freno-20*f,0,ladeo*.5);suma(c.h.Spine2,-8*f,14*f*c.fls,ladeo*.5);
   // la cabeza busca al jugador (o el ruido) antes que el cuerpo
   let m=0;if(o.estado!=='dormido'&&o.jx!==undefined){let d=Math.atan2(o.jx-o.x,o.jz-o.z)-o.ang;while(d>Math.PI)d-=6.2831853;while(d<-Math.PI)d+=6.2831853;m=THREE.MathUtils.clamp(d/R,-55,55);}
+  c.tt=(c.tt||0)+dt;if(o.mira&&!o.cerca)m=THREE.MathUtils.clamp(m+26*Math.sin(c.tt*1.7),-60,60); // buscando: la cabeza barre de un lado a otro
   c.mira+=(m-c.mira)*Math.min(1,dt*6);suma(c.h.Neck,0,c.mira*.4,0);suma(c.h.Head,-14*f,c.mira*.6,0);}

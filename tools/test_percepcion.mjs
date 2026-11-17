@@ -32,6 +32,13 @@ const p1 = partida(), p2 = partida(); ok(p1 === p2 && p1.includes('persigue'), '
 { const z = zb('z0', 0, 0, 180), j = J(0, -2.5, { agachado: true }), M = mundo([z], j); corre(M, 2, i => { if (i % 24 === 0) sonido(j.x, j.z, R.agachado, 'j1'); }); ok(z.estado === 'dormido', 'pasar agachado a 2,5 m por detrás no lo despierta');
   corre(M, 1, i => { if (i % 24 === 0) sonido(j.x, j.z, R.andar, 'j1'); }); ok(z.estado !== 'dormido', 'andando a 2,5 m lo despierta por el oído'); corre(M, 6); ok(M.golpes > 0, 'llega hasta el jugador y golpea (' + M.golpes + ' golpes)'); }
 { const z = zb('z0', 0, -20), M = mundo([z], J(0, 0)); sonido(0, 0, R.disparo, 'j1'); corre(M, .3); ok(z.estado === 'despertando' && z.obj[0] === 0 && z.obj[1] === 0, 'un disparo a 20 m lo despierta y va al origen del ruido'); }
+// reacción al ruido (20 nov): se para y mira (despertando) → camina con cautela hasta el origen (investiga) → si no ve a nadie, deambula; si lo ve, persigue
+{ const z = zb('z0', 0, 0, 180), j = J(30, 30), M = mundo([z], j); sonido(0, -12, R.disparo, 'j1'); const est = []; corre(M, 24, i => { if (i % 30 === 0) est.push(z.estado); }); // 12 m a paso cauteloso ≈ 15 s
+  ok(est[1] === 'despertando' && est.includes('investiga') && !est.includes('persigue') && est[est.length - 1] === 'deambula', 'ruido sin jugador a la vista: se para, investiga y acaba deambulando, sin perseguir (' + [...new Set(est)] + ')');
+  ok(Math.abs(z.z + 12) < 4.5, 'llega a las inmediaciones del origen del ruido (z = ' + z.z.toFixed(1) + ')'); }
+{ const z = zb('z0', 0, 0, 180), j = J(0, -12), M = mundo([z], j); sonido(0, -12, R.disparo, 'j1'); const est = []; corre(M, 14, i => { if (i % 30 === 0) est.push(z.estado); });
+  ok(est.includes('investiga') && est.includes('persigue'), 'investiga y, al llegar a ver al jugador, persigue (' + [...new Set(est)] + ')'); }
+{ const z = zb('z0', 0, 0, 180), M = mundo([z], J(40, 40)); z.estado = 'deambula'; z.obj = [0, 0]; sonido(0, -6, R.disparo, 'j1'); corre(M, .5); ok(z.estado === 'despertando' && z.alerta === true, 'deambulando, un ruido lo sobresalta sin clip de despertar'); }
 // disparadores
 { initDisparadores([{ id: 'd1', cuando: { t: 'roto', obj: 'c' }, hacer: [{ t: 'mensaje', txt: 'a' }] }, { id: 'd2', cuando: { t: 'zona', zona: 'e' }, hacer: [{ t: 'mensaje', txt: 'b' }] }]); let roto = false; const m = { j: { x: 0, z: 0 }, zonas: [{ id: 'e', rect: [-4, -38, 4, -30] }], roto: () => roto, abierta: () => false };
   const a = pasoDisparadores(m).length; roto = true; const b = pasoDisparadores(m).length, c = pasoDisparadores(m).length; m.j.z = -32; const d = pasoDisparadores(m).length; m.j.z = 0; pasoDisparadores(m); m.j.z = -33; const e = pasoDisparadores(m).length;

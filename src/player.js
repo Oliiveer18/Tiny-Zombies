@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { instance, play } from './assets.js';
-import { input } from './input.js'; import { MODELS } from './models.config.js'; import { VEL_H } from './anim_humano.js'; import { sonido, R } from './ruido.js';
+import { input } from './input.js'; import { MODELS } from './models.config.js'; import { VEL_H, creaCapa, capa } from './anim_humano.js'; import { sonido, R } from './ruido.js';
 import { obstacles, FIELD } from './world.js';
 import { wp } from './weapons.js'; import { CAM } from './renderer.js';
 // Velocidades (unidades/s). Tiny original: 4.2 / 7 con cámara a 16.4; con la cámara a 10.1 se ajustan para que la velocidad en pantalla sea parecida.
@@ -14,12 +14,11 @@ export const topSpeed=()=>MOVE.top*CW*K()*MOVE.mult*CAM.vel; // velocidad máxim
 const vel=new THREE.Vector2();
 export const player={id:'j1',x:0,z:0,hp:100,stam:100,exhausted:false,aimX:0,aimZ:-1,ax:0,az:-6,inst:null,t:0,hurt:0,shootT:0,moving:false};
 const ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),0),hit=new THREE.Vector3();
-export function initPlayer(scene){player.inst=instance('player');player.base=player.inst.body.scale.x;scene.add(player.inst.root);
+export function initPlayer(scene){player.inst=instance('player');if(GEN)creaCapa(player.inst);player.base=player.inst.body.scale.x;scene.add(player.inst.root);
   {const b=new THREE.Box3().setFromObject(player.inst.root);player.alto=(b.max.y-b.min.y)*MOVE.size||1.5;} // altura real en el mundo (para medir su tamaño en pantalla)
-  const ring=new THREE.Mesh(new THREE.RingGeometry(.22,.3,20),new THREE.MeshBasicMaterial({color:0xff5a3a,transparent:true,opacity:.8,depthTest:false}));
+  const ring=new THREE.Mesh(new THREE.RingGeometry(.07,.11,16),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.7,depthTest:false})); // retícula mínima: solo se ve mientras se apunta (el aro naranja se retiró, 20 nov)
   ring.rotation.x=-Math.PI/2;ring.renderOrder=9;scene.add(ring);player.reticle=ring;
-  const aro=new THREE.Mesh(new THREE.RingGeometry(.40,.45,40),new THREE.MeshBasicMaterial({color:0xbfe6ff,transparent:true,opacity:.55,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-4,polygonOffsetUnits:-4})); // aro del jugador (PAQ-01): localiza al jugador; con prueba de profundidad, así queda por debajo del personaje
-  aro.rotation.x=-Math.PI/2;aro.position.y=.03;aro.renderOrder=2;aro.castShadow=aro.receiveShadow=false;scene.add(aro);player.aro=aro;}
+}
 export function resetPlayer(){Object.assign(player,{x:0,z:0,hp:100,stam:100,exhausted:false,hurt:0});vel.set(0,0);player.crouch=false;input.crouch=false;if(player.inst){player.inst.blendReady=false;player.inst.dead=false;}}
 export function updatePlayer(dt,cam){
   const m=input.move.clone();if(m.length()>1)m.normalize();
@@ -49,7 +48,7 @@ export function updatePlayer(dt,cam){
   {const b=player.inst.body,tgt=player.crouch?1:0;player.cr=(player.cr||0)+(tgt-(player.cr||0))*Math.min(1,dt*10); // PROVISIONAL sin clip de agachado: encoge y se inclina
    {const S=K();b.scale.set(S,S*(1-.2*player.cr),S);}b.rotation.x=.22*player.cr;}
   const r=player.inst.root;r.position.set(player.x,0,player.z);r.rotation.y=Math.atan2(player.aimX,player.aimZ)-(GEN?0:Math.PI/2*((player.inst.w&&player.inst.w.shoot_side)||0)); // el clip «shoot_side» apunta hacia el costado del modelo (+X): se gira 90° para que el arma vaya hacia donde apuntas
-  player.reticle.position.set(player.ax,.05,player.az);player.aro.position.set(player.x,.03,player.z);
+  player.reticle.position.set(player.ax,.05,player.az);player.reticle.visible=!!(input.fire||input.aimActive||input.aimHold); // sin aro alrededor del jugador (retirado, 20 nov)
   // animación: clips si existen, si no código
   player.t+=dt*(run?14:9);player.shootT=Math.max(0,player.shootT-dt);player.hurt=Math.max(0,player.hurt-dt);
   if(player.inst.mixer){
@@ -74,6 +73,7 @@ export function updatePlayer(dt,cam){
     if(a.shoot_back)a.shoot_back.timeScale=C(speed/(CB*K()),.5,1.6); // clip «inplace»: ya va hacia atrás por sí mismo
     if(a.shoot_fwd)a.shoot_fwd.timeScale=C(speed/(CF*K()),.7,1.6);
     inst.mixer.update(dt);
+    if(GEN)capa(inst,dt,{v:speed,vtop:topSpeed(),ang:Math.atan2(player.aimX,player.aimZ),disp:player.shootT/.1,corre:run}); // capa por código: inclinaciones al arrancar, frenar y girar, y retroceso del arma
     if(a.shoot_side&&!GEN){const ss=a.shoot_side;if((inst.w.shoot_side||0)<.02)ss.time=.6;else if(ss.time>2.6)ss.time=1.25;} // el clip dura 4 s (sube el arma, apunta, la baja): se queda en la parte de apuntar, sin bajar los brazos cada 4 s
   }
   else{player.inst.body.position.y=player.moving?Math.abs(Math.sin(player.t))*.07:0;player.inst.body.rotation.x=player.moving?.12:0;player.inst.body.rotation.z=Math.sin(player.t)*(player.moving?.08:0);}

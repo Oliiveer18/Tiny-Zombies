@@ -58,31 +58,23 @@ export function updateZombies(dt){
 
 // ---------- Mapa de prueba «vivo» (PAQ-03) ----------
 // La lógica está en percepcion.js (pura). Aquí solo se le pasa el mundo y se dibuja lo que decide: el aspecto no interviene.
-const CLIPS=['idle','wake','walk','run','attack','hit','die'],DE={dormido:'idle',despertando:'wake',deambula:'walk',persigue:'run'};
+const CLIPS=['idle','wake','walk','run','attack','hit','die'],DE={dormido:'idle',despertando:'wake',investiga:'walk',deambula:'walk',persigue:'run'};
 // clip lógico → el que tenga el modelo (si falta, el anterior de la lista; si no hay ninguno, null = movimiento por código)
 function clip(inst,n){for(let i=CLIPS.indexOf(n);i>=0;i--)if(inst.actions[CLIPS[i]])return CLIPS[i];return null;}
-const M={zs:zombies,j:{x:0,z:0,agachado:false,corre:false,vivo:true},muros:LUGAR.muros,obst:obstacles,ruido,tick:0,semilla:WORLD_SEED,velJ:1,golpe:z=>state.onHurt?.(z.t.dmg),aviso:z=>{z.av=.8;}};
-function pasoVivo(dt){M.j.x=player.x;M.j.z=player.z;M.j.agachado=!!player.crouch;M.j.corre=!!player.corre;M.j.vivo=player.hp>0&&!player.caido;M.tick=tickRuido();M.velJ=topSpeed();paso(M,dt);aroRuido(dt);}
-export function cuenta(){const c={dormido:0,despertando:0,persigue:0,deambula:0};for(const z of zombies)if(z.alive&&c[z.estado]!==undefined)c[z.estado]++;return c;}
+const M={zs:zombies,j:{x:0,z:0,agachado:false,corre:false,vivo:true},muros:LUGAR.muros,obst:obstacles,ruido,tick:0,semilla:WORLD_SEED,velJ:1,golpe:z=>state.onHurt?.(z.t.dmg)};
+function pasoVivo(dt){M.j.x=player.x;M.j.z=player.z;M.j.agachado=!!player.crouch;M.j.corre=!!player.corre;M.j.vivo=player.hp>0&&!player.caido;M.tick=tickRuido();M.velJ=topSpeed();paso(M,dt);}
+export function cuenta(){const c={dormido:0,despertando:0,investiga:0,persigue:0,deambula:0};for(const z of zombies)if(z.alive&&c[z.estado]!==undefined)c[z.estado]++;return c;}
 // disparador «despertar»: pone en despertando a los dormidos de una zona, con el jugador como objetivo
 export function despertarZona(rect){for(const z of zombies)if(z.alive&&z.estado==='dormido'&&z.x>=rect[0]&&z.x<=rect[2]&&z.z>=rect[1]&&z.z<=rect[3])despierta(z,M,[player.x,player.z]);}
-let matAv=null,geoCono=null,matCono=null,aro=null,aroT=9,aroR=0,aroTick=-1;const DBG=typeof location!=='undefined'&&new URLSearchParams(location.search).has('debug');
-function aviso(z){if(!matAv){const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d');g.font='bold 58px sans-serif';g.textAlign='center';g.textBaseline='middle';g.lineWidth=8;g.strokeStyle='#000';g.strokeText('!',32,34);g.fillStyle='#ffd21e';g.fillText('!',32,34);
-    matAv=new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false,transparent:true});} // una sola textura y un solo material para todos
-  z.spr=new THREE.Sprite(matAv);z.spr.scale.setScalar(.7);z.spr.renderOrder=10;scene.add(z.spr);}
+let geoCono=null,matCono=null;const DBG=typeof location!=='undefined'&&new URLSearchParams(location.search).has('debug');
 function cono(z){if(!geoCono){const p=[0,0,0];for(let i=0;i<=12;i++){const a=(i/12-.5)*P.cono*Math.PI/180;p.push(Math.sin(a),0,Math.cos(a));}p.push(0,0,0);geoCono=new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(p,3));matCono=new THREE.LineBasicMaterial({color:0xffe060,transparent:true,opacity:.5});}
   z.cono=new THREE.Line(geoCono,matCono);z.cono.position.y=.06;z.inst.root.add(z.cono);}
 function dibujaVivo(z,dt){const r=z.inst.root,b=z.inst.body,e=z.estado;r.position.set(z.x,0,z.z);r.rotation.y=Math.atan2(z.gx,z.gz);
-  if(z.av>0){z.av-=dt;if(!z.spr)aviso(z);z.spr.visible=!z.lejos;{const c=MODELS[z.t.model];z.spr.position.set(z.x,c.gen?c.scale*1.15:1.7*(c.scale||1),z.z);}}else if(z.spr)z.spr.visible=false;
   if(DBG){if(!z.cono)cono(z);z.cono.scale.setScalar(P.vista);}
   if(z.lejos)return;
-  if(z.inst.ctl){anima(z.inst,dt,{estado:e,cerca:e==='persigue'&&z.cerca,x:z.x,z:z.z,ang:r.rotation.y,tDesp:z.tDesp,jx:e==='persigue'&&M.j.vivo?player.x:z.obj[0],jz:e==='persigue'&&M.j.vivo?player.z:z.obj[1]});return;}
+  if(z.inst.ctl){anima(z.inst,dt,{estado:e,alerta:z.alerta,cerca:e==='persigue'&&z.cerca,x:z.x,z:z.z,ang:r.rotation.y,tDesp:z.tDesp,jx:e==='persigue'&&M.j.vivo?player.x:z.obj[0],jz:e==='persigue'&&M.j.vivo?player.z:z.obj[1],mira:e==='deambula'||e==='investiga'});return;}
   if(z.inst.mixer){const c=clip(z.inst,e==='persigue'&&z.cerca?'attack':DE[e]);if(c)play(z.inst,c);z.inst.mixer.update(dt);if(c)return;}
   // sin clips (relleno): dormido inclinado y quieto; despertando se endereza; andando se balancea como en Tiny
-  const mov=e==='persigue'&&!z.cerca?1:e==='deambula'&&z.pausa<=0?.5:0;z.ph+=dt*(mov*8+1);
+  const mov=e==='persigue'&&!z.cerca?1:e==='investiga'?.5:e==='deambula'&&z.pausa<=0?.5:0;z.ph+=dt*(mov*8+1);
   b.position.y=mov?Math.abs(Math.sin(z.ph))*.08*mov:0;b.rotation.z=mov?Math.sin(z.ph)*.12:0;
   b.rotation.x=e==='dormido'?.45:e==='despertando'?.45*(1-Math.min(1,z.te/Math.max(z.tDesp,.01))):z.cerca?Math.sin(z.ph*6)*.25+.2:mov?.25:.12;}
-// Medidor de ruido: aro fino en el suelo con el radio del último ruido del jugador (se abre en 0,15 s y se desvanece en 0,6 s)
-function aroRuido(dt){if(!aro){aro=new THREE.Mesh(new THREE.RingGeometry(.985,1,64),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.25,depthWrite:false}));aro.rotation.x=-Math.PI/2;aro.position.y=.04;aro.visible=false;scene.add(aro);}
-  for(let i=ruido.length-1;i>=0;i--){const q=ruido[i];if(q.tick<=aroTick)break;if(q.quien==='j1'){aroTick=q.tick;aroT=0;aroR=q.radio;aro.position.x=q.x;aro.position.z=q.z;break;}}
-  aroT+=dt;if(aroT>.75||aroR<=0){aro.visible=false;return;}aro.visible=true;aro.scale.setScalar(aroR*Math.min(1,aroT/.15));aro.material.opacity=.25*(1-Math.max(0,(aroT-.15)/.6));}
