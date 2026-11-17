@@ -12,6 +12,7 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 | 1.5 | Respuestas al usuario en español, breves, sin tecnicismos; resumen fácil de cada entrega | U |
 | 1.6 | Oli y Lali no existen en este juego | U |
 | 1.7 | Sin cooperativo por ahora. Online al final (grupo pequeño, mundo compartido), pero todo se diseña ya para ello | U · 15 nov |
+| 1.8 | **Por ahora Fable trabaja sin Sonnet y también implementa.** Se mantiene el método: paquetes completos, traspaso con criterios y pruebas antes de programar, documentación al día | U · 17 nov (tarde); matiza 1.2 hasta nuevo aviso |
 
 ## 2. Cámara y presentación
 | # | Decisión | Quién · fecha |
@@ -20,12 +21,15 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 | 2.2 | Lo que se ve con ella: 14 m de fondo (5,4 m por detrás del jugador y 8,7 m por delante). De ancho, en **vertical** ≈ 4,6 m abajo y 7,1 m arriba; en horizontal ≈ 21 m y 33 m. Es la medida para diseñar lugares y combates | F · 17 nov (cálculo; corregido tras ver la captura en vertical) |
 | 2.3 | Los muros no pueden tapar al jugador: el muro que queda entre la cámara y él se vuelve translúcido | F · 17 nov |
 | 2.4 | Sin niebla general. Luz que cambia con hora y clima. Mundo plano | U · 15-16 nov |
-| 2.5 | **Calidad máxima con rendimiento fluido.** Requisitos: ≥ 58 fps y peor cuadro ≤ 25 ms en iPhone 14. No se recortan polígonos, texturas, sombras ni detalle para cumplir un número arbitrario | U · 17 nov |
+| 2.5 | **Calidad máxima con rendimiento fluido.** Objetivos en iPhone 14: **mínimo 30 fps · objetivo sostenido 40 fps · meta ideal 60 fps** (usuario, 17 nov; los 60 no son obligatorios si exigen sacrificar calidad visual). Peor cuadro ≤ 33 ms (equivale al mínimo de 30; cifra de Fable). No se recortan polígonos, texturas, sombras ni detalle para cumplir un número arbitrario | U · 17 nov (sustituye a «≥ 58 fps y ≤ 25 ms») |
 | 2.6 | **El tope de 40 000 triángulos queda retirado.** Era de escena completa, solo existía como texto y como aviso de color en el medidor, venía heredado de otro proyecto y nunca se probó. Triángulos, llamadas y memoria pasan a ser indicadores | U + F · 17 nov (cierra la duda de las sombras) |
 | 2.7 | Los presupuestos de escena saldrán de una prueba de carga en el móvil (PAQ-G1), fijados al 60 % del techo medido. Hasta entonces no hay presupuesto numérico | F · 17 nov |
 | 2.8 | Nadie rebaja calidad por su cuenta: si falta rendimiento, Sonnet abre un bloqueo; las rebajas las decide el usuario con dos capturas. Antes se elimina el desperdicio que no se ve. Orden completo en `docs/CALIDAD_GRAFICA.md` §4 | F · 17 nov |
 | 2.9 | **Orientación oficial: VERTICAL** (referencia para diseñar cámara, HUD, mapas y combates y para todas las pruebas). **Reversible:** se reevalúa si las pruebas de jugabilidad y visibilidad lo justifican; por eso nada se construye de forma que impida el horizontal (el juego debe seguir funcionando al girar el móvil) | U · 17 nov |
 | 2.10 | Criterios de diseño en vertical: se ven ≈ 4,6-7,1 m de ancho × 14 m de fondo, así que el juego se lee **de abajo arriba**. Lugares y combates se organizan en profundidad (lo importante llega por delante o por detrás del jugador, no por los lados); pasos de ≥ 3 m de ancho; nada importante a menos de 1 m del borde lateral de lo visible; los mandos ocupan el tercio inferior, así que la zona útil de juego es del centro hacia arriba; avisos de peligro lateral fuera de pantalla (marcador en el borde) cuando haya enemigos que disparen | F · 17 nov
+| 2.11 | Los presupuestos de escena (2.7) se calculan sobre el **objetivo de 40 fps**: 60 % de la carga con la que el móvil baja a 40. **Aún no se fijan cifras:** la primera prueba de carga (v0.1.91) tiene resultados contradictorios entre sí (`CALIDAD_GRAFICA.md` §2b) y se repite con PAQ-G2 | F · 17 nov |
+| 2.12 | Los ajustes gráficos por defecto del móvil **no se cambian** hasta tener PAQ-G2. «Resolución 3 + MSAA 4» queda descartada como opción por defecto (33 fps con la escena vacía). Cualquier cambio de ajuste lo elige el usuario comparando capturas en su móvil | F · 17 nov |
+| 2.13 | Optimización de personajes solo por vías que no cambian lo que se ve: no dibujar ni sombrear los que están fuera de pantalla, detalle acorde a su tamaño en píxeles (comprobado con capturas iguales), animación a media frecuencia en los lejanos | F · 17 nov |
 
 ## 3. Arte y personajes
 | # | Decisión | Quién · fecha |
@@ -65,6 +69,7 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 - Estilo «chunky toy-like» de las recetas 003, 005 §7, 006 §4 y 007 §8, y la prueba «semi-realista» → 3.1-3.3.
 - Mapa compacto de 14 × 20 m (16 nov) y mapa largo de la 007 §2 → 4.2.
 - Tope de 40 000 triángulos (norma 2 antigua) → 2.5-2.8.
+- «≥ 58 fps y peor cuadro ≤ 25 ms» como requisito → 2.5 (30 / 40 / 60).
 - Cifras de triángulos de la 003 §1, la 006 §3, el informe 008 §4.2 y las «jugador 2 500 / zombi 600» del 17 nov → 3.12.
 - «Personaje ≈ 49 píxeles» y «se ven 21-33 m de ancho» como criterio único (calculados para horizontal) → 2.1, 2.2, 2.9, 2.10.
 - Cámaras A, B, C y «cerca» de R1 → descartadas (2.1).

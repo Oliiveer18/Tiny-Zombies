@@ -47,15 +47,19 @@ let texT=0,texV=0; // memoria estimada de texturas en MB: ancho × alto × 4 byt
 function texMB(){const n=performance.now();if(n-texT<2000)return texV;texT=n;const seen=new Set();let b=0;
   scene.traverse(o=>{if(!o.material)return;for(const m of [].concat(o.material))for(const k in m){const t=m[k];if(t&&t.isTexture&&!seen.has(t)){seen.add(t);const im=t.image;if(im&&im.width&&im.height)b+=im.width*im.height*4*(t.generateMipmaps||t.minFilter>1002?1.33:1);}}});
   texV=b/1048576;return texV;}
+let sesN=0,sesT=0,ses40=0,ses30=0;const sesH=new Uint32Array(100); // cuadros, ms totales, ms pasados por debajo de 40 y de 30 fps, e histograma de ms por cuadro
+function sesion(){if(sesN<60)return 'sesión: midiendo…';let k=Math.ceil(sesN*.01),b=99;while(b>0&&(k-=sesH[b])>0)b--; // b = ms del 1 % de cuadros más lentos
+  return `sesión ${(sesT/60000).toFixed(1)} min: media ${(sesN*1000/sesT).toFixed(0)} fps · 1 % peor ${(1000/Math.max(b,1)).toFixed(0)} fps\n  tiempo bajo 40 fps: ${(ses40*100/sesT).toFixed(0)} % · bajo 30: ${(ses30*100/sesT).toFixed(0)} %`;}
 export function debugStart(){if(!DEBUG)return;const n=performance.now();t0=n;
-  if(last&&n>6000){const d=n-last;frames++;acc+=d;hist.push([n,d]);if(d>worst)worst=d;}
+  if(last&&n>6000){const d=n-last;frames++;acc+=d;hist.push([n,d]);if(d>worst)worst=d;
+    if(d<1000){sesN++;sesT+=d;if(d>25)ses40+=d;if(d>33.4)ses30+=d;sesH[Math.min(99,d|0)]++;}} // resumen de sesión (pausas de más de 1 s no cuentan: es salir de la página)
   last=n;renderer.info.reset();}
 export function debugEnd(){if(!DEBUG)return;if(SYNC&&el&&el.style.display!=='none'&&performance.now()-syncT>500){syncT=performance.now();for(const f of SYNC)f();}const n=performance.now();cpu=n-t0;cpuMax=Math.max(cpuMax,cpu);
   while(hist.length&&n-hist[0][0]>5000)hist.shift();
   if(n-shown<500)return;shown=n;
   fps=acc?frames*1000/acc:0;frames=0;acc=0;
   worstWin=0;for(const h of hist)if(h[1]>worstWin)worstWin=h[1];
-  const i=renderer.info,tri=i.render.triangles,bad=fps<58||worstWin>25;
-  el.style.color=bad?'#f88':'#9f9';
-  el.textContent=`versión ${__BUILD__}\nfps ${fps.toFixed(0)}  (meta ≥58)\npeor cuadro 5 s ${worstWin.toFixed(1)} ms (meta ≤25)\nCPU cuadro ${cpu.toFixed(1)} ms (máx ${cpuMax.toFixed(1)})\ntriángulos ${tri} (todas las pasadas)\nllamadas ${i.render.calls}\ngeometrías ${i.memory.geometries} · texturas ${i.memory.textures} · memoria texturas ≈ ${texMB().toFixed(1)} MB\nzombis vivos ${state.alive}\ncámara ${Math.hypot(OFF.y,OFF.z).toFixed(1)} m · ${(Math.atan2(OFF.y,OFF.z)*57.3).toFixed(0)}° · personaje 1/${(1/Math.max(charFrac(),.001)).toFixed(1)} del alto`;
+  const i=renderer.info,tri=i.render.triangles;
+  el.style.color=fps<30?'#f88':fps<40||worstWin>33.4?'#fc6':'#9f9';
+  el.textContent=`versión ${__BUILD__}\nfps ${fps.toFixed(0)}  (mín 30 · objetivo 40 · ideal 60)\npeor cuadro 5 s ${worstWin.toFixed(1)} ms (meta ≤33)\n${sesion()}\nCPU cuadro ${cpu.toFixed(1)} ms (máx ${cpuMax.toFixed(1)})\ntriángulos ${tri} (todas las pasadas)\nllamadas ${i.render.calls}\ngeometrías ${i.memory.geometries} · texturas ${i.memory.textures} · memoria texturas ≈ ${texMB().toFixed(1)} MB\nzombis vivos ${state.alive}\ncámara ${Math.hypot(OFF.y,OFF.z).toFixed(1)} m · ${(Math.atan2(OFF.y,OFF.z)*57.3).toFixed(0)}° · personaje 1/${(1/Math.max(charFrac(),.001)).toFixed(1)} del alto`;
   cpuMax=0;}

@@ -1,5 +1,10 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## PAQ-G2 · Medición fiable (17 nov 2026, hecho por Fable)
+**Resumen fácil:** la prueba de carga ahora es más fiable: repite la escena normal varias veces para comprobar que el móvil no cambia de ritmo, mide las opciones de calidad con personajes en pantalla y separa qué parte de un personaje cuesta. Hay una prueba nueva de 10 minutos para ver si el móvil se calienta. El medidor usa los objetivos nuevos (30 / 40 / 60). El juego en sí no cambia. Para probar: `?carga` (2 min y medio) y `?carga=resistencia` (10 min); al acabar, «Copiar resultados» y pegar en el chat.
+- Detalle, pruebas y lo no comprobado: `coordinacion/TRASPASOS/PAQ-G2_medicion_fiable.md`. Análisis de la primera medición real: `docs/CALIDAD_GRAFICA.md` §2b.
+- Archivos: `src/carga.js`, `src/debug.js`, `src/renderer.js` (`calidadActual`).
+
 ## PAQ-G1b · Prueba de carga: arranque táctil e interfaz (17 nov 2026)
 **Resumen fácil:** la prueba de carga ya arranca al tocar el botón en el móvil (antes no hacía nada) y ahora se ve qué pasa: un panel arriba con cuenta atrás, barra de progreso y fps. Al acabar sale «Prueba completada» con la tabla entera en una pantalla: haz captura y envíasela a Fable. Hay botones Repetir, Copiar y Cerrar, y si algo falla te dice qué hacer. Abre el juego con `?carga` para probarlo.
 

@@ -3,15 +3,16 @@
 Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `coordinacion/LEEME.md`. El estado anterior a esta fecha está en `docs/archivo/CONTINUAR_hasta_2026-11-17.md`.
 
 ## Ahora mismo
-- **Le toca a: SONNET** → (1) **ART-1 parte 1** (corta: preparar el archivo para Mixamo) y después (2) **PAQ-03**. Ambos LISTOS.
-- **Le toca al usuario (no bloquea a Sonnet):**
-  1. **iPhone, prueba de carga:** abrir el juego con `?carga` al final de la dirección, en vertical, pulsar «Iniciar prueba» (debe aparecer arriba «PRUEBA EN CURSO» con cuenta atrás), no tocar nada ≈ 90 s y, al salir «Prueba completada», enviar a Fable la captura de la tabla. Debe verse v0.1.71 o superior. Sin modo de bajo consumo.
-  2. **iPhone, jugar 5 minutos el mapa de prueba con `?debug`** (panel de barras cerrado): mover, apuntar, disparar, granada, empujar una caja con «Usar», romper el candado a tiros o forzarlo, abrir la reja. Enviar una captura del medidor y decir si algún botón estorba o cuesta pulsarlo. Girar el móvil una vez para ver que en horizontal nada se rompe.
-  3. **Ordenador, Mixamo (gratis, ≈ 20 min):** cuando Sonnet entregue ART-1 parte 1, seguir la parte 2 de `coordinacion/TRASPASOS/ART-1_prueba_mixamo.md`.
-  4. **Elegir el aspecto del primer personaje** (paleta A, B o C de 009 §3, o cambios). No corre prisa: se necesita al aceptar ART-1.
-- **Fable:** al próximo «Sigue», revisar lo entregado, fijar presupuestos con la captura de `?carga` y escribir el traspaso de PAQ-A1 (y el de ART-2 cuando ART-1 esté aceptada).
-- **Orientación oficial: VERTICAL** (usuario, 17 nov; reversible). Pruebas en vertical 390 × 844 y comprobación en horizontal.
-- **Calidad gráfica:** sin tope de triángulos. Manda `docs/CALIDAD_GRAFICA.md`: calidad máxima, límites solo por medición. Nadie rebaja calidad por su cuenta.
+- **Quién trabaja:** solo **Fable** (dirige e implementa), por decisión del usuario del 17 nov. Sonnet queda en pausa.
+- **Objetivos de rendimiento (usuario, 17 nov):** mínimo 30 fps · **sostenido 40** · ideal 60, sin sacrificar calidad visual.
+- **Le toca al usuario (iPhone, en vertical, sin modo de bajo consumo; en cada una, al acabar, «Copiar resultados» y pegar en el chat):**
+  1. `?carga` → prueba completa nueva (≈ 2 min 30 s).
+  2. `?carga=inv` → la misma en orden inverso (≈ 2 min 30 s). Mejor tras dejar el móvil reposar un par de minutos.
+  3. `?carga=resistencia` → 10 minutos con carga fija. Sin tocar la pantalla y sin cargador si es posible.
+  4. Jugar 5 minutos el mapa de prueba con `?debug` y enviar una captura del medidor (ahora incluye el resumen de la sesión). Decir si algún botón estorba.
+  5. Cuando pueda: parte 2 de ART-1 en un ordenador (Mixamo) y elegir el aspecto del personaje (009 §3).
+- **Le toca a Fable al próximo «Sigue»:** con esos resultados, fijar presupuestos y hacer PAQ-G3 (optimización sin pérdida). Mientras no lleguen: ART-1 parte 1 y PAQ-03.
+- **Orientación oficial: VERTICAL** (reversible). **Calidad gráfica:** sin tope de triángulos; nadie rebaja calidad sin que lo decida el usuario (`docs/CALIDAD_GRAFICA.md`).
 
 ## Paquetes de código (Sonnet los toma en este orden)
 | Orden | Paquete | Estado | Traspaso | Notas |
@@ -20,6 +21,8 @@ Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `co
 | — | PAQ-G1 Prueba de carga gráfica | **ACEPTADO** (herramienta) · **falta la captura `?carga` del usuario** | `coordinacion/TRASPASOS/PAQ-G1_prueba_de_carga.md` | Su resultado fija los presupuestos reales |
 | — | PAQ-02 Interacción y reja | **ACEPTADO** (Fable, 17 nov) · falta validar el tacto en iPhone | `coordinacion/TRASPASOS/PAQ-02_interaccion_y_reja.md` | |
 | — | PAQ-G1b La prueba de carga arranca en táctil + interfaz de progreso | **ACEPTADO** (Fable, 17 nov) · falta validar en iPhone | `coordinacion/TRASPASOS/PAQ-G1b_interfaz_prueba_de_carga.md` | En el móvil, `?carga` NO arrancaba antes de este paquete |
+| — | PAQ-G2 Medición fiable (`?carga` v2, resistencia, resumen de sesión, objetivos 30/40/60) | **HECHO** (Fable, 17 nov) · falta ejecutarlo en el iPhone | `coordinacion/TRASPASOS/PAQ-G2_medicion_fiable.md` | |
+| 0 | PAQ-G3 Optimización sin pérdida | PLANIFICADO | — (`CALIDAD_GRAFICA.md` §2b) | Espera los resultados de PAQ-G2 en el iPhone |
 | 1 | ART-1 parte 1 · archivo para Mixamo | **LISTO** | `coordinacion/TRASPASOS/ART-1_prueba_mixamo.md` | Corta. Al acabar pasa a «ESPERA AL USUARIO (parte 2)» y Sonnet sigue con PAQ-03 |
 | 2 | PAQ-03 Ruido y zombis que despiertan | **LISTO** | `coordinacion/TRASPASOS/PAQ-03_ruido_y_zombis.md` | |
 | 3 | ART-1 parte 3 · convertir lo de Mixamo | ESPERA AL USUARIO | mismo traspaso | Cuando el usuario suba los archivos |
@@ -40,7 +43,7 @@ Nota: hoy solo hay un paquete LISTO por delante además de ART-1 (la regla pide 
 | ART-2 Personaje de referencia | BLOQUEADO | ART-1 ACEPTADA + aspecto elegido por el usuario → Fable escribe el texto para Meshy → el usuario genera (créditos en pausa hasta entonces). Especificación: 009 §3-§4 |
 | ART-4 Resto de personajes | PLANIFICADO | PAQ-A3 + modelos |
 | ART-5 Objetos y escala | PLANIFICADO | ART-2 + modelos |
-| MED Medición en iPhone 14 | PRIMERA HECHA (17 nov, v0.1.81) | 58 fps · CPU 2,0 ms · 30 404 triángulos · peor cuadro 27 ms con el panel abierto. **Pendiente:** repetir con el panel cerrado en la versión actual y la prueba de carga. Tabla en `coordinacion/mediciones/MOVIL_REFERENCIA.md` |
+| MED Medición en iPhone 14 | DOS HECHAS (17 nov: v0.1.81 y prueba de carga v0.1.91) | 58 fps · CPU 2,0 ms · 30 404 triángulos · peor cuadro 27 ms con el panel abierto. **Pendiente:** repetir con el panel cerrado en la versión actual y la prueba de carga. Tabla en `coordinacion/mediciones/MOVIL_REFERENCIA.md` |
 
 ## Hecho y en `main`
 - Base de Tiny en módulos, medidor `?debug`, ids, semilla y reloj (A0a-A0c).
@@ -52,7 +55,7 @@ Nota: hoy solo hay un paquete LISTO por delante además de ART-1 (la regla pide 
 - Diseños de Fable disponibles: 001-009 en `coordinacion/RESPUESTAS_FABLE/`.
 
 ## Lo que NO es verdad todavía (para no darlo por hecho)
-- Solo hay UNA medición en el iPhone (escena de relleno). El techo real del móvil no se conoce hasta pasar la prueba de carga (PAQ-G1).
+- La primera prueba de carga real (v0.1.91) da una idea general, pero su parte de calidad es contradictoria y no mide el rendimiento sostenido: **aún no hay presupuestos**. Se repite con la versión 2 (PAQ-G2).
 - Zombis y objetos son relleno (cápsulas y cajas). Solo el jugador es un modelo real, y su estilo está descartado.
 - No hay NPC, ni zombis que reaccionen al ruido (en el mapa de prueba siguen quietos), ni sonido. La reja y el botón «Usar» existen pero no se han probado en el iPhone.
 - La animación sigue siendo la antigua (mezcla de cuerpo entero con 8 clips de Meshy). El sistema nuevo (009) está diseñado, no programado. No se ha comprobado todavía nada con Mixamo.

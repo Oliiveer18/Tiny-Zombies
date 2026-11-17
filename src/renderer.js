@@ -25,4 +25,5 @@ export function setCalidad({res,msaa:m,bloomOn}){
   if(res!==undefined){renderer.setPixelRatio(res);comp.setPixelRatio(res);comp.setSize(innerWidth,innerHeight);}
   if(m!==undefined){for(const t of [comp.renderTarget1,comp.renderTarget2]){t.samples=m;t.dispose();}}
   if(bloomOn!==undefined)bloom.enabled=bloomOn;}
-export const calidadActual=()=>({res:renderer.getPixelRatio(),msaa:comp.renderTarget1.samples,bloomOn:bloom.enabled});
+export const calidadActual=()=>({res:renderer.getPixelRatio(),msaa:comp.renderTarget1.samples,bloomOn:bloom.enabled,
+  msaaGL:comp.renderTarget1.samples>0===[comp.renderTarget1,comp.renderTarget2].some(t=>!!renderer.properties.get(t).__webglMultisampledFramebuffer)}); // msaaGL: el antialias que hay de verdad en la tarjeta coincide con el pedido

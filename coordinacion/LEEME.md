@@ -2,6 +2,8 @@
 
 El usuario trabaja con dos chats que no se ven entre sí. **Todo lo que uno necesita saber del otro está escrito en el repositorio.** El usuario no transmite información: solo abre el chat y dice **«Sigue»** (o «Lee CLAUDE.md y sigue»). Cada chat sabe qué hacer leyendo `docs/CONTINUAR.md`.
 
+> **Aviso (17 nov, tarde):** por decisión del usuario, y hasta que diga otra cosa, **Fable trabaja sin Sonnet y también implementa** (DECISIONES 1.8). El resto de este documento sigue valiendo como método: paquetes completos, traspaso con criterios y pruebas, documentación al día. Donde dice «Sonnet», léase «quien implemente».
+
 ## 1. Papeles
 | | **Fable (dirección)** | **Sonnet (implementación)** |
 |---|---|---|
