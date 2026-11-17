@@ -4,6 +4,41 @@
 
 Decidido por el usuario el 16 nov (22:25): **estilizado de juego móvil** (formas simplificadas y fuertes, texturas pintadas; ni fotorrealista ni juguete puro; la prueba «semi-realista» dio una foto y se descartó), mapa **compacto** y **modelos primero**. Esto sustituye el «chunky toy-like» de las recetas 003, 005 §7, 006 §4 y 007 §8 (las cifras de triángulos, texturas y huesos de la 006 siguen valiendo). Arte propio: no copiar colores, ropa ni rótulos del juego de referencia.
 
+## ★ VIGENTE · ZOMBI NORMAL v1 (17 nov, Fable · diseño 010) — pendiente del visto bueno del usuario al gasto
+Sustituye al «ZOMBI A» de más abajo (queda como historial). Nada de corredor, tanque ni variantes hasta aprobar este.
+
+### Ficha del modelo
+| | Especificación |
+|---|---|
+| Quién es | Hombre adulto, civil, convertido hace poco. Creíble e inquietante; ni monstruo de dibujos ni foto |
+| Proporciones | **5 cabezas de alto**, cabeza de tamaño normal. Complexión media, brazos un poco largos, manos algo grandes. 1,50 m en el juego |
+| Cabeza | Pómulos y cuencas marcados, mandíbula y dientes visibles, pelo corto, oscuro y apelmazado (da contraste visto desde arriba). Rasgos con volumen, no solo pintados |
+| Piel | Gris verdosa apagada, **más clara que el suelo** |
+| Ropa | Sudadera **azul grisáceo** (color identificativo del tipo normal), ceñida y rota; vaqueros grises gastados; una zapatilla y un pie descalzo. Sin capucha ni nada que cuelgue más de un palmo |
+| Heridas | Pocas y grandes: mancha de sangre rojo oscuro en un hombro (se ve desde la cámara) y mordedura en un antebrazo |
+| Pose | **T estricta**, erguido, simétrico, brazos horizontales, piernas algo separadas, dedos un poco abiertos. La postura encorvada la pondrá la animación |
+| Geometría | Una sola malla cerrada, sin piezas sueltas. Modelo alto guardado; versión de juego 5 000-8 000 triángulos (la saco yo) |
+| Textura | Color + relieve (PBR), 2K, mate, sin metal. Yo la rehago con `tools/rehacer_textura.mjs` |
+| Mixamo | Se descarga **sin esqueleto**. Requisitos: T, brazos y piernas separados del cuerpo, manos sin fundirse, nada colgando. Esqueleto previsto «No Fingers (25)» |
+
+### Paso 1 · Imagen (Text to Image) — 796 caracteres, pegar entero
+```
+3D rendered stylized game character, full body, front view, strict T-pose: arms straight out horizontally, palms down, fingers slightly spread, legs slightly apart, standing fully upright. Plain light grey background, soft even studio lighting. Modern stylized mobile action game look: clean strong shapes, hand-painted matte textures. Adult proportions, 5 heads tall, normal-sized head. NOT photorealistic, NOT a toy, NOT cartoon, NOT a 2D illustration. Zombie, former civilian man, medium build: pale grey-green skin, sunken dark eye sockets, sharp cheekbones, exposed teeth, short matted dark hair. Tight torn slate-blue sweatshirt, large dark red bloodstain on one shoulder, big bite wound on one forearm, faded grey jeans, one worn sneaker, one bare foot. No weapon, no loose cloth, no text.
+```
+Ajustes: modelo de imagen de más calidad (Nano Banana Pro o equivalente) · **Pose: T-Pose** · 4 imágenes · estilo predeterminado. **≈ 36 créditos** (4 × 9; con el modelo medio, 4 × 6 = 24).
+Elegir la que cumpla: brazos realmente horizontales y separados · cuerpo entero sin cortar · parece un modelo 3D, no un dibujo ni una foto · cabeza no grande · azul de la sudadera claro de leer · manos con dedos distinguibles. **Enseñármelas antes de seguir**; si ninguna vale, ajusto el texto (máximo 2 tandas).
+
+### Paso 2 · Image to 3D (solo con la imagen aprobada)
+Meshy 6 (o el más reciente) · Resolución «Estándar» · **Textura apagada** · **T-Pose activada** · Mejora de imagen activada · Simetría automática · licencia Privada. **≈ 20-25 créditos.**
+### Paso 3 · Remesh
+Triángulos · **Adaptativo Alto** (≈ 30 000-40 000). 0 créditos. No usar Fijo 3K/10K (borra cara y dedos).
+### Paso 4 · Textura
+Sobre el modelo ya reducido · con la misma imagen como guía · **PBR activado** · 2K (no 4K ni 8K). **≈ 10 créditos.**
+### Paso 5 · Descarga
+GLB, **sin rigging ni animaciones**. Subir al chat el GLB y los créditos que quedan.
+
+**Coste estimado: ≈ 66-71 créditos el intento completo** (36 + 20-25 + 0 + 10). Reserva razonable: **≈ 105** si hay que repetir el 3D una vez. Cifras de las pruebas del 16 nov y de la ayuda de Meshy: mirar siempre la cotización en pantalla antes de pulsar.
+
 **Arranque común de OBJETOS** (pegar antes de cada texto):
 `3D rendered stylized game prop, chunky simplified shapes with worn edges, hand-painted matte textures, dark muted palette with small warm orange accents, single object, three-quarter view seen from above, plain light grey background, soft studio lighting, strong readable silhouette, NOT photorealistic, no text, no logos.`
 
