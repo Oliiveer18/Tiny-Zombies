@@ -1,5 +1,11 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## PAQ-G3a · Resultados reales y selector de calidad (17 nov 2026, Fable)
+**Resumen fácil:** con las tres pruebas del iPhone ya sabemos que el juego cumple los 40 fps sostenidos y no se viene abajo por calor. Hemos encontrado dos formas de mejorar: una imagen más nítida al mismo rendimiento (B) o subir a casi 60 fps con bordes un poco menos suaves (C). En el menú ⚙ hay ahora «Calidad gráfica (comparar)» con A, B y C para que elijas mirando tu móvil. Por defecto no cambia nada.
+- Análisis: `docs/CALIDAD_GRAFICA.md` §2c. Capturas: `coordinacion/mediciones/`.
+- Código: `src/controls.js` (selector; se guarda en `tz_cal`; la versión de abajo muestra «· calidad B/C»; `?carga` siempre mide con la calidad por defecto).
+- Probado con toque en 390 × 699 a dpr 3: B pone el lienzo a 1170 × 2097, C y A a 780 × 1398; se conserva al recargar; `?carga` lo ignora; 0 errores. No comprobado en el iPhone.
+
 ## PAQ-G2 · Medición fiable (17 nov 2026, hecho por Fable)
 **Resumen fácil:** la prueba de carga ahora es más fiable: repite la escena normal varias veces para comprobar que el móvil no cambia de ritmo, mide las opciones de calidad con personajes en pantalla y separa qué parte de un personaje cuesta. Hay una prueba nueva de 10 minutos para ver si el móvil se calienta. El medidor usa los objetivos nuevos (30 / 40 / 60). El juego en sí no cambia. Para probar: `?carga` (2 min y medio) y `?carga=resistencia` (10 min); al acabar, «Copiar resultados» y pegar en el chat.
 - Detalle, pruebas y lo no comprobado: `coordinacion/TRASPASOS/PAQ-G2_medicion_fiable.md`. Análisis de la primera medición real: `docs/CALIDAD_GRAFICA.md` §2b.

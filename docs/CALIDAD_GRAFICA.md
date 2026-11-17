@@ -57,6 +57,43 @@ Conclusión: con 30 000 triángulos el móvil va sobrado de CPU. No hay ningún 
 4. Animación a media frecuencia en personajes lejanos y esqueleto de 25 huesos en zombis (ya previsto en 009 §7.6). La CPU no es el problema hoy, así que esto es reserva.
 5. Dibujar muchos zombis iguales en una sola llamada: solo si las llamadas llegan a pesar (hoy no: 218 llamadas, 6,6 ms).
 
+## 2c. Tercera medición real [M]: prueba de carga v2, orden inverso y resistencia (v0.1.92, 17 nov; capturas `coordinacion/mediciones/2026-11-17_*_v0.1.92.png`)
+**Cómo leer estos datos (dos efectos del móvil que explican las rarezas de §2b)**
+1. **El móvil tiene «dos marchas».** Con la misma escena base da 53-56 fps al principio y 60 más tarde, y en la prueba de resistencia pasó solo de 42-44 a 52 fps en el minuto 7 sin que cambiara nada (bajó a la vez el tiempo de CPU, de 3,2 a 2,6 ms). El sistema sube la potencia cuando lleva un rato con carga. **La contradicción de §2b era esto, no un fallo del juego:** los ajustes se restauran bien (comprobado fila a fila). Las cifras de la marcha baja son el caso desfavorable y son las que se usan para presupuestar.
+2. **Los fps van a saltos.** La pantalla es de 60 Hz: si un cuadro no llega a tiempo espera al siguiente refresco. Por eso casi todo cae en «≈ 60» o en una meseta de «≈ 38-43», y de ahí baja poco a poco hasta 30. Una fila en 41 y otra en 58 pueden diferir en muy pocos milisegundos: **la prueba dice bien a qué lado del umbral cae cada cosa, pero no cuánto cuesta exactamente.**
+
+**Conclusiones respaldadas (coinciden en las dos pasadas, directa e inversa)**
+| Conclusión | Datos |
+|---|---|
+| **El objetivo de 40 fps sostenidos se cumple** con los ajustes actuales | 10 minutos con 12 personajes + 4 luces + explosiones: 42-44 fps, luego 52. **Sin caída por calor.** Dos tropiezos aislados (180 y 134 ms) en 10 minutos |
+| Hasta **40 personajes pesados** (12 000 triángulos, con sombra) amontonados en pantalla ≈ 40 fps; 80 ≈ 35-38; nunca se bajó de 30 | 40 → 38-41 · 60 → 38-39 · 80 → 35-38 |
+| Los 60 fps aguantan hasta ≈ 10 de esos personajes | 10 → 45-53 · 20 → 41-43 |
+| La geometría estática es barata | 1,63 millones de triángulos: 43-45 fps |
+| Luces y explosiones: coste pequeño | 8 luces: 47-52 · explosiones: como la base |
+| **Sombra de 2 048: no cuesta** frente a la de 1 024 | 41-43 frente a 41-42 |
+| **Resolución 3 + MSAA 2 rinde igual que lo actual** (res 2 + MSAA 4) y es más nítida | 41 y 41 frente a 41-42 |
+| **Resolución 2 + MSAA 2 pasa al lado de los 60** | 58 y 58 frente a 41-42 |
+| Resolución 3 + MSAA 4: descartada | 30 y 30 |
+| Quitar bloom o sombras también cruzaría a 60, pero es perder calidad: **no se propone** | 57 · 50-54 |
+
+**Lo que sigue sin respuesta**
+- **Qué parte del personaje cuesta.** Las seis variantes con 40 personajes dan todas ≈ 40 fps (meseta): ni la sombra, ni la animación, ni el amontonamiento por separado bastan para cruzar a 60. El descarte por cámara dio 47 en una pasada y 41 en la otra: no concluyente (aunque reduce los triángulos dibujados casi a la mitad, así que se aplicará igual: es gratis).
+- El coste exacto en milisegundos de cada opción (efecto 2). Si hiciera falta afinar, la prueba tendría que buscar umbrales (cuánta carga hasta perder los 60) en vez de medir fps.
+
+**Presupuestos provisionales (regla 3: 60 % de la carga que deja el móvil en 40 fps; indicadores, no límites)**
+- **Personajes animados en pantalla a la vez: ≈ 24** con el peso actual (12 000 triángulos y sombra). El juego prevé como mucho 40 zombis activos y en vertical se ve solo una parte: cabe.
+- Geometría estática: sin presupuesto (no se encontró el techo con 1,6 millones de triángulos).
+- Luces puntuales: hasta 8 sin problema.
+- Se revisan cuando haya modelos y zombis definitivos.
+
+**Ajustes gráficos: opciones para que elija el usuario** (selector «Calidad gráfica» en el menú ⚙; por defecto sigue «A»)
+| Opción | Qué es | Con 20 personajes |
+|---|---|---|
+| **A · Actual** | Resolución 2, MSAA 4, sombra 1 024 | 41 fps |
+| **B · Nítida** | Resolución nativa (3), MSAA 2, sombra 2 048 | 41 fps: igual de fluida, imagen más definida |
+| **C · Fluida** | Resolución 2, MSAA 2, sombra 2 048 | 58 fps: bordes algo menos suaves |
+Recomendación de Fable: mirar B y C en el móvil; si en C no se nota diferencia en los bordes, C; si se nota, B. La elección es del usuario (regla 4).
+
 ## 3. Qué cuesta de verdad en un móvil (de más a menos, para este juego) [R]
 | Cosa | Dónde pesa | Cuánto importa aquí |
 |---|---|---|

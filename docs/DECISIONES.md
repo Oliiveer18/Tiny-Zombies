@@ -30,6 +30,8 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 | 2.11 | Los presupuestos de escena (2.7) se calculan sobre el **objetivo de 40 fps**: 60 % de la carga con la que el móvil baja a 40. **Aún no se fijan cifras:** la primera prueba de carga (v0.1.91) tiene resultados contradictorios entre sí (`CALIDAD_GRAFICA.md` §2b) y se repite con PAQ-G2 | F · 17 nov |
 | 2.12 | Los ajustes gráficos por defecto del móvil **no se cambian** hasta tener PAQ-G2. «Resolución 3 + MSAA 4» queda descartada como opción por defecto (33 fps con la escena vacía). Cualquier cambio de ajuste lo elige el usuario comparando capturas en su móvil | F · 17 nov |
 | 2.13 | Optimización de personajes solo por vías que no cambian lo que se ve: no dibujar ni sombrear los que están fuera de pantalla, detalle acorde a su tamaño en píxeles (comprobado con capturas iguales), animación a media frecuencia en los lejanos | F · 17 nov |
+| 2.14 | **Presupuesto provisional: ≈ 24 personajes animados en pantalla a la vez** con el peso actual (indicador, no límite; `CALIDAD_GRAFICA.md` §2c). Geometría estática y luces (hasta 8): sin presupuesto. El objetivo de 40 fps sostenidos está **cumplido** con los ajustes actuales (10 min sin caída por calor) | F · 17 nov (medido) |
+| 2.15 | Ajuste gráfico del móvil: **pendiente de que el usuario elija** entre A (actual), B (nítida) y C (fluida) con el selector del menú. Hasta entonces, A. La sombra de 2 048 va incluida en B y C porque no cuesta | U (pendiente) · 17 nov |
 
 ## 3. Arte y personajes
 | # | Decisión | Quién · fecha |

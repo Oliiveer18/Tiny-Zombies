@@ -5,13 +5,12 @@ Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `co
 ## Ahora mismo
 - **Quién trabaja:** solo **Fable** (dirige e implementa), por decisión del usuario del 17 nov. Sonnet queda en pausa.
 - **Objetivos de rendimiento (usuario, 17 nov):** mínimo 30 fps · **sostenido 40** · ideal 60, sin sacrificar calidad visual.
-- **Le toca al usuario (iPhone, en vertical, sin modo de bajo consumo; en cada una, al acabar, «Copiar resultados» y pegar en el chat):**
-  1. `?carga` → prueba completa nueva (≈ 2 min 30 s).
-  2. `?carga=inv` → la misma en orden inverso (≈ 2 min 30 s). Mejor tras dejar el móvil reposar un par de minutos.
-  3. `?carga=resistencia` → 10 minutos con carga fija. Sin tocar la pantalla y sin cargador si es posible.
-  4. Jugar 5 minutos el mapa de prueba con `?debug` y enviar una captura del medidor (ahora incluye el resumen de la sesión). Decir si algún botón estorba.
-  5. Cuando pueda: parte 2 de ART-1 en un ordenador (Mixamo) y elegir el aspecto del personaje (009 §3).
-- **Le toca a Fable al próximo «Sigue»:** con esos resultados, fijar presupuestos y hacer PAQ-G3 (optimización sin pérdida). Mientras no lleguen: ART-1 parte 1 y PAQ-03.
+- **Resultados reales (v0.1.92):** 40 fps sostenidos **cumplidos** con los ajustes actuales, sin caída por calor en 10 minutos. Detalle en `docs/CALIDAD_GRAFICA.md` §2c.
+- **Le toca al usuario:**
+  1. **Elegir calidad gráfica:** menú ⚙ → «Calidad gráfica (comparar)» → probar **B · Nítida** y **C · Fluida** jugando un minuto cada una y decir cuál se queda (o seguir con A).
+  2. Enviar la captura de `?debug` tras 5 minutos de juego (en curso).
+  3. Cuando pueda: parte 2 de ART-1 en un ordenador (Mixamo) y elegir el aspecto del personaje (009 §3).
+- **Le toca a Fable al próximo «Sigue»:** resto de PAQ-G3 (no dibujar personajes fuera de pantalla, sombras ajustadas a lo visible, dejar por defecto la calidad elegida), luego ART-1 parte 1 y PAQ-03.
 - **Orientación oficial: VERTICAL** (reversible). **Calidad gráfica:** sin tope de triángulos; nadie rebaja calidad sin que lo decida el usuario (`docs/CALIDAD_GRAFICA.md`).
 
 ## Paquetes de código (Sonnet los toma en este orden)
@@ -21,8 +20,8 @@ Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `co
 | — | PAQ-G1 Prueba de carga gráfica | **ACEPTADO** (herramienta) · **falta la captura `?carga` del usuario** | `coordinacion/TRASPASOS/PAQ-G1_prueba_de_carga.md` | Su resultado fija los presupuestos reales |
 | — | PAQ-02 Interacción y reja | **ACEPTADO** (Fable, 17 nov) · falta validar el tacto en iPhone | `coordinacion/TRASPASOS/PAQ-02_interaccion_y_reja.md` | |
 | — | PAQ-G1b La prueba de carga arranca en táctil + interfaz de progreso | **ACEPTADO** (Fable, 17 nov) · falta validar en iPhone | `coordinacion/TRASPASOS/PAQ-G1b_interfaz_prueba_de_carga.md` | En el móvil, `?carga` NO arrancaba antes de este paquete |
-| — | PAQ-G2 Medición fiable (`?carga` v2, resistencia, resumen de sesión, objetivos 30/40/60) | **HECHO** (Fable, 17 nov) · falta ejecutarlo en el iPhone | `coordinacion/TRASPASOS/PAQ-G2_medicion_fiable.md` | |
-| 0 | PAQ-G3 Optimización sin pérdida | PLANIFICADO | — (`CALIDAD_GRAFICA.md` §2b) | Espera los resultados de PAQ-G2 en el iPhone |
+| — | PAQ-G2 Medición fiable (`?carga` v2, resistencia, resumen de sesión, objetivos 30/40/60) | **HECHO y ejecutado en el iPhone** (17 nov, v0.1.92) | `coordinacion/TRASPASOS/PAQ-G2_medicion_fiable.md` | |
+| 0 | PAQ-G3 Optimización sin pérdida | **EN CURSO** (Fable): hecho el selector de calidad A/B/C; falta descarte por cámara, sombras ajustadas y fijar la calidad elegida | — (`CALIDAD_GRAFICA.md` §2c) | Espera la elección del usuario |
 | 1 | ART-1 parte 1 · archivo para Mixamo | **LISTO** | `coordinacion/TRASPASOS/ART-1_prueba_mixamo.md` | Corta. Al acabar pasa a «ESPERA AL USUARIO (parte 2)» y Sonnet sigue con PAQ-03 |
 | 2 | PAQ-03 Ruido y zombis que despiertan | **LISTO** | `coordinacion/TRASPASOS/PAQ-03_ruido_y_zombis.md` | |
 | 3 | ART-1 parte 3 · convertir lo de Mixamo | ESPERA AL USUARIO | mismo traspaso | Cuando el usuario suba los archivos |
