@@ -1,5 +1,9 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## 18 nov (noche) · Identidad de los personajes: saqueadores de un juego de extracción
+**Resumen fácil:** los personajes vivos ya no se describen como civiles: son supervivientes veteranos y saqueadores, con ropa resistente y equipo táctico reunido, sin ser soldados. El cuerpo del jugador se generará limpio y el equipo (casco, chaleco, mochila, fundas, armas) serán piezas aparte para personalizarlo en el juego. El estilo gráfico no cambia. Nada generado; en el juego no cambia nada.
+**Detalle:** `DIRECCION_ARTISTICA.md` §5 (identidad, tabla de huecos y piezas, texto nuevo del jugador), `DECISIONES.md` 3.23, `CLAUDE.md`. El usuario ya ha generado el 3D del zombi normal (imagen elegida por él, no revisada por Fable); falta remesh, textura y descarga.
+
 ## 18 nov (tarde) · Dirección artística aprobada como base y texto final del zombi
 **Resumen fácil:** tu captura es ya la referencia principal. Los personajes serán civiles, supervivientes y zombis (no soldados), con el estilo 3D sobrio y mate de esa captura. He quitado lo de «figuras talladas», las cinco masas quedan como orientación y los 1,50 m ya no son fijos. El texto para las 4 imágenes del zombi está listo. No se ha generado nada; en el juego no cambia nada.
 **Detalle:** `DIRECCION_ARTISTICA.md` (§1b análisis de la captura, §6 texto del zombi), `DECISIONES.md` 3.20-3.22, `CLAUDE.md` (dirección visual), captura en `docs/arte/`. `docs/arte/hoja_proporciones.png` sigue valiendo para medidas (su título aún dice 1,50 m: ignorar esa cifra).

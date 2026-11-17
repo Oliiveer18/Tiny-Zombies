@@ -58,6 +58,7 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 | 3.20 | **Referencia visual principal: la captura del usuario del 18 nov** (`docs/arte/captura_referencia_18nov.png`). Se reproduce ese estilo 3D (estilizado, compacto, sobrio, mate) con arte propio. Ya no se interpreta a partir de Tiny Troopers (sustituye a 3.1). **Personajes: civiles, supervivientes y zombis, NO soldados** ni terror realista (matiza 3.2) | U · 18 nov |
 | 3.21 | Dirección artística común aprobada como base: `docs/DIRECCION_ARTISTICA.md`. Jugador 4,5 cabezas, zombi 5 cabezas, paleta A del jugador. Las «cinco masas» son orientación, no límite. La altura en metros (1,50) **no** está fijada como escala del mundo | U · 18 nov |
 | 3.22 | Un modelo se aprueba **dentro del juego, con nuestra cámara, comparado con la captura de referencia**; la imagen frontal solo sirve para elegir candidata | U · 18 nov |
+| 3.23 | **Identidad de los vivos:** juego de supervivencia con extracción; personajes = supervivientes veteranos, exploradores y saqueadores de zonas peligrosas, con ropa funcional y equipo táctico reunido, carácter propio y diferencias claras entre ellos. Ni civiles indefensos ni soldados de uniforme. Es diseño de ropa y equipo; el estilo gráfico sigue siendo el de la captura (3.20). El cuerpo se genera limpio y armas y equipo son piezas independientes para personalizar en el juego | U · 18 nov |
 
 ## 4. Juego (mapa de prueba y táctica)
 | # | Decisión | Quién · fecha |

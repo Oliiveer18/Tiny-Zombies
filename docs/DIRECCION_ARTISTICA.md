@@ -1,6 +1,6 @@
 # DIRECCIÓN ARTÍSTICA DE PERSONAJES · lenguaje visual común (Fable, 18 nov 2026)
 
-**Estado: APROBADA COMO BASE por el usuario (18 nov)**, con sus correcciones ya aplicadas. Se mantienen: jugador 4,5 cabezas, zombi 5 cabezas, paleta A del jugador. **Referencia visual principal: la captura del usuario del 18 nov** (`docs/arte/captura_referencia_18nov.png`). Ya no se interpreta a partir de Tiny Troopers. **Los personajes son civiles, supervivientes y zombis, NO soldados**, y tampoco terror realista.
+**Estado: APROBADA COMO BASE por el usuario (18 nov)**, con sus correcciones ya aplicadas. Se mantienen: jugador 4,5 cabezas, zombi 5 cabezas, paleta A del jugador. **Referencia visual principal: la captura del usuario del 18 nov** (`docs/arte/captura_referencia_18nov.png`). Ya no se interpreta a partir de Tiny Troopers. **Los vivos son supervivientes veteranos y saqueadores de zonas peligrosas (juego de extracción): ni civiles indefensos ni soldados de uniforme** (§5). Los zombis, gente convertida. Nada de terror realista.
 
 ## 1. El objetivo
 **Que el jugador y los zombis parezcan personajes del mismo videojuego que la captura, vistos con nuestra cámara real**, adaptados a nuestra temática de supervivencia. Estilo 3D estilizado, compacto y sobrio. Una imagen frontal bonita no basta: cada modelo se aprueba dentro del juego.
@@ -56,15 +56,29 @@ Arte propio: se reproduce el estilo, no se copian sus personajes, colores, rótu
 Sigue en el juego únicamente como relleno (3.4).
 
 ## 5. Propuesta: JUGADOR (cuerpo de referencia de los vivos)
-Civil superviviente, serio y curtido; **no es un soldado**. Paleta A (aprobada).
+**Identidad (usuario, 18 nov; DECISIONES 3.23):** juego de supervivencia con extracción. Los vivos son **supervivientes veteranos, exploradores y saqueadores de zonas peligrosas**, preparados para combatir y sacar recursos. Ni civiles indefensos ni soldados de uniforme: protagonistas de un juego de extracción. Esto define **la ropa y el equipo**; el estilo gráfico sigue siendo exactamente el de la captura (§1b).
+- **Qué debe transmitir:** carácter propio, experiencia, ropa funcional y resistente, equipo táctico reunido y adaptado (no reglamentario), y diferencias claras entre personajes.
 - **Medidas:** 4,5 cabezas · hombros 1,7 cabezas · cintura 1,2 · piernas 2 cabezas · manos a medio muslo · cuello corto y ancho.
-- **Cabeza:** mandíbula firme, ceja pesada, nariz corta, pelo oscuro rapado, barba de dos días pintada.
-- **Ropa (pintada):** chaqueta de trabajo verde oliva ceñida · pantalón cargo arena · botas y guantes marrón oscuro · rodilleras gris carbón · **brazalete naranja óxido** (acento del jugador, visible desde arriba).
-- **Sin** mochila ni arma: son piezas aparte (3.14). Las piezas serán de superviviente civil (mochila, gorra, chaleco de trabajo…), no equipo militar; se definen cuando toque.
+- **Cabeza:** cara curtida, mandíbula firme, ceja pesada, cicatriz en una ceja, pelo oscuro rapado, barba de dos días.
+- **Ropa del cuerpo (pintada, paleta A):** chaqueta reforzada verde oliva ceñida · pantalón cargo arena · botas y guantes marrón oscuro · rodilleras y coderas gris carbón · brazalete naranja óxido (acento del jugador).
 
-**Texto para Meshy (783 caracteres; se usará cuando toque ART-2):**
+**El cuerpo se genera «limpio» para poder equiparlo en el juego (3.10, 3.11, 3.14):** cabeza descubierta y pecho, espalda y caderas lisos, sin bolsas ni correas modeladas. Todo el equipo son **piezas independientes** que se pegan a un hueso y se cambian en el juego:
+| Hueco | Hueso | Piezas posibles |
+|---|---|---|
+| Cabeza | cabeza | casco de obra o de moto, gorra, capucha, máscara o respirador, gafas |
+| Pecho | pecho | chaleco portaequipo, chaleco antigolpes improvisado, arnés con cargadores |
+| Espalda | pecho | mochila pequeña, mochila grande de extracción, bolsa cruzada |
+| Cintura | cadera | cinturón con bolsas, funda de pistola, herramientas (palanca, hacha) |
+| Muslo | muslo | funda, bolsa de pierna |
+| Hombros y brazos | hombro, antebrazo | hombrera, protección de antebrazo |
+| Mano | mano derecha | arma (fusil, escopeta, pistola, cuerpo a cuerpo) |
+Las piezas siguen las mismas reglas de estilo (§2) y cada una tiene volumen y color propios, porque desde nuestra cámara lo que más se ve es casco, hombros y mochila.
+
+**Cómo se diferencian los personajes sin uniformarlos:** complexión del cuerpo (2-3 cuerpos) · ropa por re-pintado del mismo cuerpo · combinación de piezas · un color de acento distinto por personaje · un rasgo de cara o pelo. Nunca dos personajes con el mismo conjunto completo.
+
+**Texto para Meshy (857 caracteres; se usará cuando toque ART-2):**
 ```
-Stylized 3D game character model, full body, front view, strict T-pose, arms horizontal, palms down, fingers apart, feet apart, light grey background, flat light. Compact sturdy adult man, 4.5 heads tall, broad shoulders, short thick neck, thick forearms, large hands, large boots. Simple clean volumes, smooth simplified surfaces, flat muted colors, soft painted shading, matte, sober style of a dark top-down survival shooter. Civilian survivor: serious face, strong jaw, heavy brow, small eyes, short simple nose, cropped dark hair, stubble. Fitted olive green work jacket, sand cargo trousers, dark brown boots and gloves, charcoal knee pads, rust-orange armband. Bare head, no helmet, no backpack, no weapon. Not photorealistic, not cartoon, not chibi, not toy, not 2D. No text.
+Stylized 3D game character model, full body, front view, strict T-pose, arms horizontal, palms down, fingers apart, feet apart, light grey background, flat light. Compact sturdy adult man, 4.5 heads tall, broad shoulders, short thick neck, thick forearms, large hands, large boots. Simple clean volumes, smooth simplified surfaces, flat muted colors, soft painted shading, matte, sober style of a dark top-down survival shooter. Veteran scavenger of dangerous zones, not a soldier: weathered face, strong jaw, heavy brow, scar on one eyebrow, cropped dark hair, stubble. Fitted reinforced olive green jacket, sand cargo trousers, dark brown boots and gloves, charcoal knee and elbow pads, rust-orange armband. Clean flat chest, back and hips. Bare head, no vest, no backpack, no pouches, no weapon. Not photorealistic, not cartoon, not toy, not 2D. No text.
 ```
 
 ## 6. Propuesta: ZOMBI NORMAL
