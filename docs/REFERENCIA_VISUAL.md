@@ -1,5 +1,7 @@
 # REFERENCIA_VISUAL · el estilo objetivo del juego
 
+> **18 nov: manda `docs/DIRECCION_ARTISTICA.md`** (referencia principal = captura del usuario; civiles, no soldados; sin Tiny Troopers). Lo de abajo sobre personajes queda como historial; cámara y criterios de lectura siguen vigentes.
+
 ## ⚠️ Dirección vigente desde el 17 nov 2026 (manda sobre el resto de este documento)
 **Referencia principal: Tiny Troopers (Global Ops y Joint Ops).** No se copia: identidad propia inspirada en ese tipo de juego. Lo de abajo (vídeo del cenital industrial) queda como referencia secundaria de luz, suelo y efectos.
 - **Personajes:** compactos pero no infantiles ni de juguete; **4-5 cabezas de alto**; cabeza algo grande sin exagerar; cuerpo robusto y proporcionado; cara expresiva; casco, mochila, chaleco y arma reconocibles y con detalle; materiales cuidados. Tampoco soldados realistas.

@@ -1,5 +1,9 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## 18 nov (tarde) · Dirección artística aprobada como base y texto final del zombi
+**Resumen fácil:** tu captura es ya la referencia principal. Los personajes serán civiles, supervivientes y zombis (no soldados), con el estilo 3D sobrio y mate de esa captura. He quitado lo de «figuras talladas», las cinco masas quedan como orientación y los 1,50 m ya no son fijos. El texto para las 4 imágenes del zombi está listo. No se ha generado nada; en el juego no cambia nada.
+**Detalle:** `DIRECCION_ARTISTICA.md` (§1b análisis de la captura, §6 texto del zombi), `DECISIONES.md` 3.20-3.22, `CLAUDE.md` (dirección visual), captura en `docs/arte/`. `docs/arte/hoja_proporciones.png` sigue valiendo para medidas (su título aún dice 1,50 m: ignorar esa cifra).
+
 ## 18 nov · Dirección artística común de personajes (propuesta)
 **Resumen fácil:** hay un documento nuevo que fija cómo deben ser TODOS los personajes (jugador y zombis) para que parezcan de la misma familia: proporciones, cabeza, cara, manos, colores, texturas y cómo se leen con nuestra cámara, con un texto de Meshy para el jugador y otro para el zombi. No se ha generado nada ni gastado créditos; en el juego no cambia nada. Falta tu visto bueno.
 **Detalle:** `docs/DIRECCION_ARTISTICA.md`, `docs/arte/hoja_proporciones.png` (esquema por bloques, no arte final) y los dos textos en `docs/arte/`. No modifica DECISIONES; si el usuario la aprueba se apuntará allí.

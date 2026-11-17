@@ -6,7 +6,7 @@ Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `co
 - **Sesión nueva: leer primero `coordinacion/TRASPASO_SESION.md`** (resumen de arranque; evita volver a analizar lo hecho).
 - **Quién trabaja:** solo **Fable** (dirige e implementa; DECISIONES 1.8). Sonnet en pausa.
 - **PAQ-03 IMPLEMENTADO (18 nov)**: pruebas de Node y de navegador pasadas (detalle y lo no comprobado en `SESION.md`); falta la prueba del usuario en el iPhone. `tools/rehacer_textura.mjs` VALIDADA con Lupa ×8 en el juego (sin motas; cabeza y iPhone sin mirar); el jugador provisional ya lleva la textura rehecha.
-- **Meshy: en espera de la dirección artística común** (`docs/DIRECCION_ARTISTICA.md`); no se genera nada hasta que el usuario la apruebe.
+- **Dirección artística aprobada como base (18 nov)**: `docs/DIRECCION_ARTISTICA.md`. **Le toca al usuario:** generar las 4 imágenes del zombi normal con el texto de su §6 y enseñarlas. Después: elegir una, 3D, y aprobación dentro del juego comparando con la captura. Pendiente técnico al llegar el modelo: quitar los reflejos de estudio a los personajes nuevos (mate).
 - **PRIMERA TAREA: modelos de zombis** (prioridad del usuario, 17 nov): zombi normal, según `coordinacion/RESPUESTAS_FABLE/010_zombis.md` §8. **Después: PAQ-03** (traspaso LISTO).
 - **Calidad gráfica: cerrada.** B · Nítida es la definitiva y única en móvil; A y C descartadas. La prueba de 10 minutos con B **no se hizo** (aceptada por decisión del usuario). No se comparan más calidades.
 - **Objetivos de rendimiento:** mínimo 30 fps · sostenido 40 · ideal 60. Calidad visual primero, sin topes arbitrarios de geometría.
