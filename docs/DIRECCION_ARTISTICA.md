@@ -1,5 +1,7 @@
 # DIRECCIÓN ARTÍSTICA DE PERSONAJES · lenguaje visual común (Fable, 18 nov 2026)
 
+> **19 nov: SUPERADO por `docs/DIRECCION_ARTISTICA_HD.md`** (referencias Tiny Troopers + captura del usuario, proporciones elegidas por lectura, identidad de operadores de extracción, criterios de aceptación y textos v3). Este documento queda como historial; lo que contradiga al HD no vale.
+
 **Estado: APROBADA COMO BASE por el usuario (18 nov)**, con sus correcciones ya aplicadas. Se mantienen: jugador 4,5 cabezas, zombi 5 cabezas, paleta A del jugador. **Referencia visual principal: la captura del usuario del 18 nov** (`docs/arte/captura_referencia_18nov.png`). Ya no se interpreta a partir de Tiny Troopers. **Los vivos son supervivientes veteranos y saqueadores de zonas peligrosas (juego de extracción): ni civiles indefensos ni soldados de uniforme** (§5). Los zombis, gente convertida. Nada de terror realista.
 
 ## 1. El objetivo

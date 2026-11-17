@@ -1,5 +1,9 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## 19 nov (noche) · Dirección artística HD aprobada: documentación y prompt v3
+**Resumen fácil:** has aprobado la dirección: las dos referencias (Tiny Troopers y tu juego) valen a la vez, las proporciones las elijo yo según cómo se lean desde la cámara, y el objetivo es Tiny Troopers en HD. Los personajes vivos serán operadores de extracción y supervivientes veteranos, con equipo intercambiable. Está todo actualizado y el prompt v3 del zombi listo para que lo revises. No se ha generado nada ni se ha tocado el juego.
+**Detalle:** estudiado el vídeo (fotogramas guardados en `docs/arte/referencia_video_personaje.png`): masas por claridad (casco claro, chaleco oscuro, mangas claras, botas oscuras), formas redondeadas y lisas, equipo legible, colores mates, objetos del mismo lenguaje. Actualizados `DIRECCION_ARTISTICA_HD.md` (§2b, §4, §6, §9, §10, §11), `DECISIONES.md` 3.25-3.28, `CLAUDE.md`, cabeceras de `DIRECCION_ARTISTICA.md` y `REFERENCIA_VISUAL.md`. Proporciones elegidas: vivos ≈ 4, zombis ≈ 4,5, como objetivo y no como regla.
+
 ## 19 nov · Zombi normal v1: revisión visual → RECHAZADO; herramientas y animación conservadas (Sonnet, tras Fable)
 **Resumen fácil:** he revisado el modelo de cerca y tenías razón: no alcanza la calidad. Tiene las proporciones de un cuerpo de 6,5 cabezas en lugar de 5, las orejas son casi el doble de altas de lo normal, los ojos están en blanco y la boca es una caja de dientes. Esos defectos están en la geometría que generó Meshy y no se arreglan bien sin rehacer el modelo, así que **no lo he retocado ni lo he dejado en el juego** (el zombi sigue siendo la cápsula). Te doy el texto corregido para una tanda nueva de imágenes. Lo único que sí queda hecho es la maquinaria (reducir, texturas, esqueleto, animaciones), lista para el modelo bueno.
 
