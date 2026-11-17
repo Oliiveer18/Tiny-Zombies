@@ -39,6 +39,9 @@ const p1 = partida(), p2 = partida(); ok(p1 === p2 && p1.includes('persigue'), '
 { const z = zb('z0', 0, 0, 180), j = J(0, -12), M = mundo([z], j); sonido(0, -12, R.disparo, 'j1'); const est = []; corre(M, 14, i => { if (i % 30 === 0) est.push(z.estado); });
   ok(est.includes('investiga') && est.includes('persigue'), 'investiga y, al llegar a ver al jugador, persigue (' + [...new Set(est)] + ')'); }
 { const z = zb('z0', 0, 0, 180), M = mundo([z], J(40, 40)); z.estado = 'deambula'; z.obj = [0, 0]; sonido(0, -6, R.disparo, 'j1'); corre(M, .5); ok(z.estado === 'despertando' && z.alerta === true, 'deambulando, un ruido lo sobresalta sin clip de despertar'); }
+// bloqueado por una reja cerrada: no corre en el sitio, se queda arañando y, sin ver al jugador, acaba deambulando
+{ const z = zb('z0', 0, 0, 180), j = J(0, 6, { agachado: false }), M = mundo([z], j); M.obst = []; for (let x = -3; x <= 3; x += .5) M.obst.push({ x, z: 2, r: .5 }); z.estado = 'persigue'; z.obj = [0, 6]; let bq = false;
+  corre(M, 3, () => { if (z.bloq) bq = true; }); ok(bq && z.z < 2, 'tras una reja cerrada se detecta bloqueado y no la atraviesa (z = ' + z.z.toFixed(2) + ')'); ok(M.golpes === 0, 'bloqueado no hace daño a través de la reja'); }
 // disparadores
 { initDisparadores([{ id: 'd1', cuando: { t: 'roto', obj: 'c' }, hacer: [{ t: 'mensaje', txt: 'a' }] }, { id: 'd2', cuando: { t: 'zona', zona: 'e' }, hacer: [{ t: 'mensaje', txt: 'b' }] }]); let roto = false; const m = { j: { x: 0, z: 0 }, zonas: [{ id: 'e', rect: [-4, -38, 4, -30] }], roto: () => roto, abierta: () => false };
   const a = pasoDisparadores(m).length; roto = true; const b = pasoDisparadores(m).length, c = pasoDisparadores(m).length; m.j.z = -32; const d = pasoDisparadores(m).length; m.j.z = 0; pasoDisparadores(m); m.j.z = -33; const e = pasoDisparadores(m).length;

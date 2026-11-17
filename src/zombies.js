@@ -72,9 +72,9 @@ function cono(z){if(!geoCono){const p=[0,0,0];for(let i=0;i<=12;i++){const a=(i/
 function dibujaVivo(z,dt){const r=z.inst.root,b=z.inst.body,e=z.estado;r.position.set(z.x,0,z.z);r.rotation.y=Math.atan2(z.gx,z.gz);
   if(DBG){if(!z.cono)cono(z);z.cono.scale.setScalar(P.vista);}
   if(z.lejos)return;
-  if(z.inst.ctl){anima(z.inst,dt,{estado:e,alerta:z.alerta,cerca:e==='persigue'&&z.cerca,x:z.x,z:z.z,ang:r.rotation.y,tDesp:z.tDesp,jx:e==='persigue'&&M.j.vivo?player.x:z.obj[0],jz:e==='persigue'&&M.j.vivo?player.z:z.obj[1],mira:e==='deambula'||e==='investiga'});return;}
+  if(z.inst.ctl){anima(z.inst,dt,{estado:e,alerta:z.alerta,cerca:e==='persigue'&&(z.cerca||z.bloq),x:z.x,z:z.z,ang:r.rotation.y,tDesp:z.tDesp,jx:e==='persigue'&&M.j.vivo?player.x:z.obj[0],jz:e==='persigue'&&M.j.vivo?player.z:z.obj[1],mira:e==='deambula'||e==='investiga'});return;}
   if(z.inst.mixer){const c=clip(z.inst,e==='persigue'&&z.cerca?'attack':DE[e]);if(c)play(z.inst,c);z.inst.mixer.update(dt);if(c)return;}
   // sin clips (relleno): dormido inclinado y quieto; despertando se endereza; andando se balancea como en Tiny
-  const mov=e==='persigue'&&!z.cerca?1:e==='investiga'?.5:e==='deambula'&&z.pausa<=0?.5:0;z.ph+=dt*(mov*8+1);
+  const mov=e==='persigue'&&!z.cerca&&!z.bloq?1:e==='investiga'?.5:e==='deambula'&&z.pausa<=0?.5:0;z.ph+=dt*(mov*8+1);
   b.position.y=mov?Math.abs(Math.sin(z.ph))*.08*mov:0;b.rotation.z=mov?Math.sin(z.ph)*.12:0;
   b.rotation.x=e==='dormido'?.45:e==='despertando'?.45*(1-Math.min(1,z.te/Math.max(z.tDesp,.01))):z.cerca?Math.sin(z.ph*6)*.25+.2:mov?.25:.12;}

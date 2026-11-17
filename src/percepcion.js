@@ -6,7 +6,7 @@ export const P={cos:.5}; // parámetros (src/data/ruido.json → percepcion). `v
 export function configuraPercepcion(d){Object.assign(P,d);P.cos=Math.cos(P.cono*Math.PI/360);}
 // Prepara los campos de estado de un zombi. Giro en grados: 0 mira hacia −z (fondo), 90 hacia +x, 180 hacia +z (la entrada).
 export function prepara(z,n,grados=180,estado='dormido'){const a=grados*Math.PI/180;z.n=n;z.gx=Math.round(Math.sin(a)*1e6)/1e6;z.gz=-Math.round(Math.cos(a)*1e6)/1e6;
-  z.estado=estado;z.te=0;z.obj=[z.x,z.z];z.tDesp=0;z.sin=0;z.atk=0;z.pt=-1;z.pk=-1;z.dc=0;z.pausa=0;z.dest=null;z.dtm=0;}
+  z.estado=estado;z.te=0;z.obj=[z.x,z.z];z.tDesp=0;z.sin=0;z.atk=0;z.pt=-1;z.pk=-1;z.dc=0;z.pausa=0;z.dest=null;z.dtm=0;z.bq=0;z.bloq=false;}
 // Lo que hay que guardar o enviar de un zombi (norma 3)
 export const estadoDe=z=>({id:z.id,tipo:z.tipo,estado:z.estado,t:z.te,x:z.x,z:z.z,gx:z.gx,gz:z.gz,vida:z.hp,obj:[z.obj[0],z.obj[1]]});
 // ¿Ve el zombi al jugador? Distancia según cómo se mueve, cono alrededor de `giro` y ningún muro en medio (las rejas no tapan).
@@ -22,6 +22,8 @@ export function mueve(z,tx,tz,sp,dt,M){let dx=tx-z.x,dz=tz-z.z;const d=Math.hypo
   const sl=Math.hypot(sx,sz)||1,av=Math.min(sp*dt,d);z.x+=sx/sl*av;z.z+=sz/sl*av;
   for(const o of M.obst){if(o.fly)continue;const ox=z.x-o.x,oz=z.z-o.z,od=Math.hypot(ox,oz),min=o.r+z.r;if(od<min&&od>1e-4){z.x=o.x+ox/od*min;z.z=o.z+oz/od*min;}}
   gira(z,dx,dz,dt*10);}
+// Mueve y mide cuánto avanzó de verdad: si apenas se acerca a su destino (muro, reja cerrada, otro zombi) durante más de 0,7 s está «bloqueado»; sirve para que no corra en el sitio.
+function avanza(z,tx,tz,sp,dt,M){const d0=Math.hypot(tx-z.x,tz-z.z);mueve(z,tx,tz,sp,dt,M);const mv=d0-Math.hypot(tx-z.x,tz-z.z);z.bq=mv<sp*dt*.3?z.bq+dt:Math.max(0,z.bq-dt*2);z.bloq=z.bq>.7;}
 function gira(z,dx,dz,k){if(k>1)k=1;if(z.gx*dx+z.gz*dz<-.98){dx+=-z.gz*.6;dz+=z.gx*.6;} // justo al revés: sin esto la mezcla solo encoge el vector y nunca llega a girar
   let gx=z.gx+(dx-z.gx)*k,gz=z.gz+(dz-z.gz)*k;const l=Math.hypot(gx,gz);if(l<1e-4){gx=dx;gz=dz;}else{gx/=l;gz/=l;}z.gx=gx;z.gz=gz;}
 // Un paso. M: {zs, j:{x,z,agachado,corre,vivo}, muros, obst, ruido, tick, semilla, velJ, golpe(z), aviso(z)}
@@ -41,12 +43,12 @@ export function paso(M,dt){const {zs,j,muros}=M;
       else despierta(z,M,est,1,'ruido',true);} // deambulando y oye algo: se sobresalta y mira
     const sp=(P.vel[z.tipo]||.5)*M.velJ*P.velX;
     if(z.estado==='despertando'){const dx=z.obj[0]-z.x,dz=z.obj[1]-z.z,d=Math.hypot(dx,dz);if(d>1e-4)gira(z,dx/d,dz/d,dt*8);if(z.te>=z.tDesp){z.te=0;z.sin=0;z.estado=z.causa==='ruido'?'investiga':'persigue';}}
-    else if(z.estado==='investiga'){const dx=z.obj[0]-z.x,dz=z.obj[1]-z.z;if(Math.hypot(dx,dz)<.7||z.te>14){z.estado='deambula';z.te=0;z.dest=null;z.pausa=1;}else mueve(z,z.obj[0],z.obj[1],sp*.6,dt,M);}
+    else if(z.estado==='investiga'){const dx=z.obj[0]-z.x,dz=z.obj[1]-z.z;if(Math.hypot(dx,dz)<.7||z.te>14||z.bq>2.5){z.estado='deambula';z.te=0;z.dest=null;z.pausa=1;z.bq=0;z.bloq=false;}else avanza(z,z.obj[0],z.obj[1],sp*.6,dt,M);}
     else if(z.estado==='persigue'){z.sin+=dt;const jx=j.x-z.x,jz=j.z-z.z,dj=Math.hypot(jx,jz),cerca=j.vivo&&dj<.7*(z.r/.35>1.3?1.3:1)+.2;
-      if(cerca){if(dj>1e-4)gira(z,jx/dj,jz/dj,dt*10);}else if(Math.hypot(z.obj[0]-z.x,z.obj[1]-z.z)>.3)mueve(z,z.obj[0],z.obj[1],sp,dt,M);
+      if(cerca){if(dj>1e-4)gira(z,jx/dj,jz/dj,dt*10);}else if(Math.hypot(z.obj[0]-z.x,z.obj[1]-z.z)>.3)avanza(z,z.obj[0],z.obj[1],sp,dt,M);else z.bloq=false;
       z.atk-=dt;if(cerca&&z.atk<=0){z.atk=.9;M.golpe&&M.golpe(z);}z.cerca=cerca;
       if(z.te>=P.contagioT)for(const o of zs){if(!o.alive||o.estado!=='dormido')continue;const ox=o.x-z.x,oz=o.z-z.z;if(ox*ox+oz*oz<P.contagio*P.contagio)despierta(o,M,z.obj,.5,'contagio');} // contagio: despierta a los dormidos cercanos, más deprisa
-      if(z.sin>=P.olvido){z.estado='deambula';z.te=0;z.dest=null;z.pausa=0;z.cerca=false;}}
+      if(z.sin>=P.olvido){z.estado='deambula';z.te=0;z.dest=null;z.pausa=0;z.cerca=false;z.bloq=false;z.bq=0;}}
     else if(z.estado==='deambula'){if(z.pausa>0)z.pausa-=dt;else{
       if(!z.dest){z.dest=[z.obj[0]+(hash01(M.semilla,z.n,z.dc,1)*2-1)*P.deambula,z.obj[1]+(hash01(M.semilla,z.n,z.dc,2)*2-1)*P.deambula];z.dtm=0;}
       mueve(z,z.dest[0],z.dest[1],sp*.5,dt,M);z.dtm+=dt;
