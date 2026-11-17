@@ -104,6 +104,9 @@ Recomendación de Fable: mirar B y C en el móvil; si en C no se nota diferencia
 - **Solución definitiva:** es un defecto del modelo de relleno, que se va a sustituir. Para los modelos definitivos pasa a ser requisito (DECISIONES 3.17): textura reorganizada en piezas grandes con margen y repintada por la herramienta, y aprobación con captura con lupa.
 - El «pixelado» en escalones de la captura del usuario es la ampliación de una imagen dibujada a resolución 2 en una pantalla de 3: con B (resolución nativa) se reduce; se ve con la lupa.
 
+## 2f. Cierre (17 nov, decisión del usuario)
+**B · Nítida es la calidad definitiva y única en móvil. A y C descartadas y retiradas del menú.** El usuario la da por aceptada por decisión propia; **la prueba de resistencia de 10 minutos con B no se realizó** y no hay cifra sostenida de B. Queda la herramienta «Lupa y costuras» en el menú para revisar modelos. No se hacen más comparaciones de calidad.
+
 ## 2e. Calidad elegida y estado (17 nov)
 - **Predeterminada en móvil: B · Nítida** (decisión del usuario, DECISIONES 2.15). A y C siguen en el menú.
 - **Rendimiento de B conocido [M]:** con 20 personajes pesados en pantalla, 41 fps en las dos pasadas de la prueba de carga (igual que A); en la partida del usuario, ≈ 60 fps. **Falta medir B de forma sostenida:** la prueba de 10 minutos y la sesión con `?debug` del 17 nov se hicieron con A. Ahora `?carga` y `?carga=resistencia` miden siempre con la predeterminada (B). No se rebaja nada de forma preventiva; si la resistencia con B bajara de 40, se decide con el usuario.

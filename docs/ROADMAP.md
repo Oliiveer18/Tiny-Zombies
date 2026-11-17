@@ -44,7 +44,7 @@ A0a-A0o · M1-M6 · C1, C2, C3, C3b, C4 · S1, S1b (suelo y calcos fijos: cubre 
 | **ART-5** Objetos y escala | Objetos de Meshy, recorte por zonas, escala aplicada | 007 §2 y §8 | ART-2 + modelos |
 | **MED** Medición en iPhone 14 | Captura de `?debug` tras cada paquete aceptado (primera hecha el 17 nov: 58 fps, 30 404 triángulos) y captura de la tabla de `?carga` cuando exista PAQ-G1 | R8, C10, P7 | el usuario |
 
-**Orden de trabajo desde el 17 nov (lo implementa Fable mientras el usuario no diga otra cosa):** PAQ-G2 → ART-1 parte 1 → PAQ-G3 (con los resultados) → PAQ-03 → (cuando lleguen los archivos de Mixamo) ART-1 parte 3 → PAQ-A1 → PAQ-A2 → PAQ-04 → PAQ-05… La animación pasa por delante de PAQ-04 por prioridad del usuario.
+**Orden de trabajo vigente (17 nov, lo implementa Fable):** hechos PAQ-01, PAQ-G1, PAQ-G1b, PAQ-02, PAQ-G2, PAQ-G3 y ART-1 parte 1. **Siguiente: ART-4 empezando por el zombi normal (prioridad del usuario; diseño 010) → PAQ-03.** Después, cuando el usuario pase por Mixamo: ART-1 partes 2-3 → PAQ-A1 → PAQ-A2 → ART-2 → PAQ-04 → PAQ-05 → PAQ-A3 → PAQ-06 → PAQ-07. ART-4 se adelanta en su parte de modelo y textura; su parte de animación sigue dependiendo de Mixamo y de PAQ-A3.
 
 Movidos a los hitos de abajo: C9 (aliado reclutable) → B4 · T7 (munición limitada) → A5. Después de PAQ-07 y ART-5 se retoma el **Hito A** tal como está (A1 regiones, …).
 

@@ -31,7 +31,7 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 | 2.12 | (Sustituida por 2.15 en cuanto al ajuste por defecto.) Los ajustes gráficos por defecto del móvil no se cambiaban hasta tener PAQ-G2. «Resolución 3 + MSAA 4» queda descartada como opción por defecto (33 fps con la escena vacía). Cualquier cambio de ajuste lo elige el usuario comparando capturas en su móvil | F · 17 nov |
 | 2.13 | Optimización de personajes solo por vías que no cambian lo que se ve: no dibujar ni sombrear los que están fuera de pantalla, detalle acorde a su tamaño en píxeles (comprobado con capturas iguales), animación a media frecuencia en los lejanos | F · 17 nov |
 | 2.14 | **Presupuesto provisional: ≈ 24 personajes animados en pantalla a la vez** con el peso actual (indicador, no límite; `CALIDAD_GRAFICA.md` §2c). Geometría estática y luces (hasta 8): sin presupuesto. El objetivo de 40 fps sostenidos está **cumplido** con los ajustes actuales (10 min sin caída por calor) | F · 17 nov (medido) |
-| 2.15 | **Calidad gráfica predeterminada en móvil: «B · Nítida»** (resolución nativa hasta 3, suavizado ×2, sombra 2 048). «A · Anterior» (resolución 2, suavizado ×4, sombra 1 024) y «C · Fluida» (resolución 2, suavizado ×2, sombra 2 048) quedan como alternativas en el menú ⚙ y se recuerdan. No se rebaja B de forma preventiva. En ordenador no cambia nada | **U · 17 nov** (elegida en su iPhone con la lupa; ≈ 60 fps en su prueba) |
+| 2.15 | **Calidad gráfica definitiva y única en móvil: «B · Nítida»** (resolución nativa hasta 3, suavizado ×2, sombra 2 048). **A y C quedan descartadas** y retiradas del menú; no se dedican más pruebas a comparar calidades. El usuario da B por aceptada **por decisión propia: la prueba de resistencia de 10 minutos con B NO se hizo** (lo medido de B: 41 fps con 20 personajes pesados en dos pasadas de `?carga`; ≈ 60 fps jugando, según el usuario). En ordenador no cambia nada | **U · 17 nov** |
 
 ## 3. Arte y personajes
 | # | Decisión | Quién · fecha |
@@ -53,6 +53,8 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 | 3.15 | **Sistema de animación único** (`anim.js`) para todos los personajes: mezcla continua en 8 direcciones con paso sincronizado, capas independientes de piernas y torso, capa aditiva y capa por código (giro de torso, retroceso, inclinación, mirada). Todo en datos. El disparo no usa clip. Diseño: 009 §7 | U (objetivo) + F (arquitectura) · 17 nov |
 | 3.16 | El sistema de animación se construye sobre un relleno con esqueleto de Mixamo **antes** de tener el personaje definitivo; los créditos de Meshy se desbloquean al aceptar ART-1 y elegir el usuario el aspecto | F · 17 nov (concreta 3.6) |
 | 3.17 | **Requisito de textura para todo modelo definitivo:** la textura debe tener pocas piezas grandes con margen entre ellas (≥ 8 píxeles a 2 048). Las texturas que entrega Meshy (cientos de trocitos pegados sin margen) producen motas claras en las costuras al verse el modelo pequeño. La herramienta de personajes reorganizará y volverá a pintar la textura antes de dar un modelo por bueno, y cada modelo se aprueba con una captura con lupa | F · 17 nov (defecto visto por el usuario en el relleno) |
+| 3.18 | **Siguiente prioridad: modelos de zombis**, antes que el personaje del jugador. Primer modelo: zombi normal; no se hacen variantes hasta aprobarlo. Especificación completa: `coordinacion/RESPUESTAS_FABLE/010_zombis.md` | U · 17 nov |
+| 3.19 | Zombis: personas convertidas, creíbles, nada infantil ni cabezón ni de juguete; **5 cabezas** 💡; pose T neutra (la postura la pone la animación); un color identificativo por tipo; esqueleto de Mixamo de 25 huesos 💡 | U (estilo) + F (cifras) · 17 nov · a validar con el primer modelo |
 
 ## 4. Juego (mapa de prueba y táctica)
 | # | Decisión | Quién · fecha |
@@ -77,5 +79,6 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 - «Personaje ≈ 49 píxeles» y «se ven 21-33 m de ancho» como criterio único (calculados para horizontal) → 2.1, 2.2, 2.9, 2.10.
 - Cámaras A, B, C y «cerca» de R1 → descartadas (2.1).
 - «Fable no edita código, salvo R0-R8» → Fable no programa (1.2).
+- Selector de calidad A / B / C y opciones A y C → 2.15.
 - ART-1 como «clips de Mixamo sobre el esqueleto de Meshy» y la fila única ART-3 → 3.13-3.16 y 009 §8.
 - Nombres de pasos C*, P*, V*, T*, R*, S* → paquetes del «Plan vigente» (`ROADMAP.md`).

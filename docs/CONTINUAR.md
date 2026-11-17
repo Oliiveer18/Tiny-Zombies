@@ -3,15 +3,13 @@
 Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `coordinacion/LEEME.md`. El estado anterior a esta fecha está en `docs/archivo/CONTINUAR_hasta_2026-11-17.md`.
 
 ## Ahora mismo
-- **Quién trabaja:** solo **Fable** (dirige e implementa), por decisión del usuario del 17 nov. Sonnet queda en pausa.
-- **Objetivos de rendimiento (usuario, 17 nov):** mínimo 30 fps · **sostenido 40** · ideal 60, sin sacrificar calidad visual.
-- **Calidad gráfica:** predeterminada **B · Nítida** (usuario, 17 nov). A y C en el menú ⚙. 40 fps sostenidos cumplidos con A (10 min sin caída por calor; jugando: media 55 fps); **con B falta la prueba de 10 minutos**.
-- **Le toca al usuario:**
-  1. **iPhone:** `?carga=resistencia` (10 min, ahora mide con B) y pegar el resultado. Jugando, fijarse en que ningún personaje desaparezca de golpe en el borde de la pantalla.
-  2. **Ordenador, Mixamo (gratis, ≈ 20 min):** descargar `…/descargas/jugador_a_para_mixamo.obj` desde la dirección del juego y seguir la parte 2 de `coordinacion/TRASPASOS/ART-1_prueba_mixamo.md`.
-  3. Elegir el aspecto del primer personaje (paleta A, B o C de 009 §3). No corre prisa.
-- **Le toca a Fable al próximo «Sigue»:** **PAQ-03** (ruido y zombis que despiertan). Cuando lleguen los archivos de Mixamo: ART-1 parte 3 y PAQ-A1.
-- **Orientación oficial: VERTICAL** (reversible). **Calidad gráfica:** sin tope de triángulos; nadie rebaja calidad sin que lo decida el usuario (`docs/CALIDAD_GRAFICA.md`).
+- **Sesión nueva: leer primero `coordinacion/TRASPASO_SESION.md`** (resumen de arranque; evita volver a analizar lo hecho).
+- **Quién trabaja:** solo **Fable** (dirige e implementa; DECISIONES 1.8). Sonnet en pausa.
+- **PRIMERA TAREA: modelos de zombis** (prioridad del usuario, 17 nov): zombi normal, según `coordinacion/RESPUESTAS_FABLE/010_zombis.md` §8. **Después: PAQ-03** (traspaso LISTO).
+- **Calidad gráfica: cerrada.** B · Nítida es la definitiva y única en móvil; A y C descartadas. La prueba de 10 minutos con B **no se hizo** (aceptada por decisión del usuario). No se comparan más calidades.
+- **Objetivos de rendimiento:** mínimo 30 fps · sostenido 40 · ideal 60. Calidad visual primero, sin topes arbitrarios de geometría.
+- **Le toca al usuario:** (1) dar el visto bueno al texto del zombi y generar la imagen en Meshy cuando Fable se lo presente; (2) cuando tenga un ordenador: Mixamo, parte 2 de `coordinacion/TRASPASOS/ART-1_prueba_mixamo.md` (archivo listo en `…/descargas/jugador_a_para_mixamo.obj`); (3) elegir el aspecto del jugador (009 §3), sin prisa; (4) jugando, avisar si algún personaje desaparece de golpe en el borde de la pantalla.
+- **Orientación oficial: VERTICAL** (reversible).
 
 ## Paquetes de código (Sonnet los toma en este orden)
 | Orden | Paquete | Estado | Traspaso | Notas |
@@ -21,7 +19,7 @@ Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `co
 | — | PAQ-02 Interacción y reja | **ACEPTADO** (Fable, 17 nov) · falta validar el tacto en iPhone | `coordinacion/TRASPASOS/PAQ-02_interaccion_y_reja.md` | |
 | — | PAQ-G1b La prueba de carga arranca en táctil + interfaz de progreso | **ACEPTADO** (Fable, 17 nov) · falta validar en iPhone | `coordinacion/TRASPASOS/PAQ-G1b_interfaz_prueba_de_carga.md` | En el móvil, `?carga` NO arrancaba antes de este paquete |
 | — | PAQ-G2 Medición fiable (`?carga` v2, resistencia, resumen de sesión, objetivos 30/40/60) | **HECHO y ejecutado en el iPhone** (17 nov, v0.1.92) | `coordinacion/TRASPASOS/PAQ-G2_medicion_fiable.md` | |
-| — | PAQ-G3 Optimización sin pérdida (calidad B por defecto, descarte por cámara, costuras, comparar con lupa) | **HECHO** (Fable, 17 nov) · falta la resistencia con B en el iPhone | — (`CALIDAD_GRAFICA.md` §2c-2e) | Sombras ajustadas a lo visible: aplazado, no hace falta hoy |
+| — | PAQ-G3 Optimización sin pérdida (calidad B por defecto, descarte por cámara, costuras, comparar con lupa) | **HECHO** (Fable, 17 nov) · cerrado por el usuario (resistencia con B no realizada) | — (`CALIDAD_GRAFICA.md` §2c-2e) | Sombras ajustadas a lo visible: aplazado, no hace falta hoy |
 | — | ART-1 parte 1 · archivo para Mixamo | **HECHO** (Fable, 17 nov) | `coordinacion/TRASPASOS/ART-1_prueba_mixamo.md` | `public/descargas/jugador_a_para_mixamo.obj`, pose en A |
 | 1 | PAQ-03 Ruido y zombis que despiertan | **LISTO** (siguiente) | `coordinacion/TRASPASOS/PAQ-03_ruido_y_zombis.md` | |
 | 3 | ART-1 parte 3 · convertir lo de Mixamo | ESPERA AL USUARIO | mismo traspaso | Cuando el usuario suba los archivos |
@@ -40,7 +38,7 @@ Nota: hoy solo hay un paquete LISTO por delante además de ART-1 (la regla pide 
 |---|---|---|
 | ART-1 Tubería Mixamo | parte 1 LISTA para Sonnet · parte 2 del usuario (ordenador) · parte 3 Sonnet | Ver traspaso. 0 créditos |
 | ART-2 Personaje de referencia | BLOQUEADO | ART-1 ACEPTADA + aspecto elegido por el usuario → Fable escribe el texto para Meshy → el usuario genera (créditos en pausa hasta entonces). Especificación: 009 §3-§4 |
-| ART-4 Resto de personajes | PLANIFICADO | PAQ-A3 + modelos |
+| ART-4 Personajes: **zombis primero** | **SIGUIENTE** (modelo y textura del zombi normal; diseño 010) | Texto para Meshy, herramienta `rehacer_textura`, visto bueno del usuario. La animación espera a Mixamo y PAQ-A3 |
 | ART-5 Objetos y escala | PLANIFICADO | ART-2 + modelos |
 | MED Medición en iPhone 14 | DOS HECHAS (17 nov: v0.1.81 y prueba de carga v0.1.91) | 58 fps · CPU 2,0 ms · 30 404 triángulos · peor cuadro 27 ms con el panel abierto. **Pendiente:** repetir con el panel cerrado en la versión actual y la prueba de carga. Tabla en `coordinacion/mediciones/MOVIL_REFERENCIA.md` |
 

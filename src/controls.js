@@ -10,7 +10,7 @@ function aplicaCal(k,guarda=true){if(!cal0)cal0={...calidadActual(),sombra:LUZ.s
   import { cfg, padState, hooks, ACTIONS, NAMES, save, resetCfg } from './gamepad.js';
 export function initControls(){
   const ver=()=>{document.getElementById('ver').textContent=__VER__+(TEST?' · prueba':'')+(cal!=='B'?' · calidad '+cal:'');};
-  if(!/[?&](carga|res|msaa)\b/.test(location.search)){let k='B';try{k=localStorage.getItem('tz_cal2')||'B';}catch(e){}if(k!=='B'&&CAL[k])aplicaCal(k,false);} // la prueba de carga mide siempre con la predeterminada
+  if(!/[?&](carga|res|msaa)\b/.test(location.search)){try{localStorage.removeItem('tz_cal2');}catch(e){} /* A y C descartadas por el usuario (17 nov): siempre B */} // la prueba de carga mide siempre con la predeterminada
   ver(); // versión: sube sola con cada cambio publicado
   const gear=document.createElement('div');gear.id='gear';gear.className='ui';gear.textContent='⚙';
   const menu=document.createElement('div');menu.id='cfgm';menu.className='ui';
@@ -25,8 +25,7 @@ export function initControls(){
       <div class="g">${rows}</div>
       <div class="r"><span>Zona muerta ${Math.round(cfg.dead*100)}%</span><input type="range" data-k="dead" min="0.05" max="0.4" step="0.01" value="${cfg.dead}"></div>
       <div class="r"><span>Sensibilidad ${cfg.sens.toFixed(2)}</span><input type="range" data-k="sens" min="0.5" max="1.5" step="0.05" value="${cfg.sens}"></div>
-      <div class="r"><span>Calidad gráfica</span><span>${Object.keys(CAL).map(k=>`<button data-q="${k}"${k===cal?' style="outline:2px solid #6cf"':''}>${k} · ${CAL[k]}</button>`).join(' ')}</span></div>
-      <div class="r"><span>Comparar gráficos (lupa, costuras)</span><span><button data-x="cmp">${barra&&barra.style.display!=='none'?'Quitar barra':'Mostrar barra'}</button></span></div>
+      <div class="r"><span>Lupa y costuras (revisar modelos)</span><span><button data-x="cmp">${barra&&barra.style.display!=='none'?'Quitar barra':'Mostrar barra'}</button></span></div>
       <div class="r"><span>Mapa de prueba (zombis quietos)</span><span><button data-t="mode">${TEST?'Desactivar':'Activar'}</button>${TEST?' <button data-t="reload">Reiniciar</button>':''}</span></div>
       <div class="s">Stick izq. camina · stick der. apunta · pulsar el stick izq. mientras caminas = correr. Granada: mantén el botón, apunta con el stick izq. y suelta para lanzar. Options abre y cierra este menú.</div>`;
   };
@@ -46,8 +45,7 @@ export function initControls(){
   // mostrando los píxeles reales, para ver de cerca lo que a tamaño normal no se distingue. No cambia nada del juego por sí misma.
   let barra=null,lupa=1;const cv=renderer.domElement;
   const pintaBarra=()=>{if(!barra)return;const q=calidadActual(),sh=LUZ.sun&&LUZ.sun.shadow;
-    barra.innerHTML=`<div>${Object.keys(CAL).map(k=>`<button data-q="${k}" class="${k===cal?'on':''}">${k} · ${CAL[k]}</button>`).join('')}</div>
-      <div><button data-l="1" class="${lupa===1?'on':''}">Sin lupa</button><button data-l="4" class="${lupa===4?'on':''}">Lupa ×4</button><button data-l="8" class="${lupa===8?'on':''}">Lupa ×8</button></div>
+    barra.innerHTML=`      <div><button data-l="1" class="${lupa===1?'on':''}">Sin lupa</button><button data-l="4" class="${lupa===4?'on':''}">Lupa ×4</button><button data-l="8" class="${lupa===8?'on':''}">Lupa ×8</button></div>
       <div><button data-c="1" class="${SEAM?'on':''}">Costuras: corregidas</button><button data-c="0" class="${SEAM?'':'on'}">sin corregir</button><button data-l="x">✕</button></div>
       <div class="i">imagen ${cv.width}×${cv.height} píxeles · suavizado ×${q.msaa||1} · sombra ${sh?sh.mapSize.x:'—'}</div>`;};
   const ponLupa=n=>{lupa=n;cv.style.transformOrigin='50% 50%';cv.style.transform=n>1?`translateY(16%) scale(${n})`:''; // algo más abajo, para que la barra no tape al personaje

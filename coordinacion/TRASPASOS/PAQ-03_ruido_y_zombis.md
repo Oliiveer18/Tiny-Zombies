@@ -52,6 +52,11 @@ Campos nuevos por zombi (serializables): `estado` (`dormido | despertando | pers
 - **Aviso sobre el zombi:** al pasar a `despertando`, un «!» amarillo sobre su cabeza 0,8 s (un sprite compartido; sin texto DOM por zombi).
 - **`?debug`:** línea «zombis: D n · ! n · P n · W n» (dormidos, despertando, persiguen, deambulan) y barras: radio de disparo, radio de andar, radio de correr, vista (m), velocidad zombis ×. Con `?debug`, además, el cono de vista de cada zombi dibujado en el suelo (líneas).
 
+## Coordinación con los modelos de zombi (010 §7)
+- El estado decide un **nombre lógico de clip**: `idle` (dormido) · `wake` (despertando) · `walk` (deambula) · `run` (persigue) · `attack` · `hit` · `die`. Se piden con `play(inst, nombre)`; si el modelo no tiene ese clip, se usa el anterior de la lista y, si no hay ninguno, el movimiento por código de hoy. Así funciona con las cápsulas de relleno y con los modelos definitivos sin tocar este paquete.
+- No se escribe en este paquete nada que dependa del aspecto: ni alturas, ni huesos, ni archivos. El «!» se coloca a 1,7 m × escala del tipo.
+- Nota de base: desde PAQ-G3 las mallas animadas se descartan por cámara (`assets.js`) y la calidad por defecto en móvil es B (resolución nativa, suavizado ×2, sombra 2 048). Las pruebas de pantalla se hacen a densidad 2 (el navegador de pruebas no mueve la nativa). **Quien implementa ahora es Fable** (DECISIONES 1.8); donde el traspaso dice Sonnet, léase quien implemente.
+
 ## Arquitectura (norma 3, obligatoria)
 - `ruido.js`, `percepcion.js` y `disparadores.js` no importan THREE ni tocan el DOM; trabajan con datos simples y se pueden ejecutar en Node. El dibujo (aro, «!», conos) solo lee.
 - Nada de `Math.random` en estados, tiempos de despertar ni puntos de deambular: `hash` de `sim.js`. El giro se guarda como vector; `atan2` solo en el dibujo.
