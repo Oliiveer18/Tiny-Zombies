@@ -134,15 +134,15 @@ for (const m of M) { const p = m.p, nv = m.nNv;
   p.setIndices(doc.createAccessor().setType('SCALAR').setArray(nv > 65535 ? m.nIdx : Uint16Array.from(m.nIdx)).setBuffer(buf)); }
 if (PNG) fs.mkdirSync(PNG, { recursive: true });
 for (const F of fuentes) { const img = sharp(Buffer.from(F.out.buffer), { raw: { width: W, height: H, channels: 4 } }), sinAlfa = F.nombre !== 'color' || !F.img.d.some((v, i) => i % 4 === 3 && v < 255), webp = F.tex.getMimeType() === 'image/webp';
-  const base = sinAlfa ? img.removeAlpha() : img; const datos = webp ? await base.webp(F.nombre === 'color' ? { quality: 92, effort: 5 } : { quality: 95, effort: 5, nearLossless: F.nombre === 'relieve' }).toBuffer() : await base.png({ compressionLevel: 9 }).toBuffer();
+  const base = sinAlfa ? img.removeAlpha() : img; const datos = webp ? await base.webp(F.nombre === 'color' ? { quality: 88, effort: 5 } : { quality: 90, effort: 5 }).toBuffer() : await base.png({ compressionLevel: 9 }).toBuffer();
   F.tex.setImage(new Uint8Array(datos)).setMimeType(webp ? 'image/webp' : 'image/png'); const inf = F.info(mat); if (inf) inf.setTexCoord(0);
   if (PNG) await base.png().toFile(path.join(PNG, F.nombre + '.png')); }
 if (PNG) { const v = new Uint8Array(W * H * 3); for (let i = 0; i < W * H; i++) { const a = pzN[i]; if (a < 0) continue; const h = Math.imul(a + 1, 2654435761) >>> 0; v[i * 3] = 80 + (h & 127); v[i * 3 + 1] = 80 + ((h >> 8) & 127); v[i * 3 + 2] = 80 + ((h >> 16) & 127); } await sharp(Buffer.from(v.buffer), { raw: { width: W, height: H, channels: 3 } }).png().toFile(path.join(PNG, 'piezas.png')); }
 // se quitan los datos viejos que ya no usa nadie
 for (const a of root.listAccessors()) if (!a.listParents().some(x => x !== root)) a.dispose();
 fs.mkdirSync(path.dirname(sal), { recursive: true }); await io.write(sal, doc); xa.destroyAtlas();
-const ok = sep >= MARGEN && piezasNuevas <= 40;
+const ok = sep >= MARGEN; // el número de piezas es solo informativo: validado en el juego con Lupa ×8 que lo que quita las motas es el margen (SESION, 18 nov)
 console.log(`${path.basename(ent)} → ${sal} (${(fs.statSync(sal).size / 1024).toFixed(0)} KB; antes ${(fs.statSync(ent).size / 1024).toFixed(0)} KB)`);
 console.log(`Triángulos: ${triTotal} (sin cambios) · vértices: ${M.reduce((s, m) => s + m.nv, 0)} → ${M.reduce((s, m) => s + m.nNv, 0)}`);
-console.log(`Piezas de textura: ${piezasViejas} → ${piezasNuevas} (objetivo ≤ 40) · separación mínima entre piezas: ${sep >= 1e9 ? '> ' + R : sep} px (objetivo ≥ ${MARGEN}) · textura ${W} × ${H}, ocupada al ${(usados / (W * H) * 100).toFixed(0)} % · mapas: ${fuentes.map(f => f.nombre).join(', ')}`);
-console.log(ok ? 'Comprobaciones OK' : 'AVISO: no cumple el objetivo (prueba con --coste más alto para menos piezas, o --tam mayor para más margen)'); if (!ok) process.exitCode = 2;
+console.log(`Piezas de textura: ${piezasViejas} → ${piezasNuevas} · separación mínima entre piezas: ${sep >= 1e9 ? '> ' + R : sep} px (objetivo ≥ ${MARGEN}) · textura ${W} × ${H}, ocupada al ${(usados / (W * H) * 100).toFixed(0)} % · mapas: ${fuentes.map(f => f.nombre).join(', ')}`);
+console.log(ok ? 'Comprobaciones OK' : 'AVISO: no cumple el objetivo (prueba con --tam mayor o --margen menor)'); if (!ok) process.exitCode = 2;

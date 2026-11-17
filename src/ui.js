@@ -8,4 +8,6 @@ function usarUI(){const v=objetivo.id?objetivo.verbo:null,T=v?v[0].toUpperCase()
   bu.classList.toggle('on',!!v);if(v&&bu.textContent!==T.toUpperCase())bu.textContent=T.toUpperCase(); // el botón redondo solo aparece cuando hay objetivo
   const t=v&&(padState.on||!input.touch);ul.classList.toggle('on',!!t);if(t)ul.textContent=(padState.on?(NAMES[cfg.map.use]||'B'+cfg.map.use):'F')+' '+T+(v==='forzar'||v==='arrastrar'?' (mantener)':'');} // etiqueta junto al HUD en mando y teclado
 export function showMsg(t){msg.textContent=t;msg.classList.remove('hide');} export function hideMsg(){msg.classList.add('hide');}
+let avT=0;const av=$('av');
+export function mensaje(t,s=2.5){av.textContent=t;av.classList.add('on');clearTimeout(avT);avT=setTimeout(()=>av.classList.remove('on'),s*1000);} // aviso breve arriba, bajo el HUD (disparadores, «Has caído»)
 export function flashWave(w){info.dataset.w=w;}

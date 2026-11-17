@@ -18,13 +18,13 @@ export function initInput(canvas){
     for(const ev of ['gesturestart','gesturechange','gestureend','dblclick'])document.addEventListener(ev,e=>e.preventDefault());
   }
   const tap=(id,fn)=>document.getElementById(id).addEventListener('touchstart',e=>{e.preventDefault();fn();},{passive:false});
-  tap('bg',()=>input.grenade=true); tap('br',()=>input.reload=true);
+  tap('bg',()=>input.grenade=true); tap('bc',()=>input.crouchToggle=true); tap('br',()=>input.reload=true);
   {const bu=document.getElementById('bu'),fin=e=>{input.useHold=false;};bu.addEventListener('touchstart',e=>{e.preventDefault();input.use=true;input.useHold=true;},{passive:false});bu.addEventListener('touchend',fin);bu.addEventListener('touchcancel',fin);} // «Usar»: toque = verbo; mantener = arrastrar / forzar
 
 }
 export function pollKeys(){
   if(!input.touch)input.move.set((keys.KeyD?1:0)-(keys.KeyA?1:0),(keys.KeyS?1:0)-(keys.KeyW?1:0));
-  {const s=document.getElementById('sl');if(s)s.style.borderColor=input.crouch?'#6cf':'';}
+  {const s=document.getElementById('sl');if(s)s.style.borderColor=input.crouch?'#6cf':'';const b=document.getElementById('bc');if(b)b.classList.toggle('on',!!input.crouch);}
   input.run=false; // sin correr (decisión del usuario, 16 nov): una sola caminata intermedia, más o menos rápida según inclines el joystick
 }
 function floatStick(id,inZone,cb,onStart,onEnd){

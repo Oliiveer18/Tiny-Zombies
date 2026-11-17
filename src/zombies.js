@@ -3,16 +3,17 @@ import * as THREE from 'three';
 import { instance, play } from './assets.js';
 import { obstacles, FIELD } from './world.js';
 import { player } from './player.js';
-import { TEST, LAYOUT } from './test.js'; import { impact } from './effects.js'; import { mulberry, hash, WORLD_SEED } from './sim.js';
+import { TEST, VIVO, LAYOUT, LUGAR } from './test.js'; import { MODELS } from './models.config.js'; import { ruido, tickRuido } from './ruido.js'; import { P, configuraPercepcion, prepara, paso, despierta } from './percepcion.js'; import DATOS from './data/ruido.json'; import { topSpeed } from './player.js'; import { impact } from './effects.js'; import { mulberry, hash, WORLD_SEED } from './sim.js';
 export const TYPES={normal:{model:'zombie',hp:3,sp:2.3,dmg:8,r:.35,pts:10,pool:36},runner:{model:'runner',hp:2,sp:4.3,dmg:5,r:.3,pts:15,pool:24},tank:{model:'tank',hp:14,sp:1.6,dmg:20,r:.55,pts:50,pool:6}};
 export const zombies=[]; const free={};let scene;const rnd=mulberry(hash(WORLD_SEED,1)); // canal 1 = zombis
 const LEJOS=26; // m: a más distancia el zombi no se dibuja ni anima (lo más lejano que se ve está a ≈ 19 m; DECISIONES 2.2). Su lógica sigue igual.
+configuraPercepcion(DATOS.percepcion);
 export const state={wave:0,queue:0,spawnT:0,inter:2,score:0,alive:0,onHurt:null};
 export function initZombies(s){scene=s;for(const [k,t] of Object.entries(TYPES)){free[k]=[];for(let i=0;i<t.pool;i++){
   const inst=instance(t.model);inst.root.visible=false;scene.add(inst.root);const z={id:'z'+zombies.length,type:k,t,inst,alive:false,x:0,z:0,hp:0,atk:0,dead:0,ph:rnd()*6,vx:0,vz:0};zombies.push(z);free[k].push(z);}}}
-function place(z,x,zz){z.home={x,z:zz};z.x=x;z.z=zz;z.hp=z.t.hp;z.alive=true;z.dead=0;z.atk=0;z.dying=false;z.lejos=false;z.inst.root.visible=true;z.inst.root.rotation.set(0,0,0);z.inst.body.rotation.set(0,0,0);z.inst.body.position.y=0;state.alive++;}
+function place(z,x,zz,giro,estado){z.home={x,z:zz};z.tipo=z.type;z.r=z.t.r;z.x=x;z.z=zz;z.hp=z.t.hp;z.alive=true;z.dead=0;z.atk=0;z.dying=false;z.lejos=false;z.inst.root.visible=true;z.inst.root.rotation.set(0,0,0);z.inst.body.rotation.set(0,0,0);z.inst.body.position.y=0;state.alive++;prepara(z,+z.id.slice(1),giro,estado);}
 export function resetZombies(){for(const z of zombies)kill(z,true);Object.assign(state,{wave:0,queue:0,spawnT:0,inter:2,score:0});
-  if(TEST)for(const [k,x,zz] of LAYOUT.zombies){const z=free[k].pop();if(z){place(z,x,zz);z.inst.root.position.set(x,0,zz);}}} // mapa de prueba: zombis fijos
+  if(TEST)for(const [k,x,zz,giro,estado] of LAYOUT.zombies){const z=free[k].pop();if(z){place(z,x,zz,giro,estado);z.inst.root.position.set(x,0,zz);}}} // mapa de prueba: zombis fijos
 function spawn(){
   const w=state.wave;let k='normal',r=rnd();if(w>=3&&r<Math.min(.03*w,.15))k='tank';else if(w>=2&&r<Math.min(.12+.04*w,.4))k='runner';
   const z=free[k].pop();if(!z)return false;
@@ -29,12 +30,14 @@ export function updateZombies(dt){
   // oleadas
   if(!TEST&&state.queue<=0&&state.alive===0){state.inter-=dt;if(state.inter<=0){state.wave++;state.queue=6+state.wave*4;state.inter=3;state.spawnT=0;state.onWave?.(state.wave);}}
   if(!TEST&&state.queue>0){state.spawnT-=dt;if(state.spawnT<=0&&state.alive<40){if(spawn())state.queue--;state.spawnT=Math.max(.25,.8-state.wave*.05);}}
+  if(VIVO)pasoVivo(dt);
   for(const z of zombies){
     if(z.dying){z.dead+=dt;const f=Math.min(z.dead/.4,1);if(!z.inst.mixer)z.inst.body.rotation.x=-f*1.5;z.inst.mixer?.update(dt);
-      if(z.dead>1.6){z.dying=false;z.inst.root.visible=false;if(TEST&&z.home)place(z,z.home.x,z.home.z);else free[z.type].push(z);}continue;} // en prueba reaparecen en su sitio
+      if(z.dead>1.6){z.dying=false;z.inst.root.visible=false;if(TEST&&!VIVO&&z.home)place(z,z.home.x,z.home.z);else free[z.type].push(z);}continue;} // en ?carga reaparecen en su sitio; en el mapa vivo, cuando el jugador cae (resetZombies)
     if(!z.alive)continue;
     let dx=player.x-z.x,dz=player.z-z.z;const d=Math.hypot(dx,dz)||1;dx/=d;dz/=d;
     if(z.lejos){if(d<LEJOS-2){z.lejos=false;z.inst.root.visible=true;}}else if(d>LEJOS){z.lejos=true;z.inst.root.visible=false;} // histéresis de 2 m: sin parpadeo
+    if(VIVO){dibujaVivo(z,dt);continue;}
     if(TEST){const r=z.inst.root;r.position.set(z.x,0,z.z);r.rotation.y=Math.atan2(dx,dz);if(!z.inst.mixer)z.inst.body.rotation.x=.12;else if(!z.lejos)z.inst.mixer.update(dt);continue;} // quietos: ni se mueven ni atacan
     let sx=dx,sz=dz;
     for(const o of obstacles){if(o.fly)continue;const ox=z.x-o.x,oz=z.z-o.z,od=Math.hypot(ox,oz),min=o.r+z.t.r;
@@ -51,3 +54,33 @@ export function updateZombies(dt){
     else{z.ph+=dt*sp*3.5+dt;z.inst.body.position.y=Math.abs(Math.sin(z.ph))*.08;z.inst.body.rotation.z=Math.sin(z.ph)*.12;z.inst.body.rotation.x=near?Math.sin(z.ph*6)*.25+.2:.25;}
   }
 }
+
+// ---------- Mapa de prueba «vivo» (PAQ-03) ----------
+// La lógica está en percepcion.js (pura). Aquí solo se le pasa el mundo y se dibuja lo que decide: el aspecto no interviene.
+const CLIPS=['idle','wake','walk','run','attack','hit','die'],DE={dormido:'idle',despertando:'wake',deambula:'walk',persigue:'run'};
+// clip lógico → el que tenga el modelo (si falta, el anterior de la lista; si no hay ninguno, null = movimiento por código)
+function clip(inst,n){for(let i=CLIPS.indexOf(n);i>=0;i--)if(inst.actions[CLIPS[i]])return CLIPS[i];return null;}
+const M={zs:zombies,j:{x:0,z:0,agachado:false,corre:false,vivo:true},muros:LUGAR.muros,obst:obstacles,ruido,tick:0,semilla:WORLD_SEED,velJ:1,golpe:z=>state.onHurt?.(z.t.dmg),aviso:z=>{z.av=.8;}};
+function pasoVivo(dt){M.j.x=player.x;M.j.z=player.z;M.j.agachado=!!player.crouch;M.j.corre=!!player.corre;M.j.vivo=player.hp>0&&!player.caido;M.tick=tickRuido();M.velJ=topSpeed();paso(M,dt);aroRuido(dt);}
+export function cuenta(){const c={dormido:0,despertando:0,persigue:0,deambula:0};for(const z of zombies)if(z.alive&&c[z.estado]!==undefined)c[z.estado]++;return c;}
+// disparador «despertar»: pone en despertando a los dormidos de una zona, con el jugador como objetivo
+export function despertarZona(rect){for(const z of zombies)if(z.alive&&z.estado==='dormido'&&z.x>=rect[0]&&z.x<=rect[2]&&z.z>=rect[1]&&z.z<=rect[3])despierta(z,M,[player.x,player.z]);}
+let matAv=null,geoCono=null,matCono=null,aro=null,aroT=9,aroR=0,aroTick=-1;const DBG=typeof location!=='undefined'&&new URLSearchParams(location.search).has('debug');
+function aviso(z){if(!matAv){const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d');g.font='bold 58px sans-serif';g.textAlign='center';g.textBaseline='middle';g.lineWidth=8;g.strokeStyle='#000';g.strokeText('!',32,34);g.fillStyle='#ffd21e';g.fillText('!',32,34);
+    matAv=new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false,transparent:true});} // una sola textura y un solo material para todos
+  z.spr=new THREE.Sprite(matAv);z.spr.scale.setScalar(.7);z.spr.renderOrder=10;scene.add(z.spr);}
+function cono(z){if(!geoCono){const p=[0,0,0];for(let i=0;i<=12;i++){const a=(i/12-.5)*P.cono*Math.PI/180;p.push(Math.sin(a),0,Math.cos(a));}p.push(0,0,0);geoCono=new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(p,3));matCono=new THREE.LineBasicMaterial({color:0xffe060,transparent:true,opacity:.5});}
+  z.cono=new THREE.Line(geoCono,matCono);z.cono.position.y=.06;z.inst.root.add(z.cono);}
+function dibujaVivo(z,dt){const r=z.inst.root,b=z.inst.body,e=z.estado;r.position.set(z.x,0,z.z);r.rotation.y=Math.atan2(z.gx,z.gz);
+  if(z.av>0){z.av-=dt;if(!z.spr)aviso(z);z.spr.visible=!z.lejos;z.spr.position.set(z.x,1.7*(MODELS[z.t.model].scale||1),z.z);}else if(z.spr)z.spr.visible=false;
+  if(DBG){if(!z.cono)cono(z);z.cono.scale.setScalar(P.vista);}
+  if(z.lejos)return;
+  if(z.inst.mixer){const c=clip(z.inst,e==='persigue'&&z.cerca?'attack':DE[e]);if(c)play(z.inst,c);z.inst.mixer.update(dt);if(c)return;}
+  // sin clips (relleno): dormido inclinado y quieto; despertando se endereza; andando se balancea como en Tiny
+  const mov=e==='persigue'&&!z.cerca?1:e==='deambula'&&z.pausa<=0?.5:0;z.ph+=dt*(mov*8+1);
+  b.position.y=mov?Math.abs(Math.sin(z.ph))*.08*mov:0;b.rotation.z=mov?Math.sin(z.ph)*.12:0;
+  b.rotation.x=e==='dormido'?.45:e==='despertando'?.45*(1-Math.min(1,z.te/Math.max(z.tDesp,.01))):z.cerca?Math.sin(z.ph*6)*.25+.2:mov?.25:.12;}
+// Medidor de ruido: aro fino en el suelo con el radio del último ruido del jugador (se abre en 0,15 s y se desvanece en 0,6 s)
+function aroRuido(dt){if(!aro){aro=new THREE.Mesh(new THREE.RingGeometry(.985,1,64),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.25,depthWrite:false}));aro.rotation.x=-Math.PI/2;aro.position.y=.04;aro.visible=false;scene.add(aro);}
+  for(let i=ruido.length-1;i>=0;i--){const q=ruido[i];if(q.tick<=aroTick)break;if(q.quien==='j1'){aroTick=q.tick;aroT=0;aroR=q.radio;aro.position.x=q.x;aro.position.z=q.z;break;}}
+  aroT+=dt;if(aroT>.75||aroR<=0){aro.visible=false;return;}aro.visible=true;aro.scale.setScalar(aroR*Math.min(1,aroT/.15));aro.material.opacity=.25*(1-Math.max(0,(aroT-.15)/.6));}

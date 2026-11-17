@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { instance, play } from './assets.js';
-import { input } from './input.js';
+import { input } from './input.js'; import { sonido, R } from './ruido.js';
 import { obstacles, FIELD } from './world.js';
 import { wp } from './weapons.js'; import { CAM } from './renderer.js';
 // Velocidades (unidades/s). Tiny original: 4.2 / 7 con cámara a 16.4; con la cámara a 10.1 se ajustan para que la velocidad en pantalla sea parecida.
@@ -34,6 +34,7 @@ export function updatePlayer(dt,cam){
   const tx=m.x*sp,tz=m.y*sp,k=Math.min(1,dt*(m.length()>0?MOVE.acc:MOVE.dec));
   vel.x+=(tx-vel.x)*k;vel.y+=(tz-vel.y)*k;
   const speed=vel.length(); player.moving=speed>.15||m.length()>.1;
+  player.corre=run;if(speed>.15){player.pasoT=(player.pasoT||0)+dt;if(player.pasoT>=.4){player.pasoT=0;sonido(player.x,player.z,run?R.correr:player.crouch?R.agachado:R.andar,'j1');}} // ruido de pasos (PAQ-03): un registro cada 0,4 s; agachado no suena
   player.x+=vel.x*dt;player.z+=vel.y*dt;
   for(const o of obstacles){if(o.fly)continue;const dx=player.x-o.x,dz=player.z-o.z,d=Math.hypot(dx,dz),min=o.r+.25*MOVE.size;if(d<min&&d>1e-4){const nx=dx/d,nz=dz/d;player.x=o.x+nx*min;player.z=o.z+nz*min;const vn=vel.x*nx+vel.y*nz;if(vn<0){vel.x-=vn*nx;vel.y-=vn*nz;}}}
   const L=FIELD-2;player.x=THREE.MathUtils.clamp(player.x,-L,L);player.z=THREE.MathUtils.clamp(player.z,-L,L);

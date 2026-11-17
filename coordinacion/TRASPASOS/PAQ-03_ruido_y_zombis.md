@@ -97,6 +97,7 @@ NPC, hostiles que disparan, cobertura, señuelos, rematar por la espalda, luz y 
 
 ---
 ## Informe de Sonnet (rellenar al entregar)
+- Implementado por Fable el 18 nov. Informe completo (qué se hizo, decisiones secundarias, resultado de las pruebas 1-17 y lo no comprobado): `docs/SESION.md`, entrada «PAQ-03».
 - Commit(s):
 - Qué se hizo:
 - Decisiones secundarias tomadas:

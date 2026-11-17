@@ -47,7 +47,7 @@ console.log('ms por paso (hasta',maxAct,'activos, 52 cuerpos):',ms.toFixed(3));
 }
 // ---- PAQ-02: «Usar» (usar.js) con la simulación real, sin navegador ----
 {
-  const U=await import('../src/usar.js');
+  const U=await import('../src/usar.js');(await import('../src/ruido.js')).configuraRuido(JSON.parse((await import('fs')).readFileSync(new URL('../src/data/ruido.json',import.meta.url))).radios);
   const mkw=()=>{const phys=createPhysics(mats,objs),props=[];const add=(id,key,x,z,rot,r)=>{const p={id,key,x,z,r:r||.5,rot,dead:false,vida:objs[key].vida||Infinity};p.body=phys.addProp(p);props.push(p);return p;};
     U.ruido.length=0;U.ordenes.length=0;U.initUsar({props,OBJ:objs,phys,damageProp:(p)=>{p.dead=true;}});return {phys,props,add};};
   const J=(x,z,ax,az,mueve=false,extra={})=>({id:'j1',x,z,ax,az,mueve,mx:mueve?ax:0,mz:mueve?az:0,dispara:false,...extra});

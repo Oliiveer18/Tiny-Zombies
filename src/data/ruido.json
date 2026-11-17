@@ -1,0 +1,4 @@
+{
+ "radios": {"disparo": 30, "explosion": 60, "reja_rota": 14, "candado_roto": 10, "objeto_roto": 8, "forzar": 8, "abrir": 6, "arrastrar": 5, "empujar": 4, "correr": 6, "andar": 3, "agachado": 0},
+ "percepcion": {"vista": 5, "vistaAgachado": 0.6, "vistaCorriendo": 1.6, "cono": 120, "contagio": 4, "contagioT": 0.3, "olvido": 8, "deambula": 2.8, "despMin": 0.6, "despMax": 1.2, "vel": {"normal": 0.55, "runner": 1, "tank": 0.4}, "velX": 1}
+}

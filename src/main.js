@@ -1,6 +1,6 @@
 // Arranque: carga de recursos, creación del mundo y bucle de animación.
 import { loadAll } from './assets.js'; import { initInput } from './input.js'; import { initControls } from './controls.js';
-import { buildWorld, damageProp } from './world.js'; import { initEffects } from './effects.js'; import { initDebris } from './debris.js'; import { initDecals } from './decals.js'; import { MUROS } from './alley.js';
+import { buildWorld, damageProp, props } from './world.js'; import { initEffects } from './effects.js'; import { initDebris } from './debris.js'; import { initDecals } from './decals.js'; import { MUROS } from './alley.js';
 import { initPlayer, player } from './player.js';
 import { initZombies, state } from './zombies.js';
 import { initWeapons, wp } from './weapons.js'; import { showMsg } from './ui.js';
@@ -9,7 +9,7 @@ import { G, setSun, die, frame } from './game.js'; import { TEST } from './test.
 async function main(){
   showMsg('Cargando…');await loadAll();initInput(renderer.domElement);initControls();
   initDecals(scene);setSun(buildWorld(scene,{shadow:2048}));initEffects(scene);initDebris(scene);initPlayer(scene);initZombies(scene);initWeapons(scene);
-  if(TEST)window.__tz={MUROS,damageProp,player,obstacles,zombies,state,phys,wp}; // ayuda para las pruebas automáticas del mapa de prueba
+  if(TEST)window.__tz={MUROS,damageProp,player,obstacles,zombies,state,phys,wp,props}; // ayuda para las pruebas automáticas del mapa de prueba
   state.onHurt=d=>{if(!G.run)return;player.hp-=d;player.hurt=.25;if(player.hp<=0)die();};wp.onSelfHit=state.onHurt;
   state.onWave=()=>{wp.grenades=Math.min(wp.grenades+1,5);};
   showMsg(touch?'TINY ZOMBIES\nJoystick izq: mover · der: apuntar y disparar\nToca para empezar':'TINY ZOMBIES\nWASD mover · Shift correr · Clic disparar\nR recargar · E granada\nClic para empezar');

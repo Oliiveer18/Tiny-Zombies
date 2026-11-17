@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 import { TEST, LAYOUT } from './test.js'; import { buildAlley } from './alley.js'; import { createPhysics } from './physics.js'; import MAT from './data/materiales.json'; import OBJ from './data/objetos.json'; export {OBJ}; import { impact } from './effects.js'; import { spawnDebris } from './debris.js'; import { bulletMark } from './decals.js'; import { propSource } from './assets.js'; import { mulberry, WORLD_SEED } from './sim.js'; import { initUsar, sonido, objetivo } from './usar.js';
+import { R, configuraRuido } from './ruido.js'; import RUIDO from './data/ruido.json';
 export const LUZ={}; // luces ajustables en vivo desde ?debug
 export const obstacles=[]; export const props=[]; export const FIELD=40;
 export const hooks={boom:null}; // lo rellena weapons.js (explosión de bidón)
-export const phys=createPhysics(MAT,OBJ);const PROPIO={candado:1}; // clases que dibuja alley.js (no usan malla instanciada)
+export const phys=createPhysics(MAT,OBJ);configuraRuido(RUIDO.radios,()=>phys.tick());const PROPIO={candado:1}; // clases que dibuja alley.js (no usan malla instanciada)
 let aroO=null,aroP=null; const dyn={}; const dummy=new THREE.Object3D(); dummy.rotation.order='YXZ'; const mm=new THREE.Matrix4();
 export function buildWorld(scene,q){
   scene.background=new THREE.Color(0x9cc4e4); scene.fog=null; // sin niebla por decisión del usuario (16 nov). DÍA provisional (noche de Tiny: fondo/niebla 0x070b16)
@@ -42,7 +43,7 @@ export function crearHoja(def){ // reja con bisagra: estado en physics.js, colis
 function moverObs(h){for(const ob of h.obs){const t=(ob.k+.5)*h.largo/5;ob.x=h.px+h.dx*t;ob.z=h.pz+h.dz*t;}}
 export function damageHoja(h,n){if(h.roto)return;h.vida-=n;if(h.vida>0)return;h.roto=true;phys.remove(h.body);
   for(const ob of h.obs){const i=obstacles.indexOf(ob);if(i>=0)obstacles.splice(i,1);}
-  const cx=h.px+h.dx*h.largo/2,cz=h.pz+h.dz*h.largo/2;spawnDebris(cx,cz,'barrote',(MAT.metal||{}).hex||0x2e4a3a,OBJ[h.clase].rompe.n);sonido(cx,cz,14,'mundo');}
+  const cx=h.px+h.dx*h.largo/2,cz=h.pz+h.dz*h.largo/2;spawnDebris(cx,cz,'barrote',(MAT.metal||{}).hex||0x2e4a3a,OBJ[h.clase].rompe.n);sonido(cx,cz,R.reja_rota,'mundo');}
 export function updateProps(dt){
   phys.step(dt);for(const h of phys.hinges)if(!h.roto)moverObs(h);
   if(aroO){const on=!!objetivo.id;aroO.visible=on;aroP.visible=on&&objetivo.prog>0;if(on){aroO.position.set(objetivo.x,.05,objetivo.z);aroO.scale.setScalar(objetivo.r);aroP.position.set(objetivo.x,.05,objetivo.z);aroP.scale.setScalar(Math.max(.01,objetivo.r*objetivo.prog));}} // física propia (src/physics.js): se mueve lo que se despierta; lo dormido no cuesta nada
@@ -54,7 +55,7 @@ export function updateProps(dt){
 }
 const matOf=p=>p.mat||(OBJ[p.key]&&OBJ[p.key].mat)||(p.key==='wall'?'hormigon':null);
 function breakProp(p){ // rotura: sale de la partida, quedan trozos y, si explota, una explosión
-  if(p.dead)return;p.dead=true;sonido(p.x,p.z,p.key==='candado'?10:8,'mundo');if(p.key==='candado')for(const h of phys.hinges)if(h.cand===p.id)h.candado=false;const d=OBJ[p.key]||{},m=MAT[matOf(p)]||{};
+  if(p.dead)return;p.dead=true;sonido(p.x,p.z,p.key==='candado'?R.candado_roto:R.objeto_roto,'mundo');if(p.key==='candado')for(const h of phys.hinges)if(h.cand===p.id)h.candado=false;const d=OBJ[p.key]||{},m=MAT[matOf(p)]||{};
   const i=obstacles.indexOf(p);if(i>=0)obstacles.splice(i,1);if(p.body){phys.remove(p.body);p.body=null;}
   if(p.idx!==undefined&&dyn[p.key])sync(p);
   if(d.rompe)spawnDebris(p.x,p.z,d.rompe.tipo,m.hex||0x888888,d.rompe.n);

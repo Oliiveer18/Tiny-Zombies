@@ -2,7 +2,7 @@
 import { renderer, scene, OFF, CAM } from './renderer.js'; import { charFrac } from './game.js';
 import { MOVE, topSpeed } from './player.js';
 import { LUZ, phys } from './world.js';
-import { state } from './zombies.js';
+import { state, cuenta } from './zombies.js'; import { R } from './ruido.js'; import { P } from './percepcion.js'; import { VIVO } from './test.js';
 export const DEBUG=new URLSearchParams(location.search).has('debug');
 let el,t0=0,last=0,frames=0,acc=0,shown=0,cpu=0,cpuMax=0,worst=0;const hist=[];let fps=0,worstWin=0,cpuWin=0;
 let SYNC=null,syncT=0;
@@ -35,6 +35,9 @@ if(DEBUG){renderer.info.autoReset=false;
   {const u=()=>phys.params.ultimo,ci=()=>u()&&phys.claseInfo(u());
    sl(()=>'Masa × de '+(u()||'(dispara a algo)'),.2,5,()=>ci()?ci().k:1,v=>{if(u())phys.setMasa(u(),v);},.1);
    sl(()=>'Rozamiento de '+(u()||'(dispara a algo)'),0,1.5,()=>ci()?ci().mu:.6,v=>{if(u())phys.setMu(u(),v);},.05);}
+  // Ruido y zombis (PAQ-03): se cambian en vivo y no se guardan
+  sl('Ruido: disparo (m)',0,60,()=>R.disparo,v=>R.disparo=v,1);sl('Ruido: andar (m)',0,10,()=>R.andar,v=>R.andar=v,.5);sl('Ruido: correr (m)',0,15,()=>R.correr,v=>R.correr=v,.5);
+  sl('Vista de los zombis (m)',0,15,()=>P.vista,v=>P.vista=v,.5);sl('Velocidad zombis ×',.2,2.5,()=>P.velX,v=>P.velX=v,.05);
   SYNC=sync;info();
   // Paneles escondidos por defecto: un botón pequeño los muestra u oculta
   const btn=document.createElement('div');btn.textContent='📊';btn.style.cssText='position:fixed;top:max(12px,env(safe-area-inset-top));right:calc(max(12px,env(safe-area-inset-right)) + 46px);z-index:100;width:38px;height:38px;line-height:38px;text-align:center;font-size:18px;color:#fff;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.25);border-radius:50%;box-sizing:border-box';
@@ -61,5 +64,5 @@ export function debugEnd(){if(!DEBUG)return;if(SYNC&&el&&el.style.display!=='non
   worstWin=0;for(const h of hist)if(h[1]>worstWin)worstWin=h[1];
   const i=renderer.info,tri=i.render.triangles;
   el.style.color=fps<30?'#f88':fps<40||worstWin>33.4?'#fc6':'#9f9';
-  el.textContent=`versión ${__BUILD__}\nfps ${fps.toFixed(0)}  (mín 30 · objetivo 40 · ideal 60)\npeor cuadro 5 s ${worstWin.toFixed(1)} ms (meta ≤33)\n${sesion()}\nCPU cuadro ${cpu.toFixed(1)} ms (máx ${cpuMax.toFixed(1)})\ntriángulos ${tri} (todas las pasadas)\nllamadas ${i.render.calls}\ngeometrías ${i.memory.geometries} · texturas ${i.memory.textures} · memoria texturas ≈ ${texMB().toFixed(1)} MB\nzombis vivos ${state.alive}\ncámara ${Math.hypot(OFF.y,OFF.z).toFixed(1)} m · ${(Math.atan2(OFF.y,OFF.z)*57.3).toFixed(0)}° · personaje 1/${(1/Math.max(charFrac(),.001)).toFixed(1)} del alto`;
+  el.textContent=`versión ${__BUILD__}\nfps ${fps.toFixed(0)}  (mín 30 · objetivo 40 · ideal 60)\npeor cuadro 5 s ${worstWin.toFixed(1)} ms (meta ≤33)\n${sesion()}\nCPU cuadro ${cpu.toFixed(1)} ms (máx ${cpuMax.toFixed(1)})\ntriángulos ${tri} (todas las pasadas)\nllamadas ${i.render.calls}\ngeometrías ${i.memory.geometries} · texturas ${i.memory.textures} · memoria texturas ≈ ${texMB().toFixed(1)} MB\nzombis vivos ${state.alive}${VIVO?(c=>` · D ${c.dormido} · ! ${c.despertando} · P ${c.persigue} · W ${c.deambula}`)(cuenta()):''}\ncámara ${Math.hypot(OFF.y,OFF.z).toFixed(1)} m · ${(Math.atan2(OFF.y,OFF.z)*57.3).toFixed(0)}° · personaje 1/${(1/Math.max(charFrac(),.001)).toFixed(1)} del alto`;
   cpuMax=0;}
