@@ -96,6 +96,14 @@ Conclusión: con 30 000 triángulos el móvil va sobrado de CPU. No hay ningún 
 | **C · Fluida** | Resolución 2, MSAA 2, sombra 2 048 | 58 fps: bordes algo menos suaves |
 Recomendación de Fable: mirar B y C en el móvil; si en C no se nota diferencia en los bordes, C; si se nota, B. La elección es del usuario (regla 4).
 
+## 2d. Comparación de calidades y defecto de costuras (17 nov, tras probarlo el usuario)
+- **¿Las opciones A/B/C aplican cambios reales? Sí** [comprobado]: B dibuja 1 170 × 2 097 píxeles con suavizado ×2 y sombra 2 048; A y C dibujan 780 × 1 398 (A suavizado ×4 y sombra 1 024; C suavizado ×2 y sombra 2 048). El usuario no las distingue a tamaño normal porque la pantalla del iPhone tiene los píxeles muy pequeños. **Eso es un dato útil** (C daría 58 fps sin pérdida apreciable), pero no se aprueba nada hasta que él lo vea.
+- **Para verlo:** menú ⚙ → «Comparar gráficos» → barra con A/B/C, **lupa ×4 y ×8** (amplía el centro de la imagen enseñando los píxeles reales) y la línea con los valores reales en uso. La elección no se guarda: el juego arranca siempre en A.
+- **Defecto del personaje (motas claras en camiseta, pelo, botas y pantalón al ampliar):** reproducido. **Causa:** la textura que entregó Meshy son cientos de trocitos de colores distintos pegados sin margen; cuando el personaje se ve pequeño, la textura reducida mezcla cada trozo con sus vecinos (piel junto a camiseta, etc.) y aparecen motas en las costuras. No depende del suavizado de bordes (sale igual con y sin él). De cerca de verdad (cámara pegada) no aparece, porque entonces la textura se lee entera.
+- **Corrección aplicada (no cambia el estilo ni rebaja nada):** la textura de los modelos se lee un nivel y medio más nítida y con más filtrado, y las coordenadas se toman dentro de cada triángulo. En las capturas las motas se reducen mucho, sin desaparecer del todo. **No comprobado:** que no añada parpadeo en movimiento en el iPhone (por eso la barra permite alternar «corregidas / sin corregir»).
+- **Solución definitiva:** es un defecto del modelo de relleno, que se va a sustituir. Para los modelos definitivos pasa a ser requisito (DECISIONES 3.17): textura reorganizada en piezas grandes con margen y repintada por la herramienta, y aprobación con captura con lupa.
+- El «pixelado» en escalones de la captura del usuario es la ampliación de una imagen dibujada a resolución 2 en una pantalla de 3: con B (resolución nativa) se reduce; se ve con la lupa.
+
 ## 3. Qué cuesta de verdad en un móvil (de más a menos, para este juego) [R]
 | Cosa | Dónde pesa | Cuánto importa aquí |
 |---|---|---|

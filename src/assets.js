@@ -6,6 +6,19 @@ import { renderer } from './renderer.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 let env=null; // reflejos suaves de estudio, solo para el personaje (ver A0f)
 function getEnv(){ if(!env){const pm=new THREE.PMREMGenerator(renderer);env=pm.fromScene(new RoomEnvironment(),0.04).texture;pm.dispose();} return env; }
+// Costuras de textura (PAQ-G3): las texturas de Meshy son cientos de trozos de colores distintos pegados sin margen. Al verse el modelo pequeño,
+// la textura reducida mezcla trozos vecinos y salen motas claras en las costuras. Sin rehacer el modelo se reduce así: (1) la textura se lee un
+// nivel más nítida (menos mezcla entre trozos), con más filtrado anisótropo para que no parpadee; (2) las coordenadas se toman dentro del
+// triángulo («centroid»), para que el suavizado de bordes no lea fuera de él. Se puede apagar desde el menú (Comparar) o con ?costuras=0 para ver la diferencia.
+let off=false;try{off=localStorage.getItem('tz_costuras')==='0';}catch(e){}
+export const SEAM=!off&&!/[?&]costuras=0/.test(location.search);const SESGO=(/[?&]sesgo=([\d.]+)/.exec(location.search)||[])[1]||'1.5';
+const cen=c=>c.replace(/varying vec2 (vMapUv|vNormalMapUv)/g,'centroid varying vec2 $1');
+function costuras(m){m.onBeforeCompile=sh=>{
+  sh.vertexShader=sh.vertexShader.replace('#include <uv_pars_vertex>',cen(THREE.ShaderChunk.uv_pars_vertex));
+  sh.fragmentShader=sh.fragmentShader.replace('#include <uv_pars_fragment>',cen(THREE.ShaderChunk.uv_pars_fragment))
+    .replace('#include <map_fragment>',THREE.ShaderChunk.map_fragment.replace('texture2D( map, vMapUv )','texture2D( map, vMapUv, -'+SESGO+' )'))
+    .replace('#include <normal_fragment_maps>',THREE.ShaderChunk.normal_fragment_maps.replace('texture2D( normalMap, vNormalMapUv )','texture2D( normalMap, vNormalMapUv, -'+SESGO+' )'));};
+  m.customProgramCacheKey=()=>'costuras'+SESGO;}
 const loader = new GLTFLoader(); const cache = {};
 function placeholder(p){
   let g; const m=new THREE.MeshStandardMaterial({color:p.color,roughness:.8});
@@ -25,7 +38,8 @@ export async function loadAll(){
       g.scene.traverse(o=>{if(!o.isMesh)return; o.castShadow=true;
         if(o.isSkinnedMesh)o.frustumCulled=false; // receta 003 §3: la caja de un modelo animado no sigue a los huesos
         for(const m of [].concat(o.material)){ m.metalness=0; m.metalnessMap=null; // sin mapa de entorno, el metal sale negro
-          for(const t of [m.map,m.normalMap])if(t)t.anisotropy=4;
+          for(const t of [m.map,m.normalMap])if(t)t.anisotropy=SEAM?8:4;
+          if(SEAM)costuras(m);
           if(k==='player'){m.envMap=getEnv();m.envMapIntensity=.9;m.roughness=.62;} m.needsUpdate=true; }});
       cache[k]=g;
     }catch{ cache[k]=placeholder(c.placeholder); }

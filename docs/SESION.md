@@ -1,5 +1,11 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## PAQ-G3b · Comparar gráficos con lupa y corrección de costuras (17 nov 2026, Fable)
+**Resumen fácil:** las tres calidades sí cambian cosas, pero en la pantalla del iPhone no se notan a simple vista; ahora hay una barra con lupa para verlas de cerca. Las motas claras del personaje venían de cómo está hecha su textura y están muy reducidas. Para probar: ⚙ → «Comparar gráficos» → «Mostrar barra»; toca «Lupa ×4» y cambia entre A, B y C, y entre «Costuras: corregidas / sin corregir». El juego sigue arrancando en la calidad de siempre.
+- Causa, pruebas y lo no comprobado: `docs/CALIDAD_GRAFICA.md` §2d. Requisito nuevo para modelos definitivos: DECISIONES 3.17.
+- Código: `src/assets.js` (lectura de textura más nítida + `centroid`, apagable), `src/controls.js` (barra de comparación; la calidad ya no se guarda).
+- Probado con toque a 390 × 699 y dpr 3: barra, A/B/C con valores reales, lupa ×4/×8, interruptor de costuras (recarga y conserva la barra), cerrar restaura A y quita la lupa; 0 errores.
+
 ## PAQ-G3a · Resultados reales y selector de calidad (17 nov 2026, Fable)
 **Resumen fácil:** con las tres pruebas del iPhone ya sabemos que el juego cumple los 40 fps sostenidos y no se viene abajo por calor. Hemos encontrado dos formas de mejorar: una imagen más nítida al mismo rendimiento (B) o subir a casi 60 fps con bordes un poco menos suaves (C). En el menú ⚙ hay ahora «Calidad gráfica (comparar)» con A, B y C para que elijas mirando tu móvil. Por defecto no cambia nada.
 - Análisis: `docs/CALIDAD_GRAFICA.md` §2c. Capturas: `coordinacion/mediciones/`.

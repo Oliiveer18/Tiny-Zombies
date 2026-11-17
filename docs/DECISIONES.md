@@ -31,7 +31,7 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 | 2.12 | Los ajustes gráficos por defecto del móvil **no se cambian** hasta tener PAQ-G2. «Resolución 3 + MSAA 4» queda descartada como opción por defecto (33 fps con la escena vacía). Cualquier cambio de ajuste lo elige el usuario comparando capturas en su móvil | F · 17 nov |
 | 2.13 | Optimización de personajes solo por vías que no cambian lo que se ve: no dibujar ni sombrear los que están fuera de pantalla, detalle acorde a su tamaño en píxeles (comprobado con capturas iguales), animación a media frecuencia en los lejanos | F · 17 nov |
 | 2.14 | **Presupuesto provisional: ≈ 24 personajes animados en pantalla a la vez** con el peso actual (indicador, no límite; `CALIDAD_GRAFICA.md` §2c). Geometría estática y luces (hasta 8): sin presupuesto. El objetivo de 40 fps sostenidos está **cumplido** con los ajustes actuales (10 min sin caída por calor) | F · 17 nov (medido) |
-| 2.15 | Ajuste gráfico del móvil: **pendiente de que el usuario elija** entre A (actual), B (nítida) y C (fluida) con el selector del menú. Hasta entonces, A. La sombra de 2 048 va incluida en B y C porque no cuesta | U (pendiente) · 17 nov |
+| 2.15 | Ajuste gráfico del móvil: **sin decidir; se mantiene A (actual)**. El usuario no distingue A, B y C a tamaño normal (17 nov) y no aprueba ninguna hasta poder distinguirlas: para eso está la barra «Comparar gráficos» con lupa. La elección no se guarda entre sesiones. La sombra de 2 048 va incluida en B y C porque no cuesta | U (pendiente) · 17 nov |
 
 ## 3. Arte y personajes
 | # | Decisión | Quién · fecha |
@@ -52,6 +52,7 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 | 3.14 | El cuerpo de referencia se genera **en pose T, sin casco, chaleco, mochila ni arma** (son piezas) y sin nada suelto. Especificación completa en 009 §3 | F · 17 nov |
 | 3.15 | **Sistema de animación único** (`anim.js`) para todos los personajes: mezcla continua en 8 direcciones con paso sincronizado, capas independientes de piernas y torso, capa aditiva y capa por código (giro de torso, retroceso, inclinación, mirada). Todo en datos. El disparo no usa clip. Diseño: 009 §7 | U (objetivo) + F (arquitectura) · 17 nov |
 | 3.16 | El sistema de animación se construye sobre un relleno con esqueleto de Mixamo **antes** de tener el personaje definitivo; los créditos de Meshy se desbloquean al aceptar ART-1 y elegir el usuario el aspecto | F · 17 nov (concreta 3.6) |
+| 3.17 | **Requisito de textura para todo modelo definitivo:** la textura debe tener pocas piezas grandes con margen entre ellas (≥ 8 píxeles a 2 048). Las texturas que entrega Meshy (cientos de trocitos pegados sin margen) producen motas claras en las costuras al verse el modelo pequeño. La herramienta de personajes reorganizará y volverá a pintar la textura antes de dar un modelo por bueno, y cada modelo se aprueba con una captura con lupa | F · 17 nov (defecto visto por el usuario en el relleno) |
 
 ## 4. Juego (mapa de prueba y táctica)
 | # | Decisión | Quién · fecha |
