@@ -1,5 +1,13 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## PAQ-G3 (cierre) y ART-1 parte 1 (17 nov 2026, Fable)
+**Resumen fácil:** el juego arranca ya en la calidad «B · Nítida» que elegiste; A y C siguen en el menú ⚙ por si quieres cambiar. Los personajes que quedan fuera de la pantalla ya no gastan rendimiento. Y está listo el archivo del personaje para subirlo a Mixamo. Para probar: abre el juego, comprueba que se ve nítido y pasa `?carga=resistencia` (10 min) para confirmar que B aguanta.
+- Calidad: `src/renderer.js` (móvil: resolución hasta 3 y suavizado ×2 por defecto), `src/main.js` (sombra 2 048), `src/controls.js` (selector en el menú, se recuerda en `tz_cal2`), `src/carga.js` (variantes de calidad explícitas respecto a B).
+- Descarte por cámara de mallas animadas: `src/assets.js`.
+- ART-1 parte 1: `tools/para_mixamo.mjs` → `public/descargas/jugador_a_para_mixamo.obj` (9 836 vértices, 12 000 triángulos, 1,70 m, pies en 0, **pose en A**: Mixamo suele aceptarla).
+- Probado con toque: por defecto 1 170 × 2 097 a densidad 3; A y C se aplican y se recuerdan; B restaura; `?carga` completa con ajustes correctos en cada fila y restaurados; jugador visible; 0 errores. El navegador de pruebas no mueve la resolución nativa con soltura, así que el resto se probó a densidad 2.
+- No comprobado: nada en el iPhone; fps sostenidos de B; bordes de pantalla con el descarte.
+
 ## PAQ-G3b · Comparar gráficos con lupa y corrección de costuras (17 nov 2026, Fable)
 **Resumen fácil:** las tres calidades sí cambian cosas, pero en la pantalla del iPhone no se notan a simple vista; ahora hay una barra con lupa para verlas de cerca. Las motas claras del personaje venían de cómo está hecha su textura y están muy reducidas. Para probar: ⚙ → «Comparar gráficos» → «Mostrar barra»; toca «Lupa ×4» y cambia entre A, B y C, y entre «Costuras: corregidas / sin corregir». El juego sigue arrancando en la calidad de siempre.
 - Causa, pruebas y lo no comprobado: `docs/CALIDAD_GRAFICA.md` §2d. Requisito nuevo para modelos definitivos: DECISIONES 3.17.

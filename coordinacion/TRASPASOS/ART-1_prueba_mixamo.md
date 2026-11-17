@@ -44,8 +44,8 @@
 - **Falla 2-4 con el cuerpo actual pero va bien con el muñeco de Mixamo:** la tubería vale; el fallo es de la pose del cuerpo viejo. PAQ-A1 se hace con el muñeco de Mixamo como relleno y ART-2 exige pose en T.
 - **Falla también así:** se vuelve a las animaciones de Meshy y Fable replantea el 009.
 
-## Informe de Sonnet
-(pendiente)
+## Informe (parte 1, hecha por Fable el 17 nov)
+`tools/para_mixamo.mjs` creado y ejecutado sobre `jugador_a.glb` → `public/descargas/jugador_a_para_mixamo.obj`: 9 836 vértices y 12 000 triángulos (los mismos que el GLB), una malla, altura 1,700 m, pies en y = 0, esqueleto de 20 huesos quitado. **Pose en A** (ancho/alto 0,67): Mixamo suele aceptarla; si no, vale la alternativa de la parte 2. No comprobado: que Mixamo lo acepte (solo se sabe al subirlo) y hacia dónde mira el modelo (Mixamo deja girarlo al subirlo). Partes 2 y 3 pendientes.
 
 ## Revisión de Fable
 (pendiente)

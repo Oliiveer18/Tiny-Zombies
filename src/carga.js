@@ -46,8 +46,8 @@ export function initCarga(){
     a=fam('luz');for(const k of [2,4,8])a(k+' luces puntuales',()=>luces(k));a('3 explosión/0,5 s',()=>explos(3));
     // opciones de calidad medidas CON carga (20 personajes): sin carga la pantalla recorta a 60 y no se ve la diferencia
     a=fam('cal');const q=(nom,c)=>a('20p · '+nom,junto(()=>personajes(20),()=>calidad(c)));
-    q('por defecto',{});q('MSAA 2',{msaa:2});q('sin MSAA',{msaa:0});q('res 3 sin MSAA',{res:3,msaa:0});q('res 3 MSAA 2',{res:3,msaa:2});q('res 3 MSAA 4',{res:3,msaa:4});
-    q('sin bloom',{bloomOn:false});q('sin sombras',{sombra:0});q('sombra 2048',{sombra:2048});
+    q('por defecto (B)',{});q('A: res2 MSAA4',{res:Math.min(RES0,2),msaa:4,sombra:1024});q('C: res2 MSAA2',{res:Math.min(RES0,2),msaa:2});q('sin MSAA',{msaa:0});q('MSAA 4',{msaa:4});
+    q('sin bloom',{bloomOn:false});q('sin sombras',{sombra:0});q('sombra 1024',{sombra:1024});
     // desglose del coste de 40 personajes: qué parte cuesta
     a=fam('des');a('40p · normal',()=>personajes(40));a('40p · sin sombra',()=>personajes(40,{sinSombra:true}));a('40p · anim. parada',()=>personajes(40,{parada:true}));a('40p · anim. 1/2',()=>personajes(40,{media:true}));
     a('40p · repartidos',()=>personajes(40,{repartidos:true}));a('40p · repart.+descarte',()=>personajes(40,{repartidos:true,descarte:true}));

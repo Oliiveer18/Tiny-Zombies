@@ -104,6 +104,12 @@ Recomendación de Fable: mirar B y C en el móvil; si en C no se nota diferencia
 - **Solución definitiva:** es un defecto del modelo de relleno, que se va a sustituir. Para los modelos definitivos pasa a ser requisito (DECISIONES 3.17): textura reorganizada en piezas grandes con margen y repintada por la herramienta, y aprobación con captura con lupa.
 - El «pixelado» en escalones de la captura del usuario es la ampliación de una imagen dibujada a resolución 2 en una pantalla de 3: con B (resolución nativa) se reduce; se ve con la lupa.
 
+## 2e. Calidad elegida y estado (17 nov)
+- **Predeterminada en móvil: B · Nítida** (decisión del usuario, DECISIONES 2.15). A y C siguen en el menú.
+- **Rendimiento de B conocido [M]:** con 20 personajes pesados en pantalla, 41 fps en las dos pasadas de la prueba de carga (igual que A); en la partida del usuario, ≈ 60 fps. **Falta medir B de forma sostenida:** la prueba de 10 minutos y la sesión con `?debug` del 17 nov se hicieron con A. Ahora `?carga` y `?carga=resistencia` miden siempre con la predeterminada (B). No se rebaja nada de forma preventiva; si la resistencia con B bajara de 40, se decide con el usuario.
+- **Personajes fuera de pantalla:** ya no se dibujan ni proyectan sombra (descarte por cámara con margen doble). En la prueba, 40 personajes repartidos pasan de 987 000 a 555 000 triángulos dibujados. No comprobado en el iPhone que ninguno desaparezca antes de tiempo en el borde de la pantalla.
+- **Costuras:** la corrección sigue activa (§2d) y el requisito para modelos definitivos está en DECISIONES 3.17.
+
 ## 3. Qué cuesta de verdad en un móvil (de más a menos, para este juego) [R]
 | Cosa | Dónde pesa | Cuánto importa aquí |
 |---|---|---|

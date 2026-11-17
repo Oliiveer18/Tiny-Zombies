@@ -5,11 +5,12 @@ Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `co
 ## Ahora mismo
 - **Quién trabaja:** solo **Fable** (dirige e implementa), por decisión del usuario del 17 nov. Sonnet queda en pausa.
 - **Objetivos de rendimiento (usuario, 17 nov):** mínimo 30 fps · **sostenido 40** · ideal 60, sin sacrificar calidad visual.
-- **Resultados reales (v0.1.92):** 40 fps sostenidos **cumplidos** con los ajustes actuales, sin caída por calor en 10 minutos. Jugando 4 minutos: media 55 fps, 1 % del tiempo bajo 40, nunca bajo 30. Detalle en `docs/CALIDAD_GRAFICA.md` §2c.
+- **Calidad gráfica:** predeterminada **B · Nítida** (usuario, 17 nov). A y C en el menú ⚙. 40 fps sostenidos cumplidos con A (10 min sin caída por calor; jugando: media 55 fps); **con B falta la prueba de 10 minutos**.
 - **Le toca al usuario:**
-  1. **Comparar con lupa:** menú ⚙ → «Comparar gráficos» → «Mostrar barra». Con «Lupa ×4», alternar A / B / C y «Costuras: corregidas / sin corregir», quieto y andando. Decir (a) si las motas del personaje han mejorado y no parpadea, y (b) si ya distingue las calidades y cuál prefiere. **Hasta entonces se queda A.**
-  2. Cuando pueda: parte 2 de ART-1 en un ordenador (Mixamo) y elegir el aspecto del personaje (009 §3).
-- **Le toca a Fable al próximo «Sigue»:** resto de PAQ-G3 (no dibujar personajes fuera de pantalla, sombras ajustadas a lo visible, dejar por defecto la calidad elegida), luego ART-1 parte 1 y PAQ-03.
+  1. **iPhone:** `?carga=resistencia` (10 min, ahora mide con B) y pegar el resultado. Jugando, fijarse en que ningún personaje desaparezca de golpe en el borde de la pantalla.
+  2. **Ordenador, Mixamo (gratis, ≈ 20 min):** descargar `…/descargas/jugador_a_para_mixamo.obj` desde la dirección del juego y seguir la parte 2 de `coordinacion/TRASPASOS/ART-1_prueba_mixamo.md`.
+  3. Elegir el aspecto del primer personaje (paleta A, B o C de 009 §3). No corre prisa.
+- **Le toca a Fable al próximo «Sigue»:** **PAQ-03** (ruido y zombis que despiertan). Cuando lleguen los archivos de Mixamo: ART-1 parte 3 y PAQ-A1.
 - **Orientación oficial: VERTICAL** (reversible). **Calidad gráfica:** sin tope de triángulos; nadie rebaja calidad sin que lo decida el usuario (`docs/CALIDAD_GRAFICA.md`).
 
 ## Paquetes de código (Sonnet los toma en este orden)
@@ -20,9 +21,9 @@ Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `co
 | — | PAQ-02 Interacción y reja | **ACEPTADO** (Fable, 17 nov) · falta validar el tacto en iPhone | `coordinacion/TRASPASOS/PAQ-02_interaccion_y_reja.md` | |
 | — | PAQ-G1b La prueba de carga arranca en táctil + interfaz de progreso | **ACEPTADO** (Fable, 17 nov) · falta validar en iPhone | `coordinacion/TRASPASOS/PAQ-G1b_interfaz_prueba_de_carga.md` | En el móvil, `?carga` NO arrancaba antes de este paquete |
 | — | PAQ-G2 Medición fiable (`?carga` v2, resistencia, resumen de sesión, objetivos 30/40/60) | **HECHO y ejecutado en el iPhone** (17 nov, v0.1.92) | `coordinacion/TRASPASOS/PAQ-G2_medicion_fiable.md` | |
-| 0 | PAQ-G3 Optimización sin pérdida | **EN CURSO** (Fable): hecho el selector de calidad A/B/C; falta descarte por cámara, sombras ajustadas y fijar la calidad elegida | — (`CALIDAD_GRAFICA.md` §2c) | Espera la elección del usuario |
-| 1 | ART-1 parte 1 · archivo para Mixamo | **LISTO** | `coordinacion/TRASPASOS/ART-1_prueba_mixamo.md` | Corta. Al acabar pasa a «ESPERA AL USUARIO (parte 2)» y Sonnet sigue con PAQ-03 |
-| 2 | PAQ-03 Ruido y zombis que despiertan | **LISTO** | `coordinacion/TRASPASOS/PAQ-03_ruido_y_zombis.md` | |
+| — | PAQ-G3 Optimización sin pérdida (calidad B por defecto, descarte por cámara, costuras, comparar con lupa) | **HECHO** (Fable, 17 nov) · falta la resistencia con B en el iPhone | — (`CALIDAD_GRAFICA.md` §2c-2e) | Sombras ajustadas a lo visible: aplazado, no hace falta hoy |
+| — | ART-1 parte 1 · archivo para Mixamo | **HECHO** (Fable, 17 nov) | `coordinacion/TRASPASOS/ART-1_prueba_mixamo.md` | `public/descargas/jugador_a_para_mixamo.obj`, pose en A |
+| 1 | PAQ-03 Ruido y zombis que despiertan | **LISTO** (siguiente) | `coordinacion/TRASPASOS/PAQ-03_ruido_y_zombis.md` | |
 | 3 | ART-1 parte 3 · convertir lo de Mixamo | ESPERA AL USUARIO | mismo traspaso | Cuando el usuario suba los archivos |
 | 4 | PAQ-A1 Núcleo de animación | PLANIFICADO | — (diseño: 009 §7) | Fable lo pasa a LISTO al aceptar ART-1 |
 | 5 | PAQ-A2 Capa por código y acciones | PLANIFICADO | — (diseño: 009 §7.3-7.4) | |

@@ -1,16 +1,16 @@
 // Pantalla «Controles»: engranaje en la esquina (o botón Options del mando). Pausa el juego mientras está abierta.
 import { TEST, setTest } from './test.js'; import { setCalidad, calidadActual } from './renderer.js'; import { LUZ } from './world.js'; import { renderer } from './renderer.js'; import { SEAM } from './assets.js';
-// Calidad gráfica a comparar en el móvil (PAQ-G3). «A» es la de siempre y sigue siendo la que sale por defecto: nada cambia hasta que el usuario elija.
-// Medido en iPhone 14 con 20 personajes (coordinacion/mediciones): A 41 fps · B 41 fps (más nítida) · C 58 fps (bordes algo menos suaves). La sombra de 2 048 no cuesta.
-const CAL={A:'Actual',B:'Nítida',C:'Fluida'};let cal='A',cal0=null;
-function aplicaCal(k){if(!cal0)cal0={...calidadActual(),sombra:LUZ.sun?LUZ.sun.shadow.mapSize.x:1024};
-  const nat=Math.min(devicePixelRatio||1,3),c=k==='B'?{res:nat,msaa:2,sombra:2048}:k==='C'?{res:cal0.res,msaa:2,sombra:2048}:{res:cal0.res,msaa:cal0.msaa,sombra:cal0.sombra};
+// Calidad gráfica (DECISIONES 2.15): «B · Nítida» es la predeterminada (elegida por el usuario en su iPhone el 17 nov) y es la que arranca el juego;
+// A y C quedan como alternativas en el menú y se recuerdan. Medido en iPhone 14 con 20 personajes: A 41 fps · B 41 fps · C 58 fps.
+const CAL={A:'Anterior',B:'Nítida',C:'Fluida'};let cal='B',cal0=null;
+function aplicaCal(k,guarda=true){if(!cal0)cal0={...calidadActual(),sombra:LUZ.sun?LUZ.sun.shadow.mapSize.x:2048}; // cal0 = la predeterminada (B) tal como arrancó
+  const c=k==='A'?{res:Math.min(cal0.res,2),msaa:4,sombra:1024}:k==='C'?{res:Math.min(cal0.res,2),msaa:2,sombra:2048}:cal0;
   setCalidad({res:c.res,msaa:c.msaa});const sh=LUZ.sun&&LUZ.sun.shadow;if(sh&&sh.mapSize.x!==c.sombra){sh.mapSize.set(c.sombra,c.sombra);sh.map&&sh.map.dispose();sh.map=null;}
-  cal=CAL[k]?k:'A';} /* no se guarda: hasta que el usuario decida, el juego arranca siempre en A (DECISIONES 2.15) */
+  cal=CAL[k]?k:'B';if(guarda)try{localStorage.setItem('tz_cal2',cal);}catch(e){}}
   import { cfg, padState, hooks, ACTIONS, NAMES, save, resetCfg } from './gamepad.js';
 export function initControls(){
-  const ver=()=>{document.getElementById('ver').textContent=__VER__+(TEST?' · prueba':'')+(cal!=='A'?' · calidad '+cal:'');};
-  try{localStorage.removeItem('tz_cal');}catch(e){}
+  const ver=()=>{document.getElementById('ver').textContent=__VER__+(TEST?' · prueba':'')+(cal!=='B'?' · calidad '+cal:'');};
+  if(!/[?&](carga|res|msaa)\b/.test(location.search)){let k='B';try{k=localStorage.getItem('tz_cal2')||'B';}catch(e){}if(k!=='B'&&CAL[k])aplicaCal(k,false);} // la prueba de carga mide siempre con la predeterminada
   ver(); // versión: sube sola con cada cambio publicado
   const gear=document.createElement('div');gear.id='gear';gear.className='ui';gear.textContent='⚙';
   const menu=document.createElement('div');menu.id='cfgm';menu.className='ui';
@@ -25,13 +25,15 @@ export function initControls(){
       <div class="g">${rows}</div>
       <div class="r"><span>Zona muerta ${Math.round(cfg.dead*100)}%</span><input type="range" data-k="dead" min="0.05" max="0.4" step="0.01" value="${cfg.dead}"></div>
       <div class="r"><span>Sensibilidad ${cfg.sens.toFixed(2)}</span><input type="range" data-k="sens" min="0.5" max="1.5" step="0.05" value="${cfg.sens}"></div>
-      <div class="r"><span>Comparar gráficos (lupa, calidad A/B/C, costuras)</span><span><button data-x="cmp">${barra&&barra.style.display!=='none'?'Quitar barra':'Mostrar barra'}</button></span></div>
+      <div class="r"><span>Calidad gráfica</span><span>${Object.keys(CAL).map(k=>`<button data-q="${k}"${k===cal?' style="outline:2px solid #6cf"':''}>${k} · ${CAL[k]}</button>`).join(' ')}</span></div>
+      <div class="r"><span>Comparar gráficos (lupa, costuras)</span><span><button data-x="cmp">${barra&&barra.style.display!=='none'?'Quitar barra':'Mostrar barra'}</button></span></div>
       <div class="r"><span>Mapa de prueba (zombis quietos)</span><span><button data-t="mode">${TEST?'Desactivar':'Activar'}</button>${TEST?' <button data-t="reload">Reiniciar</button>':''}</span></div>
       <div class="s">Stick izq. camina · stick der. apunta · pulsar el stick izq. mientras caminas = correr. Granada: mantén el botón, apunta con el stick izq. y suelta para lanzar. Options abre y cierra este menú.</div>`;
   };
   menu.addEventListener('click',e=>{
     const t=e.target.closest('button');if(!t)return;
     if(t.dataset.a){padState.listen=padState.on?t.dataset.a:null;render();if(!padState.on)menu.querySelector('.s').textContent='Primero conecta el mando y pulsa un botón';}
+    else if(t.dataset.q){aplicaCal(t.dataset.q);ver();render();}
     else if(t.dataset.x==='cmp'){comparar(!(barra&&barra.style.display!=='none'));setOpen(false);}
     else if(t.dataset.t==='mode'){setTest(!TEST);location.reload();}
     else if(t.dataset.t==='reload')location.reload();
@@ -60,7 +62,7 @@ export function initControls(){
         else if(t.dataset.l)ponLupa(+t.dataset.l);
         else if(t.dataset.c){if((t.dataset.c==='1')!==SEAM){try{localStorage.setItem('tz_costuras',t.dataset.c);localStorage.setItem('tz_cmp','1');}catch(e){}location.reload();return;}}
         pintaBarra();});}
-    barra.style.display=v?'':'none';if(!v){ponLupa(1);if(cal!=='A'){aplicaCal('A');ver();}try{localStorage.removeItem('tz_cmp');}catch(e){}}else pintaBarra();}
+    barra.style.display=v?'':'none';if(!v){ponLupa(1);try{localStorage.removeItem('tz_cmp');}catch(e){}}else pintaBarra();}
   try{if(localStorage.getItem('tz_cmp')==='1')comparar(true);}catch(e){} // tras recargar por el cambio de costuras, la barra sigue abierta
   // medida en vivo de la cámara elegida (el juego sigue dibujando en pausa)
   gear.addEventListener('click',()=>setOpen(!padState.open));
