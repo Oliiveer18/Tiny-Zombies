@@ -2,7 +2,7 @@
 // + controlador que los mezcla con AnimationMixer y añade ajustes por código (inclinarse al girar y al frenar, encajar golpes, seguir con la cabeza).
 // No decide nada del juego: solo lee el estado del zombi (percepcion.js / zombies.js) y lo dibuja. Cuando exista anim.js (PAQ-A1/A3) se integra allí.
 // Ejes de los huesos (sin giro en reposo, pose T, mirando a +Z): X = cabecear (positivo hacia delante) · Y = girar · Z = ladear. Ángulos en grados.
-import * as THREE from 'three'; import { reiniciaRagdoll, levantaRagdoll, mezclaLevanta } from './ragdoll.js';
+import * as THREE from 'three'; import { reiniciaRagdoll, levantaRagdoll, mezclaLevanta, pasoPinned } from './ragdoll.js';
 const P='mixamorig', R=Math.PI/180, S=p=>Math.sin(6.2831853*p), C=p=>Math.cos(6.2831853*p), pos=v=>v>0?v:0, mez=(a,b,t)=>a+(b-a)*t, sua=t=>{t=t<0?0:t>1?1:t;return t*t*(3-2*t);};
 // Parámetros de cada clip (contenido como datos): duración en s, si se repite, y amplitudes en grados o en fracciones de la altura.
 export const CLIPS={
@@ -73,7 +73,7 @@ export function muere(inst){const c=inst.ctl;if(!c||c.muerto)return;c.muerto=tru
 const q1=new THREE.Quaternion(),e1=new THREE.Euler();
 function suma(b,x,y,z){if(b)b.quaternion.multiply(q1.setFromEuler(e1.set(x*R,y*R,z*R,'XYZ')));}
 // o: {estado:'dormido'|'despertando'|'persigue'|'deambula', cerca, x, z, ang (hacia dónde mira, rad), tDesp, jx, jz (jugador), quieto}
-export function anima(inst,dt,o){const c=inst.ctl,A=inst.actions;if(!c||dt<=0)return;if(inst.rd&&inst.rd.activo)return; // con ragdoll mandan las partículas
+export function anima(inst,dt,o){const c=inst.ctl,A=inst.actions;if(!c||dt<=0)return;if(inst.rd&&inst.rd.activo&&!inst.rd.pinned)return; // con ragdoll libre mandan las partículas
   // velocidad real, aceleración y velocidad de giro, suavizadas (de ahí salen el ritmo del paso y las inclinaciones)
   if(c.px!==null){const v=Math.hypot(o.x-c.px,o.z-c.pz)/dt,k=Math.min(1,dt*8);c.v+=(v-c.v)*k;const a=(c.v-c.va)/dt;c.ac+=(a-c.ac)*Math.min(1,dt*5);c.va=c.v;
     let d=o.ang-c.ang;while(d>Math.PI)d-=6.2831853;while(d<-Math.PI)d+=6.2831853;c.giro+=(d/dt-c.giro)*k;}
@@ -100,4 +100,5 @@ export function anima(inst,dt,o){const c=inst.ctl,A=inst.actions;if(!c||dt<=0)re
   // la cabeza busca al jugador (o el ruido) antes que el cuerpo
   let m=0;if(o.estado!=='dormido'&&o.jx!==undefined){let d=Math.atan2(o.jx-o.x,o.jz-o.z)-o.ang;while(d>Math.PI)d-=6.2831853;while(d<-Math.PI)d+=6.2831853;m=THREE.MathUtils.clamp(d/R,-55,55);}
   c.tt=(c.tt||0)+dt;if(o.mira&&!o.cerca)m=THREE.MathUtils.clamp(m+26*Math.sin(c.tt*1.7),-60,60); // buscando: la cabeza barre de un lado a otro
-  c.mira+=(m-c.mira)*Math.min(1,dt*6);suma(c.h.Neck,0,c.mira*.4,0);suma(c.h.Head,-14*f,c.mira*.6,0);}
+  c.mira+=(m-c.mira)*Math.min(1,dt*6);suma(c.h.Neck,0,c.mira*.4,0);suma(c.h.Head,-14*f,c.mira*.6,0);
+  pasoPinned(inst,dt);} // reacción física a los impactos, encima de todo lo anterior

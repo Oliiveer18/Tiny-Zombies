@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { instance, play } from './assets.js';
 import { obstacles, FIELD } from './world.js';
 import { player } from './player.js';
-import { TEST, VIVO, LAYOUT, LUGAR } from './test.js'; import { MODELS } from './models.config.js'; import { creaAnim, revive, golpe, muere, anima, levantaAnim } from './anim_zombi.js'; import { iniciaRagdoll, pasoRagdoll, mundo as mundoRd } from './ragdoll.js'; import { OBJ } from './world.js'; import { ruido, tickRuido } from './ruido.js'; import { P, configuraPercepcion, prepara, paso, despierta } from './percepcion.js'; import DATOS from './data/ruido.json'; import { topSpeed } from './player.js'; import { impact } from './effects.js'; import { mulberry, hash, WORLD_SEED } from './sim.js';
+import { TEST, VIVO, LAYOUT, LUGAR } from './test.js'; import { MODELS } from './models.config.js'; import { creaAnim, revive, golpe, muere, anima, levantaAnim } from './anim_zombi.js'; import { iniciaRagdoll, impactoRagdoll, pasoRagdoll, mundo as mundoRd } from './ragdoll.js'; import { OBJ } from './world.js'; import { ruido, tickRuido } from './ruido.js'; import { P, configuraPercepcion, prepara, paso, despierta } from './percepcion.js'; import DATOS from './data/ruido.json'; import { topSpeed } from './player.js'; import { impact } from './effects.js'; import { mulberry, hash, WORLD_SEED } from './sim.js';
 export const TYPES={normal:{model:'zombie',hp:3,sp:2.3,dmg:8,r:.35,pts:10,pool:36},runner:{model:'runner',hp:2,sp:4.3,dmg:5,r:.3,pts:15,pool:24},tank:{model:'tank',hp:14,sp:1.6,dmg:20,r:.55,pts:50,pool:6}};
 export const zombies=[]; const free={};let scene;const rnd=mulberry(hash(WORLD_SEED,1)); // canal 1 = zombis
 const LEJOS=26; // m: a más distancia el zombi no se dibuja ni anima (lo más lejano que se ve está a ≈ 19 m; DECISIONES 2.2). Su lógica sigue igual.
@@ -29,10 +29,10 @@ export function hurt(z,dmg,kx=0,kz=0,lat=0){
   if(!z.alive||z.dead)return;z.hp-=dmg;const fz=Math.hypot(kx,kz),expl=fz>5,dx=kx/(fz||1),dz=kz/(fz||1),zn=zona(expl?0:lat);z.x+=kx*.1;z.z+=kz*.1;
   const c=z.inst.ctl,y=z.inst.root.rotation.y,vel=c?(c.v||0):0;
   if(z.hp<=0){blood(z.x,z.z,1+Math.random()*.4);z.dead=.0001;state.score+=z.t.pts;state.alive--;z.alive=false;z.dying=true;
-    if(c&&iniciaRagdoll(z.inst,{vx:Math.sin(y)*vel,vz:Math.cos(y)*vel,dx,dz,fuerza:expl?Math.min(fz*.75,11):3.6+Math.random()*1.2,hueso:zn.h,lift:expl?.5:.25}))muere(z.inst,true); // cae como un cuerpo con peso: la dirección y la fuerza dependen del disparo
+    if(c&&iniciaRagdoll(z.inst,{vx:Math.sin(y)*vel,vz:Math.cos(y)*vel,dx,dz,fuerza:expl?Math.min(fz*.65,9):2.4+Math.random()*.8,hueso:zn.h,lift:expl?.45:.15}))muere(z.inst,true); // cae como un cuerpo con peso: la dirección y la fuerza dependen del disparo
     else if(c)muere(z.inst);else if(z.inst.actions.die)play(z.inst,'die',true);return;}
   if(expl&&c){z.derribo=2.6;iniciaRagdoll(z.inst,{vx:Math.sin(y)*vel,vz:Math.cos(y)*vel,dx,dz,fuerza:Math.min(fz*.7,10),hueso:2,lift:.5});return;} // vivo pero derribado por una explosión: sale despedido y luego se levanta
-  golpe(z.inst,kx*Math.cos(y)-kz*Math.sin(y),zn.z,dx,dz);z.stun=.3;
+  golpe(z.inst,kx*Math.cos(y)-kz*Math.sin(y));if(c)impactoRagdoll(z.inst,{dx,dz,fuerza:1.1+Math.random()*.5,hueso:zn.h});z.stun=.3; // cada disparo ya mueve el cuerpo con física, no solo la muerte
 }
 export function updateZombies(dt){
   // oleadas
@@ -40,10 +40,10 @@ export function updateZombies(dt){
   if(!TEST&&state.queue>0){state.spawnT-=dt;if(state.spawnT<=0&&state.alive<40){if(spawn())state.queue--;state.spawnT=Math.max(.25,.8-state.wave*.05);}}
   if(VIVO)pasoVivo(dt);
   for(const z of zombies){
-    if(z.dying){z.dead+=dt;const f=Math.min(z.dead/.4,1);if(z.inst.rd&&z.inst.rd.activo){pasoRagdoll(z.inst,dt);z.x=z.inst.root.position.x;z.z=z.inst.root.position.z;}else{if(!z.inst.mixer)z.inst.body.rotation.x=-f*1.5;if(z.inst.ctl)anima(z.inst,dt,{estado:'muerto',x:z.x,z:z.z,ang:z.inst.root.rotation.y});else z.inst.mixer?.update(dt);}
+    if(z.dying){z.dead+=dt;const f=Math.min(z.dead/.4,1);if(z.inst.rd&&z.inst.rd.activo&&!z.inst.rd.pinned){pasoRagdoll(z.inst,dt);z.x=z.inst.root.position.x;z.z=z.inst.root.position.z;}else{if(!z.inst.mixer)z.inst.body.rotation.x=-f*1.5;if(z.inst.ctl)anima(z.inst,dt,{estado:'muerto',x:z.x,z:z.z,ang:z.inst.root.rotation.y});else z.inst.mixer?.update(dt);}
       if(z.dead>(VIVO?1e9:TEST?1.6:8)){z.dying=false;z.inst.root.visible=false;if(TEST&&!VIVO&&z.home)place(z,z.home.x,z.home.z);else free[z.type].push(z);}continue;} // en ?carga reaparecen en su sitio; en el mapa vivo, cuando el jugador cae (resetZombies)
     if(!z.alive)continue;
-    if(z.inst.rd&&z.inst.rd.activo){pasoRagdoll(z.inst,dt);z.x=z.inst.root.position.x;z.z=z.inst.root.position.z;z.derribo-=dt; // derribado por una explosión
+    if(z.inst.rd&&z.inst.rd.activo&&!z.inst.rd.pinned){pasoRagdoll(z.inst,dt);z.x=z.inst.root.position.x;z.z=z.inst.root.position.z;z.derribo-=dt; // derribado por una explosión
       if(z.derribo<=0||(z.inst.rd.dormido&&z.inst.rd.t>1.2)){z.derribo=0;const y=z.inst.root.rotation.y;z.gx=Math.sin(y);z.gz=Math.cos(y);levantaAnim(z.inst);z.estado='persigue';z.te=0;z.sin=0;z.obj=[player.x,player.z];z.bq=0;z.bloq=false;}continue;}
     let dx=player.x-z.x,dz=player.z-z.z;const d=Math.hypot(dx,dz)||1;dx/=d;dz/=d;
     if(z.lejos){if(d<LEJOS-2){z.lejos=false;z.inst.root.visible=true;}}else if(d>LEJOS){z.lejos=true;z.inst.root.visible=false;} // histéresis de 2 m: sin parpadeo

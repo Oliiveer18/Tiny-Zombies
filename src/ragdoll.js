@@ -10,11 +10,11 @@ const ENLACES=[[0,1],[1,2],[2,3],[3,4],[2,5],[5,6],[6,7],[2,8],[8,9],[9,10],[0,1
   [5,8],[11,14],[2,11],[2,14],[3,5],[3,8],[0,3],[4,2],[1,5],[1,8],[1,11],[1,14],[0,2],[1,3]]; // refuerzos: el tronco, los hombros y la cadera no se pliegan
 const G=-15,DT=1/60,MAX=8,V=THREE.Vector3,Q=THREE.Quaternion;
 const ACT=[]; // ragdolls en marcha (como mucho MAX: el más antiguo se queda congelado en su postura)
-const a=new V(),b=new V(),c=new V(),qa=new Q(),qb=new Q(),qc=new Q(),qd=new Q(),bq=new Q();
+const a=new V(),b=new V(),c=new V(),qa=new Q(),qb=new Q(),qc=new Q(),qd=new Q(),qe=new Q(),bq=new Q();
 function crea(inst){const h=NOM.map(n=>inst.body.getObjectByName(P+n));if(h.some(x=>!x))return null;
   const dir={};for(const k in HIJO)dir[k]=h[HIJO[k]].position.clone().normalize(); // sin giro en reposo (esqueleto_auto): la posición local del hijo es su dirección de reposo
   return {inst,h,dir,upH:h[1].position.clone(),sdH:h[11].position.clone().sub(h[14].position),upS:h[3].position.clone(),sdS:h[5].position.clone().sub(h[8].position),
-    p:NOM.map(()=>new V()),q:NOM.map(()=>new V()),len:ENLACES.map(()=>0),activo:false,dormido:false,t:0,calma:0,acc:0,lev:null,wq:NOM.map(()=>new Q())};}
+    p:NOM.map(()=>new V()),q:NOM.map(()=>new V()),len:ENLACES.map(()=>0),activo:false,dormido:false,t:0,calma:0,acc:0,lev:null,wq:NOM.map(()=>new Q()),aq:NOM.map(()=>new Q()),pinned:false,w:1,r0:new V()};}
 // Orientación del hueso a partir de dos direcciones (arriba y lado) respecto a su postura de reposo.
 function base(out,restUp,restSide,up,side){qa.copy(bq);a.copy(restUp).applyQuaternion(bq).normalize();b.copy(restSide).applyQuaternion(bq);qb.setFromUnitVectors(a,up);b.applyQuaternion(qb);
   const d1=b.sub(c.copy(up).multiplyScalar(b.dot(up))),d2=c.copy(side).sub(a.copy(up).multiplyScalar(side.dot(up))),ang=Math.atan2(up.dot(a.copy(d1).cross(d2)),d1.dot(d2));
@@ -22,14 +22,17 @@ function base(out,restUp,restSide,up,side){qa.copy(bq);a.copy(restUp).applyQuate
 // ---- control ----
 // opciones: vx, vz (velocidad que traía el zombi), dx, dz (dirección del golpe), fuerza (m/s), hueso (índice del hueso golpeado)
 export function iniciaRagdoll(inst,{vx=0,vz=0,dx=0,dz=0,fuerza=3,hueso=2,lift=.25}={}){const rd=inst.rd||(inst.rd=crea(inst));if(!rd)return false;
+  if(rd.pinned&&rd.activo){ // estaba reaccionando a los disparos: se suelta el muelle y se sigue desde ahí, con todo su movimiento (la mezcla sube a 1 en 0,12 s)
+    rd.pinned=false;rd.t=0;rd.calma=0;rd.nt=0;rd.cerca=[];rd.fuerza=fuerza;rd.lev=null;empuja(rd,dx,dz,fuerza*.8,hueso);rd.q.forEach((q,i)=>{q.y-=lift*fuerza*.6*DT;});
+    const j=ACT.indexOf(rd);if(j>=0)ACT.splice(j,1);ACT.push(rd);while(ACT.length>MAX){ACT.shift().dormido=true;}return true;}
   inst.root.updateMatrixWorld(true);rd.h.forEach((o,i)=>{o.getWorldPosition(rd.p[i]);});
   ENLACES.forEach((e,k)=>{rd.len[k]=rd.p[e[0]].distanceTo(rd.p[e[1]]);});
   const l=Math.hypot(dx,dz)||1;dx/=l;dz/=l;
   rd.p.forEach((p,i)=>{const w=i===hueso?1:.5,k=w*fuerza;rd.q[i].set(p.x-(vx+dx*k)*DT,p.y-(lift*fuerza*(i===hueso?1.4:1))*DT,p.z-(vz+dz*k)*DT);}); // velocidad inicial = la que traía + el golpe (más fuerte en el hueso golpeado) + un poco hacia arriba
-  rd.nt=0;rd.cerca=[];rd.activo=true;rd.dormido=false;rd.t=0;rd.calma=0;rd.acc=0;rd.lev=null;rd.fuerza=fuerza;
+  rd.nt=0;rd.cerca=[];rd.pinned=false;rd.w=1;rd.activo=true;rd.dormido=false;rd.t=0;rd.calma=0;rd.acc=0;rd.lev=null;rd.fuerza=fuerza;
   const i=ACT.indexOf(rd);if(i>=0)ACT.splice(i,1);ACT.push(rd);while(ACT.length>MAX){const o=ACT.shift();o.dormido=true;} // el más viejo se queda tal cual está
   return true;}
-export function reiniciaRagdoll(inst){const rd=inst.rd;if(!rd)return;rd.activo=false;rd.lev=null;rd.dormido=false;const i=ACT.indexOf(rd);if(i>=0)ACT.splice(i,1);}
+export function reiniciaRagdoll(inst){const rd=inst.rd;if(!rd)return;rd.activo=false;rd.pinned=false;rd.lev=null;rd.dormido=false;const i=ACT.indexOf(rd);if(i>=0)ACT.splice(i,1);}
 const alto=o=>o.wall?3:(mundo.OBJ[o.key]&&mundo.OBJ[o.key].alto)||(o.key==='car'?1:.85);
 function choca(p,q,r,cerca){const x0=p.x,z0=p.z;
   if(p.y<r){p.y=r;q.x+=(p.x-q.x)*.18;q.z+=(p.z-q.z)*.18;} // suelo con rozamiento
@@ -45,18 +48,41 @@ export function pasoRagdoll(inst,dt){const rd=inst.rd;if(!rd||!rd.activo)return;
       for(let it=0;it<4;it++){ENLACES.forEach((e,k)=>{const A=rd.p[e[0]],B=rd.p[e[1]],d=a.copy(B).sub(A),l=d.length()||1e-6,f=(l-rd.len[k])/l*.5;A.addScaledVector(d,f);B.addScaledVector(d,-f);});
         rd.p.forEach((p,i)=>choca(p,rd.q[i],RAD[i],rd.cerca));}
       rd.calma=ek<.0004?rd.calma+DT:0;if(rd.calma>.5&&rd.t>.8||rd.t>(rd.fuerza>8?6:4.5))rd.dormido=true;}}
-  pon(rd);}
+  if(rd.w<1)rd.w=Math.min(1,rd.w+dt/.12);pon(rd,rd.w,true);}
 // escribe los huesos a partir de las partículas
-function pon(rd){const {inst,h,dir,wq}=rd,root=inst.root,P0=rd.p[0];root.position.set(P0.x,0,P0.z);root.updateMatrixWorld(true);inst.body.getWorldQuaternion(bq);
-  h[0].position.copy(inst.body.worldToLocal(a.copy(P0)));
+function pon(rd,w=1,mueve=true){const {inst,h,dir,wq}=rd,root=inst.root,P0=rd.p[0];if(mueve)root.position.set(P0.x,0,P0.z);root.updateMatrixWorld(true);inst.body.getWorldQuaternion(bq);
+  if(w<1)h.forEach((o,i)=>rd.aq[i].copy(o.quaternion)); // pose de la animación, para mezclar
+  const pl=inst.body.worldToLocal(a.copy(P0));if(w<1)h[0].position.lerp(pl,w);else h[0].position.copy(pl);
   const up=new V(),sd=new V();
   for(let i=0;i<NOM.length;i++){const par=PADRE[i],pq=par<0?bq:wq[par];
     if(i===0){up.copy(rd.p[1]).sub(rd.p[0]).normalize();sd.copy(rd.p[11]).sub(rd.p[14]);base(wq[0],rd.upH,rd.sdH,up,sd);}
     else if(i===2){up.copy(rd.p[3]).sub(rd.p[2]).normalize();sd.copy(rd.p[5]).sub(rd.p[8]);base(wq[2],rd.upS,rd.sdS,up,sd);}
     else if(HIJO[i]!==undefined){up.copy(rd.p[HIJO[i]]).sub(rd.p[i]).normalize();a.copy(dir[i]).applyQuaternion(bq).normalize();wq[i].copy(qa.setFromUnitVectors(a,up)).multiply(bq);}
-    else{wq[i].copy(pq);h[i].quaternion.identity();continue;} // extremos (cabeza, manos, pies): siguen a su hueso
-    h[i].quaternion.copy(qd.copy(pq).invert()).multiply(wq[i]);}
+    else{wq[i].copy(pq);h[i].quaternion.identity();if(w<1)h[i].quaternion.copy(rd.aq[i]).slerp(qe.identity(),w);continue;} // extremos (cabeza, manos, pies): siguen a su hueso
+    h[i].quaternion.copy(qd.copy(pq).invert()).multiply(wq[i]);if(w<1){qe.copy(h[i].quaternion);h[i].quaternion.copy(rd.aq[i]).slerp(qe,w);}}
   inst.body.updateMatrixWorld(true);}
+// ---- ragdoll «anclado» (reacción física a los impactos de un zombi VIVO) ----
+// Las partículas siguen a la animación con un muelle; un disparo las empuja y el cuerpo cede de forma física y vuelve a la animación en ≈ 0,9 s.
+// Si el zombi muere en ese momento, se suelta el muelle y el mismo movimiento continúa hacia la caída (sin saltos).
+const K=[.45,.4,.36,.3,.26,.22,.18,.15,.22,.18,.15,.5,.5,.6,.5,.5,.6]; // reacción sutil: el cuerpo cede poco // cuánto se aferra cada partícula a la animación (las piernas, más: siguen en el suelo)
+function empuja(rd,dx,dz,f,h){const l=Math.hypot(dx,dz)||1;dx/=l;dz/=l;rd.p.forEach((p,i)=>{const k=(i===h?1:.45)*f;rd.q[i].x-=dx*k*DT;rd.q[i].z-=dz*k*DT;if(i===h)rd.q[i].y-=.2*f*DT;});}
+export function impactoRagdoll(inst,{dx=0,dz=1,fuerza=2.6,hueso=2}={}){const rd=inst.rd||(inst.rd=crea(inst));if(!rd)return false;
+  if(rd.activo&&!rd.pinned){empuja(rd,dx,dz,fuerza,hueso);return true;} // ya está cayendo: se suma el golpe
+  if(!rd.pinned){inst.root.updateMatrixWorld(true);rd.h.forEach((o,i)=>{o.getWorldPosition(rd.p[i]);rd.q[i].copy(rd.p[i]);});ENLACES.forEach((e,k)=>{rd.len[k]=rd.p[e[0]].distanceTo(rd.p[e[1]]);});
+    rd.pinned=true;rd.activo=true;rd.dormido=false;rd.t=0;rd.w=1;rd.acc=0;rd.lev=null;rd.r0=inst.root.position.clone();rd.fuerza=fuerza;}
+  empuja(rd,dx,dz,fuerza,hueso);rd.t=Math.min(rd.t,.3);return true;} // cada nuevo impacto alarga la reacción
+const T=NOM.map(()=>new V());
+export function pasoPinned(inst,dt){const rd=inst.rd;if(!rd||!rd.activo||!rd.pinned)return;const root=inst.root;root.updateMatrixWorld(true);
+  rd.h.forEach((o,i)=>o.getWorldPosition(T[i])); // dónde está cada articulación según la animación
+  const sx=root.position.x-rd.r0.x,sz=root.position.z-rd.r0.z;rd.r0.copy(root.position);if(sx||sz)rd.p.forEach((p,i)=>{p.x+=sx;p.z+=sz;rd.q[i].x+=sx;rd.q[i].z+=sz;}); // el zombi camina: las partículas lo acompañan
+  rd.acc+=dt;let n=0;
+  while(rd.acc>=DT&&n<3){rd.acc-=DT;n++;
+    rd.p.forEach((p,i)=>{const q=rd.q[i],vx=(p.x-q.x)*.97,vy=(p.y-q.y)*.97,vz=(p.z-q.z)*.97;q.copy(p);p.x+=vx;p.y+=vy+G*.4*DT*DT;p.z+=vz;p.lerp(T[i],K[i]);});
+    for(let it=0;it<3;it++){for(let k=0;k<18;k++){const e=ENLACES[k],A=rd.p[e[0]],B=rd.p[e[1]],d=a.copy(B).sub(A),l=d.length()||1e-6,f=(l-rd.len[k])/l*.5;A.addScaledVector(d,f);B.addScaledVector(d,-f);}
+      rd.p.forEach((p,i)=>{if(p.y<RAD[i])p.y=RAD[i];});}}
+  rd.t+=dt;const u=Math.min(1,Math.max(0,(rd.t-.08)/.6)),w=1-u*u*(3-2*u);
+  if(rd.t>.7){rd.activo=false;rd.pinned=false;return;}
+  pon(rd,w,false);}
 // ---- levantarse tras un derribo: se mezcla desde la postura caída hacia la animación normal ----
 export function levantaRagdoll(inst){const rd=inst.rd;if(!rd||!rd.activo)return;rd.activo=false;rd.lev={t:0,q:rd.h.map(o=>o.quaternion.clone()),p:rd.h[0].position.clone()};
   const i=ACT.indexOf(rd);if(i>=0)ACT.splice(i,1);}

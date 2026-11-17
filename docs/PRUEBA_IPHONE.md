@@ -33,12 +33,13 @@ Dispara a un zombi: se estremece al impacto y cae hacia atrás al morir. Mira si
 ## 4b · Física de los zombis: impactos, caídas y explosiones (3 min) — NUEVO 20 nov
 | Haz | Debe verse |
 |---|---|
-| Dispara a un zombi **sin matarlo** (apunta al borde de su cuerpo y al centro) | Se estremece **en la zona que le das** (hombro, cabeza o pierna) y se frena un instante |
+| Dispara a un zombi **sin matarlo** (apunta al borde de su cuerpo y al centro) | **Desde el primer disparo** el cuerpo cede un poco con física en la zona que le das (sutil, menos de un segundo) y se frena un instante |
+| Dispárale varias veces seguidas | Las reacciones se suman; al morir, el movimiento **continúa** hacia la caída sin cortes |
 | Mata a uno | **Cae como un cuerpo con peso**, hacia donde iba la bala, con brazos y cabeza sueltos; se queda tumbado donde cae |
 | Mata a uno **pegado a una caja, valla o barril** | Choca con el obstáculo y se queda junto a él o encima |
 | Mata a varios y mira los cuerpos | Cada uno cae en una postura distinta |
 | **Granada o bidón** cerca de zombis | Los que mueren salen despedidos lejos; los que sobreviven salen despedidos, quedan en el suelo ~2 s y **se levantan y vuelven a perseguirte** |
-**Apúntame:** si la caída parece de goma o se queda rara (cuerpo doblado, atravesando un objeto), si se levantan mal, o si el juego se ralentiza al haber varios cuerpos. Hay un tope de 8 cuerpos moviéndose a la vez; los demás se quedan donde estaban.
+**Apúntame:** si la reacción a los disparos te parece **demasiado poca o demasiada** (dime «más» o «menos»), si la caída parece de goma o se queda rara (cuerpo doblado, atravesando un objeto), si se levantan mal, o si el juego se ralentiza al haber varios cuerpos. Hay un tope de 8 cuerpos moviéndose a la vez; los demás se quedan donde estaban.
 
 ## 5 · Rendimiento con varios personajes: `?carga` (3 min)
 1. Añade `?carga` al final de la dirección y entra. Hay 12 personajes quietos y sin daño; el medidor muestra fps, peor cuadro, triángulos y llamadas.
