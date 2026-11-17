@@ -36,3 +36,4 @@
 - 2026-11-17 · Fable · Orientación oficial VERTICAL (usuario; reversible). Criterios de diseño en vertical añadidos a DECISIONES 2.9-2.10, REFERENCIA_VISUAL, CLAUDE.md, LEEME y tablero. Los paquetes LISTOS no cambian. Sin código.
 - 2026-11-17 · Sonnet · PAQ-01 ENTREGADO: cámara Tiny por defecto, muros translúcidos, aro del jugador, zombis lejanos ocultos, medidor corregido. Pruebas 1-10 en vertical y horizontal OK; fps real pendiente de iPhone.
 - 2026-11-17 · Sonnet · PAQ-G1 ENTREGADO: modo `?carga` (22 escalones, tabla, Copiar/Cerrar). Juego normal sin cambios. Cifras reales pendientes del iPhone del usuario.
+- 2026-11-17 · Sonnet · PAQ-02 ENTREGADO: barras de física en ?debug, acción «Usar» (✕ / F / botón táctil), `usar.js` con ruido, reja de dos hojas con bisagra y candado en el callejón. Pruebas OK (Node y navegador); falta tacto/fps en iPhone.

@@ -6,7 +6,7 @@ export function initDebris(scene){
   mesh.castShadow=true;mesh.frustumCulled=false;
   for(let i=0;i<N;i++){P.push({on:false,x:0,y:0,z:0,vx:0,vy:0,vz:0,rx:0,ry:0,rz:0,wx:0,wy:0,wz:0,sx:0,sy:0,sz:0,t:0,b:0});d.scale.set(0,0,0);d.updateMatrix();mesh.setMatrixAt(i,d.matrix);mesh.setColorAt(i,col.set(0xffffff));}
   scene.add(mesh);}
-const SIZE={tabla:[.5,.05,.12],trozo:[.16,.1,.14],esquirla:[.07,.04,.07]};
+const SIZE={barrote:[.6,.04,.04],tabla:[.5,.05,.12],trozo:[.16,.1,.14],esquirla:[.07,.04,.07]};
 export function spawnDebris(x,z,tipo,hex,n,dx=0,dz=0){
   if(!mesh)return;const s=SIZE[tipo]||SIZE.trozo;
   for(let k=0;k<n;k++){const p=P[next];next=(next+1)%N;const a=Math.random()*6.283,v=1.5+Math.random()*3.5;

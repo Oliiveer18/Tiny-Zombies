@@ -3,7 +3,7 @@
 Actualizado: 17 nov 2026 por Fable. Cómo se usa: `coordinacion/LEEME.md`. El estado anterior a esta fecha está en `docs/archivo/CONTINUAR_hasta_2026-11-17.md`.
 
 ## Ahora mismo
-- **Le toca a: SONNET** → implementar **PAQ-01**, después **PAQ-G1** y después **PAQ-02** (los tres `LISTO`, en ese orden).
+- **Le toca a: FABLE** → revisar PAQ-01, PAQ-G1 y PAQ-02 (los tres ENTREGADOS por Sonnet el 17 nov) y preparar PAQ-03 y PAQ-04.
 - **Le toca al usuario (cuando pueda, no bloquea a Sonnet):** (1) cuando Sonnet entregue PAQ-G1, pasar la prueba `?carga` en vertical y enviar la captura de la tabla a Fable; (2) descargar dos clips de Mixamo para ART-1 (`coordinacion/TRASPASOS/ART-1_prueba_mixamo.md`).
 - **Orientación oficial: VERTICAL** (usuario, 17 nov; reversible). Todas las pruebas se hacen en vertical 390 × 844 y se comprueba además que en horizontal nada se rompe.
 - **Calidad gráfica:** el tope de 40 000 triángulos está RETIRADO. Manda `docs/CALIDAD_GRAFICA.md`: calidad máxima, límites solo por medición.
@@ -14,7 +14,7 @@ Actualizado: 17 nov 2026 por Fable. Cómo se usa: `coordinacion/LEEME.md`. El es
 |---|---|---|---|
 | PAQ-01 Cámara definitiva y lectura del escenario | **ENTREGADO** (Sonnet, 17 nov) | `coordinacion/TRASPASOS/PAQ-01_camara_y_lectura.md` | Base: `48aec15` o posterior |
 | PAQ-G1 Prueba de carga gráfica | **ENTREGADO** (Sonnet, 17 nov; falta la captura `?carga` del usuario) | `coordinacion/TRASPASOS/PAQ-G1_prueba_de_carga.md` | Requiere PAQ-01 ENTREGADO. Su resultado (captura del usuario) fija los presupuestos reales |
-| PAQ-02 Interacción y reja | **LISTO** | `coordinacion/TRASPASOS/PAQ-02_interaccion_y_reja.md` | Requiere PAQ-01 ENTREGADO |
+| PAQ-02 Interacción y reja | **ENTREGADO** (Sonnet, 17 nov) | `coordinacion/TRASPASOS/PAQ-02_interaccion_y_reja.md` | Requiere PAQ-01 ENTREGADO |
 | PAQ-03 Ruido y zombis que despiertan | PLANIFICADO | — (diseño: 007 §4, 004 T1-T2) | Lo prepara Fable en su siguiente turno |
 | PAQ-04 Puntería, cobertura y sigilo | PLANIFICADO | — (diseño: 004 T3-T6) | |
 | PAQ-05 NPC del campamento | PLANIFICADO | — (diseño: 007 §4 y §6) | |

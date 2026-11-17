@@ -3,7 +3,7 @@ import { input } from './input.js';
 import { player } from './player.js';
 import { zombies, hurt } from './zombies.js';
 import { obstacles, blast, hitProp, hooks, OBJ } from './world.js';
-import { blood, burn } from './decals.js'; import { muzzle, impact, tracer, explosion } from './effects.js';
+import { tickUsar, ordenes, objetivo, sonido } from './usar.js'; import { blood, burn } from './decals.js'; import { muzzle, impact, tracer, explosion } from './effects.js';
 // Temblor de cámara. Tiny original: disparo .04, explosión .6. Disparo sin temblor por petición del usuario (16 nov); explosión más suave porque la cámara está más cerca.
 const MUZZLE=.55,SHAKE_SHOT=0,SHAKE_BOOM=.2;
 export const wp={mag:30,ammo:30,cd:0,reload:0,grenades:3,shake:0,onShake:null};
@@ -19,12 +19,19 @@ function shoot(){
   for(const z of zombies){if(!z.alive)continue;const t=rayCircle(ox,oz,dx,dz,z.x,z.z,z.t.r+.12);if(t!==null&&t<best){best=t;hz=z;wall=false;bo=null;}}
   tracer(mx,mz,ox+dx*Math.max(best,MUZZLE),oz+dz*Math.max(best,MUZZLE));muzzle(mx,.75,mz,dx,dz);
   if(hz){hurt(hz,1,dx,dz);impact(ox+dx*best,.7,oz+dz*best,[.5,.9,.3]);if(Math.random()<.34)blood(ox+dx*(best+.6),oz+dz*(best+.6),.5);}else if(wall){if(!hitProp(bo,dx,dz,ox+dx*best,oz+dz*best))impact(ox+dx*best,.5,oz+dz*best);}
-  for(const [o,t] of thru)if(t<best)hitProp(o,dx,dz,ox+dx*t,oz+dz*t);
-  wp.ammo--;wp.cd=.11;wp.shake=Math.max(wp.shake,SHAKE_SHOT);player.shootT=.1;
+  const vistas=new Set();for(const [o,t] of thru)if(t<best){if(o.hoja){if(vistas.has(o.hoja))continue;vistas.add(o.hoja);} // la reja son varios círculos: una bala cuenta una sola vez
+    hitProp(o,dx,dz,ox+dx*t,oz+dz*t);}
+  wp.ammo--;wp.disp=true;sonido(player.x,player.z,30,'j1');wp.cd=.11;wp.shake=Math.max(wp.shake,SHAKE_SHOT);player.shootT=.1;
 }
+// Entrada → orden → simulación (norma 3): aquí solo se lee la entrada y se crea la orden; la lógica está en usar.js
+function usarGlue(dt,active){
+  if(active){if(input.use&&objetivo.id)ordenes.push({t:'usar',j:'j1',obj:objetivo.id,verbo:objetivo.verbo});
+    const al=Math.hypot(player.aimX,player.aimZ)||1,m=Math.hypot(input.move.x,input.move.y);
+    tickUsar(dt,{id:'j1',x:player.x,z:player.z,ax:player.aimX/al,az:player.aimZ/al,mueve:m>.2,mx:input.move.x,mz:input.move.y,dispara:!!wp.disp},{hold:input.useHold});}
+  input.use=false;wp.disp=false;}
 function rayCircle(ox,oz,dx,dz,cx,cz,r){const fx=cx-ox,fz=cz-oz,t=fx*dx+fz*dz;if(t<0)return null;const px=fx-dx*t,pz=fz-dz*t,d2=px*px+pz*pz;if(d2>r*r)return null;return t-Math.sqrt(r*r-d2);}
 export function updateWeapons(dt,active){
-  wp.cd-=dt;input.weapon=false; // «cambiar arma»: de momento solo hay un arma
+  usarGlue(dt,active);wp.cd-=dt;input.weapon=false; // «cambiar arma»: de momento solo hay un arma
   wp.shake=Math.max(0,wp.shake-dt*1.5);
   if(input.reload){input.reload=false;if(active&&!wp.reload&&wp.ammo<wp.mag)wp.reload=1.5;}
   if(wp.reload>0){wp.reload-=dt;if(wp.reload<=0){wp.ammo=wp.mag;wp.reload=0;}}
@@ -36,6 +43,7 @@ export function updateWeapons(dt,active){
 }
 hooks.boom=(x,z)=>detonate(x,z); // bidón explosivo: misma explosión que la granada
 function detonate(x,z){
+  sonido(x,z,60,'j1');
   explosion(x,z);burn(x,z,3);blast(x,z,7,16);wp.shake=SHAKE_BOOM;
   for(const zb of zombies){if(!zb.alive)continue;const dx=zb.x-x,dz=zb.z-z,d=Math.hypot(dx,dz);if(d<6){hurt(zb,Math.ceil(14*(1-d/6)),dx/(d||1)*14,dz/(d||1)*14);}}
   const dp=Math.hypot(player.x-x,player.z-z);if(dp<4)wp.onSelfHit?.(Math.round(30*(1-dp/4)));

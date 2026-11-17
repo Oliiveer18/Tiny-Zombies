@@ -14,6 +14,7 @@ canvas{display:block}
 .stick b{position:absolute;left:40px;top:40px;width:50px;height:50px;border-radius:50%;background:#fff5}
 #sl{left:24px}#sr{right:24px}
 .btn{position:fixed;display:none;width:62px;height:62px;border-radius:50%;background:#fff2;border:2px solid #fff4;align-items:center;justify-content:center;font-size:12px}
+#bu{right:190px;bottom:max(190px,env(safe-area-inset-bottom));background:#fff3;border-color:#fff;font-size:11px;font-weight:bold}body.touch #bu{display:none}body.touch #bu.on{display:flex}#ul{position:fixed;left:50%;bottom:22%;transform:translateX(-50%);display:none;padding:6px 14px;border-radius:14px;background:#0008;color:#fff;font:15px sans-serif;pointer-events:none;z-index:5}#ul.on{display:block}
 #bg{right:170px;bottom:max(40px,env(safe-area-inset-bottom))}#br{right:190px;bottom:max(115px,env(safe-area-inset-bottom))}
 #brun{left:28px;bottom:max(190px,env(safe-area-inset-bottom))}.btn.on{background:#fff6;border-color:#fff}
 .stick{opacity:.55}body.touch .stick{display:block}body.touch .btn{display:flex}
@@ -28,6 +29,6 @@ body.pad .stick,body.pad .btn{display:none!important}
 <div id="vig"></div>
 <div id="hud"><div id="hp" class="bar"><i></i></div><div id="st" class="bar"><i></i></div><div id="info"></div></div>
 <div id="sl" class="stick"><b></b></div><div id="sr" class="stick"><b></b></div>
-<div id="bg" class="btn">GRAN.</div><div id="br" class="btn">RECAR.</div>
+<div id="bg" class="btn">GRAN.</div><div id="br" class="btn">RECAR.</div><div id="bu" class="btn"></div><div id="ul"></div>
 <div id="msg"></div><div id="ver"></div>
 <script type="module" src="/src/main.js"></script></body></html>

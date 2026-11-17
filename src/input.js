@@ -1,10 +1,10 @@
 import * as THREE from 'three';
-export const input={move:new THREE.Vector2(),aim:new THREE.Vector2(),aimActive:false,fire:false,run:false,pad:false,aimHold:false,nadeHold:false,nadeAim:new THREE.Vector2(),weapon:false,crouchToggle:false,crouch:false,reload:false,grenade:false,touch:false,mouse:new THREE.Vector2()};
+export const input={move:new THREE.Vector2(),aim:new THREE.Vector2(),aimActive:false,fire:false,run:false,pad:false,aimHold:false,nadeHold:false,nadeAim:new THREE.Vector2(),weapon:false,crouchToggle:false,crouch:false,reload:false,grenade:false,use:false,useHold:false,touch:false,mouse:new THREE.Vector2()};
 const keys={};
 export function initInput(canvas){
   input.touch=matchMedia('(pointer:coarse)').matches||'ontouchstart' in window; document.body.classList.toggle('touch',input.touch);
-  addEventListener('keydown',e=>{keys[e.code]=1;if(e.code==='KeyR')input.reload=true;if(e.code==='KeyE')input.grenade=true;if(e.code==='KeyC')input.crouchToggle=true;});
-  addEventListener('keyup',e=>keys[e.code]=0);
+  addEventListener('keydown',e=>{keys[e.code]=1;if(e.code==='KeyR')input.reload=true;if(e.code==='KeyE')input.grenade=true;if(e.code==='KeyC')input.crouchToggle=true;if(e.code==='KeyF'){if(!e.repeat)input.use=true;input.useHold=true;}});
+  addEventListener('keyup',e=>{keys[e.code]=0;if(e.code==='KeyF')input.useHold=false;});
   canvas.addEventListener('mousemove',e=>input.mouse.set(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1));
   canvas.addEventListener('mousedown',e=>{if(e.button===0&&!input.touch)input.fire=true;});
   addEventListener('mouseup',()=>{if(!input.touch)input.fire=false;});
@@ -19,6 +19,7 @@ export function initInput(canvas){
   }
   const tap=(id,fn)=>document.getElementById(id).addEventListener('touchstart',e=>{e.preventDefault();fn();},{passive:false});
   tap('bg',()=>input.grenade=true); tap('br',()=>input.reload=true);
+  {const bu=document.getElementById('bu'),fin=e=>{input.useHold=false;};bu.addEventListener('touchstart',e=>{e.preventDefault();input.use=true;input.useHold=true;},{passive:false});bu.addEventListener('touchend',fin);bu.addEventListener('touchcancel',fin);} // «Usar»: toque = verbo; mantener = arrastrar / forzar
 
 }
 export function pollKeys(){

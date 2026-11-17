@@ -3,13 +3,14 @@ import { spawnDebris } from './debris.js';
 // Los objetos y los zombis los coloca world.js / zombies.js desde el mismo archivo (vía test.js).
 import * as THREE from 'three';
 import { LUGAR } from './test.js'; import { buildGround } from './ground.js';
-import { renderer, cam } from './renderer.js'; import { obstacles, LUZ, phys } from './world.js';
+import { renderer, cam } from './renderer.js'; import { obstacles, LUZ, phys, props, crearHoja } from './world.js'; import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 function glow(radio,color){ // charco de luz falso: disco aditivo con degradado, una sola malla
   const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d'),gr=g.createRadialGradient(32,32,0,32,32,32);
   gr.addColorStop(0,'rgba(255,255,255,.9)');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;g.fillRect(0,0,64,64);
   const m=new THREE.Mesh(new THREE.CircleGeometry(radio,24),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),color,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.35}));
   m.rotation.x=-Math.PI/2;m.renderOrder=2;return m;}
-export const MUROS=[]; // tramos de muro dibujados (para volverlos translúcidos si tapan al jugador)
+export const MUROS=[],HOJAS=[]; // HOJAS: dibujo de cada hoja de reja (estado en physics.js)
+let CAND=null,candMesh=null; // tramos de muro dibujados (para volverlos translúcidos si tapan al jugador)
 const ALTO_MURO=3.2,OP_TAPA=.25;
 // Muros que no tapan al jugador (PAQ-01 §2): si el segmento cámara→jugador (en planta) cruza el muro (ensanchado 0,5 m por cada extremo) y la altura de la línea de visión ahí es menor que la del muro, el tramo baja a opacidad .25 en ≈ 0,15 s.
 export function updateMuros(dt,cx,cy,cz,px,pz){
@@ -22,7 +23,13 @@ export function updateMuros(dt,cx,cy,cz,px,pz){
     const obj=tapa?OP_TAPA:1,k=Math.min(1,dt/.15);w.op+=(obj-w.op)*k;if(Math.abs(w.op-obj)<.01)w.op=obj;
     const m=w.mat,tr=w.op<.999;m.opacity=w.op;if(m.transparent!==tr){m.transparent=tr;m.depthWrite=!tr;}
     w.tapa=tapa;}
+  for(const q of HOJAS){const h=q.h;q.mesh.visible=!h.roto;if(h.roto)continue;q.mesh.rotation.y=-Math.atan2(h.dz,h.dx);} // la hoja gira con su ángulo (dibujo: aquí sí se puede usar atan2)
+  if(candMesh)candMesh.visible=!CAND.dead;
 }
+// Relleno visual de la reja hasta que haya modelo de Meshy: marco con 6 barrotes verticales en una sola malla (2 m de alto)
+function geoHoja(L){const G=[],b=(w,h,d,x,y)=>{const g=new THREE.BoxGeometry(w,h,d);g.translate(x,y,0);G.push(g);};
+  b(L,.07,.07,L/2,1.96);b(L,.07,.07,L/2,.1);b(.07,2,.07,.035,1);b(.07,2,.07,L-.035,1);
+  for(let i=1;i<=6;i++)b(.04,1.9,.04,i*L/7,1);return mergeGeometries(G);}
 export function buildAlley(scene,ground){
   // luz de atardecer, sin niebla: cielo azul oscuro, hemisférica fría, sol bajo y naranja
   scene.background=new THREE.Color(0x0b1020);
@@ -36,6 +43,11 @@ export function buildAlley(scene,ground){
     const mat=mat0.clone();const mesh=new THREE.Mesh(new THREE.BoxGeometry(L+1,3.2,1),mat);MUROS.push({mat,x1,z1,x2,z2,op:1,L}); // material propio por tramo: así cada uno se vuelve translúcido por separado
     mesh.position.set((x1+x2)/2,1.6,(z1+z2)/2);mesh.rotation.y=-Math.atan2(z2-z1,x2-x1);mesh.castShadow=mesh.receiveShadow=true;scene.add(mesh);phys.addBox('m'+i,(x1+x2)/2,(z1+z2)/2,(L+1)/2,.5,Math.atan2(-(z2-z1),x2-x1)); // muro estático del motor de física
     const n=Math.ceil(L/.6);for(let k=0;k<=n;k++){const t=n?k/n:0;obstacles.push({id:'m'+i+'_'+k,key:'wall',x:x1+(x2-x1)*t,z:z1+(z2-z1)*t,r:.5,fly:false,wall:true});}});
+  // reja del callejón (z = −17): dos hojas con bisagra y un candado
+  CAND=props.find(p=>p.id==='cand1')||null;
+  if(LUGAR.puertas){const gm=new THREE.MeshStandardMaterial({color:0x2e4a3a,roughness:.6,metalness:.35});
+    for(const d of LUGAR.puertas){const h=crearHoja(d);if(!h)continue;const mesh=new THREE.Mesh(geoHoja(d.largo),gm);mesh.position.set(h.px,0,h.pz);mesh.rotation.y=-Math.atan2(h.dz,h.dx);mesh.castShadow=true;scene.add(mesh);HOJAS.push({h,mesh});}
+    if(CAND){candMesh=new THREE.Mesh(new THREE.BoxGeometry(.15,.2,.1),new THREE.MeshStandardMaterial({color:0xc9a030,roughness:.4,metalness:.7}));candMesh.position.set(CAND.x,1.05,CAND.z);scene.add(candMesh);}}
   // luces: farolas (puntual real, sin sombra, ≤ 2) y charcos falsos
   let n=0;
   for(const l of LUGAR.luces){

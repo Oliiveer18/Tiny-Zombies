@@ -2,9 +2,9 @@
 // Pensado para PlayStation (DualShock/DualSense) por Bluetooth en iPhone; vale cualquier mando con mapeo estándar.
 import { input } from './input.js';
 export const NAMES=['✕','○','□','△','L1','R1','L2','R2','Create','Options','L3','R3','↑','↓','←','→'];
-export const ACTIONS=[['fire','Disparar'],['aim','Apuntar'],['grenade','Granada'],['run','Correr'],['reload','Recargar'],['crouch','Agacharse'],['weapon','Cambiar arma']];
+export const ACTIONS=[['fire','Disparar'],['aim','Apuntar'],['grenade','Granada'],['run','Correr'],['reload','Recargar'],['crouch','Agacharse'],['weapon','Cambiar arma'],['use','Usar']];
 const OPTIONS=9; // reservado: abre y cierra el menú de Controles
-const DEF={map:{fire:7,aim:6,grenade:5,run:10,reload:2,crouch:1,weapon:3},dead:.15,sens:1};
+const DEF={map:{fire:7,aim:6,grenade:5,run:10,reload:2,crouch:1,weapon:3,use:0},dead:.15,sens:1};
 const clone=o=>JSON.parse(JSON.stringify(o));
 function load(){try{const s=JSON.parse(localStorage.getItem('tz_pad2')||'null');if(s)return {...clone(DEF),...s,map:{...DEF.map,...s.map}};}catch(e){}return clone(DEF);}
 export const cfg=load();
@@ -15,7 +15,7 @@ export function resetCfg(){const d=clone(DEF);cfg.map=d.map;cfg.dead=d.dead;cfg.
 let prev=[];
 // zona muerta circular + sensibilidad (más sensibilidad = llegas antes al máximo)
 function stick(x,y){const l=Math.hypot(x,y);if(l<cfg.dead)return [0,0];const k=Math.min(1,(l-cfg.dead)/(1-cfg.dead)*cfg.sens)/l;return [x*k,y*k];}
-function release(){input.move.set(0,0);input.aim.set(0,0);input.nadeAim.set(0,0);input.aimActive=false;input.fire=false;input.aimHold=false;input.nadeHold=false;input.run=false;}
+function release(){input.move.set(0,0);input.aim.set(0,0);input.nadeAim.set(0,0);input.aimActive=false;input.fire=false;input.aimHold=false;input.nadeHold=false;input.run=false;input.useHold=false;}
 const sm=[0,0];
 export function pollPad(dt){
   padState.start=false;
@@ -51,5 +51,6 @@ export function pollPad(dt){
   if(ed('reload'))input.reload=true;
   if(ed('crouch'))input.crouchToggle=true;
   if(ed('weapon'))input.weapon=true;
+  if(ed('use'))input.use=true;input.useHold=held('use'); // ✕ por defecto: Usar (empujar, abrir; mantener = arrastrar, forzar)
   for(const i of [0,1,2,3])if(e(i)&&last.length)padState.start=true; // cualquier botón de la derecha empieza o reintenta la partida
 }

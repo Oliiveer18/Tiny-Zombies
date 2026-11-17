@@ -1,5 +1,12 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## PAQ-02 · Interacción y reja (17 nov 2026)
+**Resumen fácil:** ahora puedes interactuar con cosas. Mira a una caja o barril y aparece el botón «EMPUJAR»; el contenedor se arrastra manteniendo pulsado. En el callejón hay una reja con candado: puedes dispararle al candado, o ponerte frente a ella y mantener «FORZAR» 4 segundos. Sin candado, «ABRIR» abre las dos hojas, o simplemente camina contra ellas; una granada cerca las rompe. En el móvil con mando: ✕ es Usar. Pruébalo en vertical, mirando a la caja que hay al principio del callejón.
+
+**Detalle técnico**
+- `usar.js` (sin THREE ni DOM): órdenes → validación → efecto; `objetivo` y `ruido` exportados. `physics.js`: bisagras (`addHinge`, `hingeImpulse`, `hingeHit`), `impulse`, `setMasa/setMu`, `params.fGranada`. `world.js`: `crearHoja`, `damageHoja`, aro del objetivo, `blast` con hojas. `alley.js`: dibujo de la reja. `weapons.js`: enlace entrada→orden y ruido de disparo/explosión.
+- Informe completo con las 14 pruebas en el traspaso.
+
 ## PAQ-G1 · Prueba de carga gráfica (17 nov 2026)
 **Resumen fácil:** he añadido una prueba que mide hasta dónde aguanta tu iPhone (geometría, personajes, luces, calidad). Abre el juego con `?carga` al final de la dirección, toca «Iniciar prueba», espera 90 s sin tocar y mándale a Fable una captura de la tabla. El juego normal no cambia.
 

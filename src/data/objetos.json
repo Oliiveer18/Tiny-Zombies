@@ -9,7 +9,8 @@
   "rompe": {
    "n": 5,
    "tipo": "tabla"
-  }
+  },
+  "usar": "empujar"
  },
  "barrel": {
   "mat": "metal",
@@ -18,7 +19,8 @@
   "masa": 18,
   "vuelca": 20,
   "alto": 0.9,
-  "hl": 0.35
+  "hl": 0.35,
+  "usar": "empujar"
  },
  "bidon": {
   "modelo": "barrel",
@@ -31,7 +33,8 @@
   "explota": true,
   "vuelca": 25,
   "alto": 0.77,
-  "hl": 0.3
+  "hl": 0.3,
+  "usar": "empujar"
  },
  "papelera": {
   "modelo": "barrel",
@@ -42,7 +45,8 @@
   "masa": 8,
   "vuelca": 8,
   "alto": 0.6,
-  "hl": 0.23
+  "hl": 0.23,
+  "usar": "empujar"
  },
  "carton": {
   "modelo": "crate",
@@ -103,6 +107,33 @@
   "hx": 0.9,
   "hz": 0.5,
   "masa": 250,
-  "mu": 0.15
+  "mu": 0.15,
+  "usar": "arrastrar"
+ },
+ "reja_hoja": {
+  "mat": "metal",
+  "forma": "caja",
+  "hx": 0.75,
+  "hz": 0.05,
+  "masa": 60,
+  "vida": 40,
+  "pasa": true,
+  "bisagra": true,
+  "rompe": {
+   "n": 6,
+   "tipo": "barrote"
+  }
+ },
+ "candado": {
+  "mat": "metal",
+  "forma": "circulo",
+  "r": 0.15,
+  "masa": 1,
+  "vida": 3,
+  "fijo": true,
+  "rompe": {
+   "n": 2,
+   "tipo": "esquirla"
+  }
  }
 }
