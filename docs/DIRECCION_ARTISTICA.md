@@ -76,9 +76,9 @@ Las piezas siguen las mismas reglas de estilo (§2) y cada una tiene volumen y c
 
 **Cómo se diferencian los personajes sin uniformarlos:** complexión del cuerpo (2-3 cuerpos) · ropa por re-pintado del mismo cuerpo · combinación de piezas · un color de acento distinto por personaje · un rasgo de cara o pelo. Nunca dos personajes con el mismo conjunto completo.
 
-**Texto para Meshy (857 caracteres; se usará cuando toque ART-2):**
+**Texto para Meshy (813 caracteres; se usará cuando toque ART-2):**
 ```
-Stylized 3D game character model, full body, front view, strict T-pose, arms horizontal, palms down, fingers apart, feet apart, light grey background, flat light. Compact sturdy adult man, 4.5 heads tall, broad shoulders, short thick neck, thick forearms, large hands, large boots. Simple clean volumes, smooth simplified surfaces, flat muted colors, soft painted shading, matte, sober style of a dark top-down survival shooter. Veteran scavenger of dangerous zones, not a soldier: weathered face, strong jaw, heavy brow, scar on one eyebrow, cropped dark hair, stubble. Fitted reinforced olive green jacket, sand cargo trousers, dark brown boots and gloves, charcoal knee and elbow pads, rust-orange armband. Clean flat chest, back and hips. Bare head, no vest, no backpack, no pouches, no weapon. Not photorealistic, not cartoon, not toy, not 2D. No text.
+Stylized 3D game character model, full body, front view, strict T-pose, arms horizontal, palms down, fingers apart, feet apart, light grey background, flat light. Compact sturdy adult man, 4.5 heads tall, broad shoulders, short thick neck, large hands, large boots. Simple clean volumes, smooth simplified surfaces, flat muted colors, soft painted shading, matte, sober style of a dark top-down survival shooter. Veteran scavenger, not a soldier: weathered face, strong jaw, heavy brow, scarred eyebrow, cropped dark hair, stubble. Fitted reinforced olive green jacket, sand cargo trousers, dark brown boots and gloves, charcoal knee and elbow pads, rust-orange armband. Plain chest, back and hips. Bare head, no vest, no backpack, no pouches, no weapon. Not photorealistic, not cartoon, not toy, not 2D. No text.
 ```
 
 ## 6. Propuesta: ZOMBI NORMAL
