@@ -42,6 +42,10 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 | 3.10 | Ropa = pintura sobre el cuerpo; casco, chaleco, mochila, pelo y arma = piezas rígidas pegadas a un hueso; animaciones compartidas en un archivo por familia | F (006) · aceptada al implementar P1-P2 |
 | 3.11 | El personaje va sin nada en las manos; el arma es una pieza | U · 16 nov |
 | 3.12 | Sin tope de triángulos ni de textura por modelo. Los modelos se hacen con lo que necesiten para verse bien a tamaño de juego (≈ 105 píxeles de alto); guía orientativa en `docs/CALIDAD_GRAFICA.md` §6. De Meshy se guarda siempre el modelo alto | U + F · 17 nov (sustituye a las cifras rebajadas del mismo día y a 006 §3) |
+| 3.13 | **El esqueleto de los humanos lo pone Mixamo** (no Meshy): se sube a Mixamo el cuerpo sin esqueleto y todos los humanos comparten ese esqueleto y sus clips. Meshy hace forma y textura; su esqueleto y sus animaciones quedan de reserva. Jugador y NPC 41 huesos, zombis 25 💡. Se confirma con ART-1 (0 créditos) | F · 17 nov (009 §2; desarrolla 3.8) |
+| 3.14 | El cuerpo de referencia se genera **en pose T, sin casco, chaleco, mochila ni arma** (son piezas) y sin nada suelto. Especificación completa en 009 §3 | F · 17 nov |
+| 3.15 | **Sistema de animación único** (`anim.js`) para todos los personajes: mezcla continua en 8 direcciones con paso sincronizado, capas independientes de piernas y torso, capa aditiva y capa por código (giro de torso, retroceso, inclinación, mirada). Todo en datos. El disparo no usa clip. Diseño: 009 §7 | U (objetivo) + F (arquitectura) · 17 nov |
+| 3.16 | El sistema de animación se construye sobre un relleno con esqueleto de Mixamo **antes** de tener el personaje definitivo; los créditos de Meshy se desbloquean al aceptar ART-1 y elegir el usuario el aspecto | F · 17 nov (concreta 3.6) |
 
 ## 4. Juego (mapa de prueba y táctica)
 | # | Decisión | Quién · fecha |
@@ -65,4 +69,5 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 - «Personaje ≈ 49 píxeles» y «se ven 21-33 m de ancho» como criterio único (calculados para horizontal) → 2.1, 2.2, 2.9, 2.10.
 - Cámaras A, B, C y «cerca» de R1 → descartadas (2.1).
 - «Fable no edita código, salvo R0-R8» → Fable no programa (1.2).
+- ART-1 como «clips de Mixamo sobre el esqueleto de Meshy» y la fila única ART-3 → 3.13-3.16 y 009 §8.
 - Nombres de pasos C*, P*, V*, T*, R*, S* → paquetes del «Plan vigente» (`ROADMAP.md`).

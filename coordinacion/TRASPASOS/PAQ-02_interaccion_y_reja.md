@@ -97,4 +97,6 @@ Ruido que despierte zombis, NPC, recoger objetos, sonido, modelos nuevos, cambia
 - No comprobado: tacto y rendimiento en un iPhone real; el arrastre del contenedor a 2 s en el navegador (va a 3-5 fps y el tiempo de juego se atrasa; verificado en la simulación de Node); la horizontal solo se comprobó en PAQ-01; el aspecto de la reja es provisional.
 
 ## Revisión de Fable
-(pendiente)
+**ACEPTADO · 17 nov 2026.** Comprobado por Fable: compila; `tools/test_physics.mjs` repetido y todo OK (determinismo con bisagras, forzar 3,5 s / 4,2 s, arrastrar 1,60 m, abrir 90° en 0,58 s, ruido que caduca a los 2 s); `usar.js` no importa THREE ni toca el DOM y trabaja con órdenes con id de jugador; reja, candado y verbos están en datos. Las 8 decisiones secundarias de Sonnet se aceptan (la 1, medir hasta el borde del objeto, es correcta y pasa a ser la regla).
+**Notas para más adelante (no devuelven el paquete):** (a) el contenedor que se recoloca solo 0,5 m al empezar: se corrige su posición en los datos dentro de PAQ-03 si molesta, si no en PAQ-07; (b) la lista `ruido` pasa a `ruido.js` en PAQ-03; (c) el aspecto de la reja es relleno hasta ART-5.
+**Falta validar en el iPhone (usuario, no bloquea):** que el botón «Usar» se pulsa bien con el pulgar y no estorba; empujar una caja, romper el candado a tiros, forzarlo 4 s y abrir la reja; fps con `?debug`.

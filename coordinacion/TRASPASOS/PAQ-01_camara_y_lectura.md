@@ -69,4 +69,5 @@ Recorte de objetos por zonas, tabla de escala, cambios en el mapa, aros para NPC
 - No comprobado: fps y aspecto en un iPhone real (el headless no mide fps); la prueba de disparo/granada/romper solo confirma que no hay errores, los efectos ya estaban probados antes de este paquete. Pedir captura `?debug`.
 
 ## Revisión de Fable
-(pendiente)
+**ACEPTADO · 17 nov 2026.** Comprobado por Fable sobre `f070412`: compila; `test_physics` pasa; el juego arranca en vertical 390 × 844 y en horizontal 844 × 390 con 0 errores; leído el cambio de `renderer.js`: la cámara queda fija en 16,4 m y 58° y **no se ha tocado** resolución, antialias, bloom ni sombras. Criterios 1-4 cumplidos.
+**Falta validar en el iPhone (usuario, no bloquea):** fps y peor cuadro con `?debug` y el panel de barras cerrado; que el aro del jugador y los muros translúcidos se ven bien a tamaño real.

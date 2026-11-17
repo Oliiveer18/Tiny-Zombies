@@ -63,4 +63,5 @@ Nuevo `src/carga.js`. Cambios mínimos en `src/main.js` (arrancarlo solo si la d
 - No comprobado: cifras reales en iPhone (lo único importante), recorrido completo de ≈90 s con todos los escalones, y horizontal.
 
 ## Revisión de Fable
-(pendiente)
+**ACEPTADO · 17 nov 2026 (herramienta).** Comprobado por Fable: compila; `?carga` abre con el botón «Iniciar prueba» y 0 errores; `carga.js` solo se carga con `?carga` (va en un archivo aparte de 5,9 kB); el juego normal no cambia. `setCalidad` solo lo usa la prueba.
+**El resultado del paquete sigue pendiente:** las cifras solo valen en el iPhone real. Falta la captura de la tabla (≈ 90 s, en vertical, sin tocar la pantalla, con el móvil sin modo de bajo consumo). Con ella Fable fija los presupuestos (`CALIDAD_GRAFICA.md` §4.3 y §4.7). Si la prueba se corta o el móvil se calienta mucho, también es un dato: enviar captura de hasta dónde llegó.

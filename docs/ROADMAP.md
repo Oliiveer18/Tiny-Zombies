@@ -33,12 +33,16 @@ A0a-A0o · M1-M6 · C1, C2, C3, C3b, C4 · S1, S1b (suelo y calcos fijos: cubre 
 ### Tareas de arte (en paralelo; cada una empieza cuando el usuario aporta lo que falta)
 | Tarea | Contenido | Viene de | Necesita |
 |---|---|---|---|
-| **ART-1** Prueba de Mixamo | Un clip de Mixamo sobre el cuerpo actual; decide de dónde salen las animaciones | R2 | un clip descargado por el usuario (gratis) |
+| **ART-1** Tubería Mixamo | Cuerpo actual sin esqueleto → Mixamo le pone el suyo → packs de fusil convertidos; deja un relleno animado (009 §2, §4) | R2 | parte 1: nada (Sonnet) · parte 2: el usuario, en un ordenador, gratis |
 | **ART-2** Personaje de referencia | Proporciones definitivas, texto de Meshy, primer personaje nuevo pasado por las herramientas, tabla de escala | R3 | ART-1 hecha; visto bueno del usuario al personaje; créditos de Meshy |
-| **ART-3** Sistema de animación | `anim.js` (dos mitades, sin giro de 90°), capa por código, personaje por piezas, arma en la mano | R4, R5, V9, P3, P4 | ART-2 + clips nuevos |
-| **ART-4** Resto de personajes | Zombis y NPC sobre `anim.js`, cuerpo de NPC, metal y rugosidad | resto de R6, P5, P6 | ART-3 + modelos |
+| **PAQ-A1** Núcleo de animación (antes ART-3) | `anim.js`: mezcla en 8 direcciones con paso sincronizado, capas de piernas y torso, transiciones, banco `?anim`; sin giro de 90° (009 §7) | R4, V9 | ART-1 ACEPTADA (no espera al personaje nuevo) |
+| **PAQ-A2** Capa por código y acciones | Giro de torso, retroceso, inclinación, mirada, aditivos, recarga / granada / usar, agachado real, muerte; arma en la mano | R5, P3, P4 | PAQ-A1 |
+| **PAQ-A3** Zombis y NPC sobre `anim.js` | Clips de zombi, media frecuencia a distancia, medición con 40 | R6 | PAQ-A2 + clips |
+| **ART-4** Resto de personajes | Modelos de zombis y NPC, cuerpo de NPC, metal y rugosidad | P5, P6 | PAQ-A3 + modelos |
 | **ART-5** Objetos y escala | Objetos de Meshy, recorte por zonas, escala aplicada | 007 §2 y §8 | ART-2 + modelos |
 | **MED** Medición en iPhone 14 | Captura de `?debug` tras cada paquete aceptado (primera hecha el 17 nov: 58 fps, 30 404 triángulos) y captura de la tabla de `?carga` cuando exista PAQ-G1 | R8, C10, P7 | el usuario |
+
+**Orden de Sonnet desde el 17 nov:** ART-1 parte 1 → PAQ-03 → (cuando lleguen los archivos de Mixamo) ART-1 parte 3 → PAQ-A1 → PAQ-A2 → PAQ-04 → PAQ-05… La animación pasa por delante de PAQ-04 por prioridad del usuario.
 
 Movidos a los hitos de abajo: C9 (aliado reclutable) → B4 · T7 (munición limitada) → A5. Después de PAQ-07 y ART-5 se retoma el **Hito A** tal como está (A1 regiones, …).
 
