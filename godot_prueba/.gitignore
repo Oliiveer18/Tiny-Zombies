@@ -1,0 +1,5 @@
+# Lo genera Godot al abrir el proyecto (importación de modelos, caché)
+.godot/
+*.import
+modelos_alt/
+.DS_Store

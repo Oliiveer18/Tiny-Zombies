@@ -1,0 +1,48 @@
+; Prueba independiente en Godot 4 · Tiny Zombies. No toca el proyecto de Three.js.
+; Los controles (teclado, mando y táctil) se crean por código en scripts/entrada.gd.
+config_version=5
+
+[application]
+
+config/name="Tiny Zombies · prueba Godot"
+config/description="Escena de prueba para evaluar Godot 4 con los personajes y mecánicas reales."
+run/main_scene="res://escenas/principal.tscn"
+config/features=PackedStringArray("4.4", "GL Compatibility")
+
+[autoload]
+
+Ruido="*res://scripts/ruido.gd"
+Entrada="*res://scripts/entrada.gd"
+Efectos="*res://scripts/efectos.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[input_devices]
+
+pointing/emulate_mouse_from_touch=false
+
+[layer_names]
+
+3d_physics/layer_1="mundo"
+3d_physics/layer_2="jugador"
+3d_physics/layer_3="zombis"
+3d_physics/layer_4="props"
+3d_physics/layer_5="ragdoll"
+3d_physics/layer_6="muros"
+
+[physics]
+
+common/physics_ticks_per_second=60
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
+anti_aliasing/quality/msaa_3d=2
+environment/defaults/default_clear_color=Color(0.07, 0.09, 0.14, 1)
