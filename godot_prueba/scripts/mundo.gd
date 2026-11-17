@@ -283,10 +283,11 @@ func _hornear_nav() -> void:
 	var nm := NavigationMesh.new()
 	nm.agent_radius = 0.3
 	nm.agent_height = 1.0
-	nm.agent_max_climb = 0.3
+	nm.agent_max_climb = 0.25
 	nm.agent_max_slope = 45.0
 	nm.cell_size = 0.25
-	nm.cell_height = 0.2
+	nm.cell_height = 0.25
+	nm.geometry_parsed_geometry_type = NavigationMesh.PARSED_GEOMETRY_STATIC_COLLIDERS  # colisiones, no mallas visuales (más rápido y sin leer la GPU)
 	region.navigation_mesh = nm
 	region.bake_finished.connect(func() -> void: nav_lista.emit())
 	region.bake_navigation_mesh(true)

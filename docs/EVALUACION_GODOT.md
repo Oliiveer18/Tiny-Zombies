@@ -1,8 +1,11 @@
 # EVALUACIÓN · prueba de Godot 4 frente a Three.js (plantilla + lo ya sabido)
 
-Estado: **la prueba está escrita pero NO ejecutada** (`godot_prueba/`; el entorno de preparación no pudo ejecutar Godot). Todo lo marcado «MEDIDO» queda vacío hasta que se juegue en el Mac. Lo marcado «expectativa» es una opinión razonada sin comprobar, no un resultado.
+Estado: **ejecutada en Godot 4.7 (Linux, sin pantalla, renderizado por software) el 20 nov; falta la prueba en el Mac y el iPhone** (`godot_prueba/`; el entorno de preparación no pudo ejecutar Godot). Todo lo marcado «MEDIDO» queda vacío hasta que se juegue en el Mac. Lo marcado «expectativa» es una opinión razonada sin comprobar, no un resultado.
 
 ## Lo comprobado de verdad hasta ahora
+- **Godot 4.7 descargado (suma SHA-512 verificada) y ejecutado.** El proyecto abre, **importa los dos GLB sin errores** y arranca **sin errores de scripts**.
+- **Banco de pruebas automático** (`godot_prueba/pruebas/captura.gd`): simula teclas y stick, y guarda capturas. Comprobado: personaje animado que se mueve, corre, apunta, dispara (con retícula solo al apuntar), recarga; navegación horneada (`nav_listo`); zombis que despiertan por el disparo, investigan y persiguen; un zombi alcanzado muere con **ragdoll de huesos físicos**; el jugador recibe daño.
+- Esas pruebas usan renderizado por software: **no** miden fps ni aspecto real.
 - Versión estable actual: **Godot 4.7 (junio de 2026)**; 4.6 (enero 2026) también tiene soporte. Fuente: política de versiones de la documentación oficial.
 - Requisitos: el MacBook Pro 2019 (i5 Intel, 8 GB) **cumple** los del renderizador *Compatibility* (macOS ≥ 10.13, OpenGL 3.3, 4 GB mínimo / 8 GB recomendados). Fuente: página de requisitos de sistema de la documentación estable.
 - Las animaciones del juego actual **se pueden reutilizar sin reescribirlas**: `tools/exportar_clips_godot.mjs` las muestrea (8 clips del protagonista y 7 del zombi, 264 KB en total).

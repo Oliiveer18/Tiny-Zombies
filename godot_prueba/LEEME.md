@@ -2,7 +2,7 @@
 
 Escena 3D para evaluar Godot con **nuestros personajes y mecánicas reales**, antes de decidir si migramos el juego. **No toca el proyecto de Three.js** ni duplica sus recursos: los modelos se leen por enlaces simbólicos a `public/models/…` y las animaciones se generan a partir de las que ya existen.
 
-> ⚠️ **Estado honesto:** el código se ha escrito y revisado estáticamente (sangrías, paréntesis, referencias entre archivos y datos), pero **no se ha ejecutado nunca**: el entorno donde se preparó no permitió descargar ni ejecutar Godot. Es muy probable que el primer arranque dé algún error pequeño. Mira «Si algo falla» y dime lo que salga en la pestaña **Salida** de Godot.
+> **Estado (20 nov, tras ejecutarlo en Godot 4.7 para Linux sin pantalla):** el proyecto **importa los dos GLB sin errores** (incluidas las texturas WebP), **arranca sin errores de scripts**, y se probó con un banco de pruebas automático (`pruebas/captura.gd`) que simula entradas y guarda capturas: movimiento, disparo, recarga, zombis que se despiertan, investigan, persiguen, reciben impactos y mueren con **ragdoll de huesos físicos**. Esas pruebas se hicieron con renderizado por software (Mesa llvmpipe), así que **los fps y el aspecto final en tu Mac y en el iPhone siguen sin medir**. Las animaciones siguen siendo las provisionales por código; se sustituirán por las de Mixamo.
 
 ## 1 · Requisitos de tu MacBook Pro 2019 (Intel i5, 8 GB)
 Según la documentación oficial de Godot (versión estable 4.7, junio de 2026):
