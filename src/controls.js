@@ -1,5 +1,5 @@
 // Pantalla «Controles»: engranaje en la esquina (o botón Options del mando). Pausa el juego mientras está abierta.
-import { TEST, setTest } from './test.js'; import { CAMS, CAM, setCam, OFF } from './renderer.js'; import { charFrac } from './game.js'; import { cfg, padState, hooks, ACTIONS, NAMES, save, resetCfg } from './gamepad.js';
+import { TEST, setTest } from './test.js';  import { cfg, padState, hooks, ACTIONS, NAMES, save, resetCfg } from './gamepad.js';
 export function initControls(){
   document.getElementById('ver').textContent=__VER__+(TEST?' · prueba':''); // versión: sube sola con cada cambio publicado
   const gear=document.createElement('div');gear.id='gear';gear.className='ui';gear.textContent='⚙';
@@ -15,14 +15,12 @@ export function initControls(){
       <div class="g">${rows}</div>
       <div class="r"><span>Zona muerta ${Math.round(cfg.dead*100)}%</span><input type="range" data-k="dead" min="0.05" max="0.4" step="0.01" value="${cfg.dead}"></div>
       <div class="r"><span>Sensibilidad ${cfg.sens.toFixed(2)}</span><input type="range" data-k="sens" min="0.5" max="1.5" step="0.05" value="${cfg.sens}"></div>
-      <div class="r"><span>Cámara <small id="cami"></small></span><span>${Object.entries(CAMS).map(([k,c])=>`<button data-cam="${k}" style="min-width:52px${CAM.id===k?';background:#6cf6;border-color:#6cf':''}">${c.n}</button>`).join(' ')}</span></div>
       <div class="r"><span>Mapa de prueba (zombis quietos)</span><span><button data-t="mode">${TEST?'Desactivar':'Activar'}</button>${TEST?' <button data-t="reload">Reiniciar</button>':''}</span></div>
       <div class="s">Stick izq. camina · stick der. apunta · pulsar el stick izq. mientras caminas = correr. Granada: mantén el botón, apunta con el stick izq. y suelta para lanzar. Options abre y cierra este menú.</div>`;
   };
   menu.addEventListener('click',e=>{
     const t=e.target.closest('button');if(!t)return;
     if(t.dataset.a){padState.listen=padState.on?t.dataset.a:null;render();if(!padState.on)menu.querySelector('.s').textContent='Primero conecta el mando y pulsa un botón';}
-    else if(t.dataset.cam){setCam(t.dataset.cam);render();}
     else if(t.dataset.t==='mode'){setTest(!TEST);location.reload();}
     else if(t.dataset.t==='reload')location.reload();
     else if(t.dataset.x==='reset'){resetCfg();render();}
@@ -31,7 +29,6 @@ export function initControls(){
   menu.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset.k;if(!k)return;cfg[k]=parseFloat(e.target.value);save();
     const sp=e.target.previousElementSibling;if(sp)sp.textContent=k==='dead'?`Zona muerta ${Math.round(cfg.dead*100)}%`:`Sensibilidad ${cfg.sens.toFixed(2)}`;}); // sin repintar para no soltar el deslizador
   // medida en vivo de la cámara elegida (el juego sigue dibujando en pausa)
-  setInterval(()=>{const e=document.getElementById('cami');if(!e||!padState.open)return;const f=charFrac();e.textContent=`· ${Math.hypot(OFF.y,OFF.z).toFixed(1)} m · ${(Math.atan2(OFF.y,OFF.z)*57.3).toFixed(0)}° · personaje 1/${f>0?(1/f).toFixed(0):'?'} del alto`;},300);
   gear.addEventListener('click',()=>setOpen(!padState.open));
   hooks.toggle=()=>setOpen(!padState.open);hooks.refresh=render;
 }

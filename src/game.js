@@ -1,7 +1,7 @@
 // Estado de la partida (jugando / muerto), inicio, muerte y bucle de cuadro.
 import * as THREE from 'three';
 import { input, pollKeys } from './input.js';
-import { updateProps } from './world.js'; import { updateDebris } from './debris.js'; import { updateDecals } from './decals.js';
+import { updateProps } from './world.js'; import { updateDebris } from './debris.js'; import { updateDecals } from './decals.js'; import { updateMuros } from './alley.js';
 import { updateEffects } from './effects.js';
 import { updatePlayer, player, resetPlayer,playDeath } from './player.js';
 import { updateZombies, resetZombies, state } from './zombies.js';
@@ -32,7 +32,7 @@ export function frame(dt){
   if(G.run){advanceClock(dt);updatePlayer(dt,cam);updateWeapons(dt,true);}
   if(!G.run&&G.over)playDeath(dt);
   updateZombies(G.run?dt:dt*.3);updateProps(dt);updateDebris(dt);updateDecals(dt);updateEffects(dt);updateUI();
-  camFollow(dt);
+  camFollow(dt);updateMuros(dt,cam.position.x,cam.position.y,cam.position.z,player.x,player.z);
   sun.position.set(player.x-14,26,player.z+10);sun.target.position.set(player.x,0,player.z);
   comp.render();debugEnd();
 }

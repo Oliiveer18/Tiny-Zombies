@@ -62,11 +62,11 @@ Recorte de objetos por zonas, tabla de escala, cambios en el mapa, aros para NPC
 
 ---
 ## Informe de Sonnet (rellenar al entregar)
-- Commit(s):
-- Qué se hizo:
-- Decisiones secundarias tomadas:
-- Resultado de cada prueba (1-10):
-- No comprobado:
+- Commit(s): «PAQ-01 entregado (Sonnet)» sobre «PAQ-01 en curso».
+- Qué se hizo: cámara Tiny (16,4 m, 58°) por defecto sin tabla de cámaras (`CAMS`, `setCam`, `?cam=`, `tz_cam` eliminados) y sin fila «Cámara» en Controles; muros translúcidos por tramo (`updateMuros` en `alley.js`, opacidad .25 en ≈0,15 s); aro del jugador (`player.aro`, r .40–.45, #bfe6ff, .55); zombis a >26 m ocultos y sin animar (vuelven a <24 m, histéresis 2 m); medidor sin «meta <40000», sin rojo por triángulos, con memoria de texturas (MB), etiquetas Velocidad/Sol/Ambiente leídas al mostrar el panel.
+- Decisiones secundarias tomadas: el aro usa prueba de profundidad con polygonOffset (queda bajo el personaje); `CAM.k`≈1.81 y `CAM.vel`=1.55 fijos; `MUROS` expuesto en `window.__tz` para pruebas.
+- Resultado de cada prueba (1-10): build OK. Vertical 390×844 y horizontal 844×390: medidor «16.4 m · 58° · personaje 1/16.0»; menú sin fila Cámara; jugador en (0,−39.2) y (−3.2,−10) sin muros translúcidos (siempre visible); en (8,−33) el tramo [4,−32,11,−32] baja a 0.25 y vuelve a 1 al alejarse 4 m; aro presente; 6 zombis a 30 m invisibles y a 10 m visibles con x/z/hp idénticos; triángulos 30 148 antes → ≈30 540 ahora (+aro), llamadas 77 → 82; medidor sin «meta <40000», máx 1.5 numérico, memoria de texturas ≈ 52 MB; test_physics OK; 0 errores de página (solo un 404 del icono de la pestaña, ya existía).
+- No comprobado: fps y aspecto en un iPhone real (el headless no mide fps); la prueba de disparo/granada/romper solo confirma que no hay errores, los efectos ya estaban probados antes de este paquete. Pedir captura `?debug`.
 
 ## Revisión de Fable
 (pendiente)

@@ -1,5 +1,15 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## PAQ-01 · Cámara definitiva y lectura del escenario (17 nov 2026)
+**Resumen fácil:** la cámara que elegiste (Tiny) ya es la única del juego. Si te pones detrás de un muro, ese muro se vuelve transparente para que no te tape. Hay un aro claro bajo tus pies para localizarte, y los zombis muy lejanos no se dibujan. Para probarlo: acércate a un muro por detrás y míralo volverse transparente.
+
+**Detalle técnico**
+- `renderer.js`: `OFF=(0,14,8.6)`, `CAM={k:1.81,vel:1.55}`; fuera `CAMS/setCam/?cam=/tz_cam`. `controls.js`: sin fila Cámara.
+- `alley.js`: `MUROS` (material clonado por tramo) y `updateMuros` (cruce planta cámara→jugador ensanchado 0,5 m, altura de visión < 3,2 → opacidad .25, suavizado 0,15 s, depthWrite se restaura a 1).
+- `player.js`: `player.aro`. `zombies.js`: `LEJOS=26`, histéresis 2 m, sin animar lejos.
+- `debug.js`: sin tope de triángulos, línea de memoria de texturas, etiquetas leídas al abrir el panel.
+- Pruebas y cifras: ver informe en `coordinacion/TRASPASOS/PAQ-01_camara_y_lectura.md`.
+
 ## A0a · Dividir el código en módulos (15 nov 2026, LOW)
 **Resumen fácil:** he ordenado el código del juego en más archivos, con nombres claros, sin cambiar nada de cómo se ve ni cómo se juega. Verás exactamente lo mismo. Prueba en el móvil: abre el juego igual que antes (todavía no hay enlace al iPhone; se decide aparte). Si algo se viera distinto, avísame.
 

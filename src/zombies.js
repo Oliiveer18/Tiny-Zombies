@@ -6,10 +6,11 @@ import { player } from './player.js';
 import { TEST, LAYOUT } from './test.js'; import { impact } from './effects.js'; import { mulberry, hash, WORLD_SEED } from './sim.js';
 export const TYPES={normal:{model:'zombie',hp:3,sp:2.3,dmg:8,r:.35,pts:10,pool:36},runner:{model:'runner',hp:2,sp:4.3,dmg:5,r:.3,pts:15,pool:24},tank:{model:'tank',hp:14,sp:1.6,dmg:20,r:.55,pts:50,pool:6}};
 export const zombies=[]; const free={};let scene;const rnd=mulberry(hash(WORLD_SEED,1)); // canal 1 = zombis
+const LEJOS=26; // m: a más distancia el zombi no se dibuja ni anima (lo más lejano que se ve está a ≈ 19 m; DECISIONES 2.2). Su lógica sigue igual.
 export const state={wave:0,queue:0,spawnT:0,inter:2,score:0,alive:0,onHurt:null};
 export function initZombies(s){scene=s;for(const [k,t] of Object.entries(TYPES)){free[k]=[];for(let i=0;i<t.pool;i++){
   const inst=instance(t.model);inst.root.visible=false;scene.add(inst.root);const z={id:'z'+zombies.length,type:k,t,inst,alive:false,x:0,z:0,hp:0,atk:0,dead:0,ph:rnd()*6,vx:0,vz:0};zombies.push(z);free[k].push(z);}}}
-function place(z,x,zz){z.home={x,z:zz};z.x=x;z.z=zz;z.hp=z.t.hp;z.alive=true;z.dead=0;z.atk=0;z.dying=false;z.inst.root.visible=true;z.inst.root.rotation.set(0,0,0);z.inst.body.rotation.set(0,0,0);z.inst.body.position.y=0;state.alive++;}
+function place(z,x,zz){z.home={x,z:zz};z.x=x;z.z=zz;z.hp=z.t.hp;z.alive=true;z.dead=0;z.atk=0;z.dying=false;z.lejos=false;z.inst.root.visible=true;z.inst.root.rotation.set(0,0,0);z.inst.body.rotation.set(0,0,0);z.inst.body.position.y=0;state.alive++;}
 export function resetZombies(){for(const z of zombies)kill(z,true);Object.assign(state,{wave:0,queue:0,spawnT:0,inter:2,score:0});
   if(TEST)for(const [k,x,zz] of LAYOUT.zombies){const z=free[k].pop();if(z){place(z,x,zz);z.inst.root.position.set(x,0,zz);}}} // mapa de prueba: zombis fijos
 function spawn(){
@@ -17,7 +18,7 @@ function spawn(){
   const z=free[k].pop();if(!z)return false;
   const a=rnd()*6.28,d=22;z.x=player.x+Math.cos(a)*d;z.z=player.z+Math.sin(a)*d;
   const L=FIELD-1;z.x=THREE.MathUtils.clamp(z.x,-L,L);z.z=THREE.MathUtils.clamp(z.z,-L,L);
-  z.hp=z.t.hp+Math.floor(w/4);z.alive=true;z.dead=0;z.atk=0;z.inst.root.visible=true;z.inst.root.rotation.set(0,0,0);z.inst.body.rotation.set(0,0,0);z.inst.body.position.y=0;
+  z.hp=z.t.hp+Math.floor(w/4);z.alive=true;z.dead=0;z.atk=0;z.lejos=false;z.inst.root.visible=true;z.inst.root.rotation.set(0,0,0);z.inst.body.rotation.set(0,0,0);z.inst.body.position.y=0;
   state.alive++;return true;}
 function kill(z){z.dying=false;if(z.alive)state.alive--;z.alive=false;z.dead=0;z.inst.root.visible=false;if(!free[z.type].includes(z))free[z.type].push(z);}
 export function hurt(z,dmg,kx=0,kz=0){
@@ -33,7 +34,8 @@ export function updateZombies(dt){
       if(z.dead>1.6){z.dying=false;z.inst.root.visible=false;if(TEST&&z.home)place(z,z.home.x,z.home.z);else free[z.type].push(z);}continue;} // en prueba reaparecen en su sitio
     if(!z.alive)continue;
     let dx=player.x-z.x,dz=player.z-z.z;const d=Math.hypot(dx,dz)||1;dx/=d;dz/=d;
-    if(TEST){const r=z.inst.root;r.position.set(z.x,0,z.z);r.rotation.y=Math.atan2(dx,dz);if(!z.inst.mixer)z.inst.body.rotation.x=.12;else z.inst.mixer.update(dt);continue;} // quietos: ni se mueven ni atacan
+    if(z.lejos){if(d<LEJOS-2){z.lejos=false;z.inst.root.visible=true;}}else if(d>LEJOS){z.lejos=true;z.inst.root.visible=false;} // histéresis de 2 m: sin parpadeo
+    if(TEST){const r=z.inst.root;r.position.set(z.x,0,z.z);r.rotation.y=Math.atan2(dx,dz);if(!z.inst.mixer)z.inst.body.rotation.x=.12;else if(!z.lejos)z.inst.mixer.update(dt);continue;} // quietos: ni se mueven ni atacan
     let sx=dx,sz=dz;
     for(const o of obstacles){if(o.fly)continue;const ox=z.x-o.x,oz=z.z-o.z,od=Math.hypot(ox,oz),min=o.r+z.t.r;
       if(od<min+1.1){const w=(min+1.1-od)/1.1;const cross=ox*dz-oz*dx;const sg=cross>0?1:-1; // rodear por el lado más corto
@@ -45,7 +47,7 @@ export function updateZombies(dt){
     for(const o of obstacles){if(o.fly)continue;const ox=z.x-o.x,oz=z.z-o.z,od=Math.hypot(ox,oz),min=o.r+z.t.r;if(od<min&&od>1e-4){z.x=o.x+ox/od*min;z.z=o.z+oz/od*min;}}
     z.atk-=dt;if(near&&z.atk<=0){z.atk=.9;state.onHurt?.(z.t.dmg);}
     const r=z.inst.root;r.position.set(z.x,0,z.z);r.rotation.y=Math.atan2(dx,dz);
-    if(z.inst.mixer){play(z.inst,near?'attack':'run');z.inst.mixer.update(dt);}
+    if(z.inst.mixer){play(z.inst,near?'attack':'run');if(!z.lejos)z.inst.mixer.update(dt);}
     else{z.ph+=dt*sp*3.5+dt;z.inst.body.position.y=Math.abs(Math.sin(z.ph))*.08;z.inst.body.rotation.z=Math.sin(z.ph)*.12;z.inst.body.rotation.x=near?Math.sin(z.ph*6)*.25+.2:.25;}
   }
 }

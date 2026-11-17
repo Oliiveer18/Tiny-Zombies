@@ -10,12 +10,10 @@ const Q=new URLSearchParams(location.search); // ?res=1.5|2|3 y ?msaa=0|4 para c
 renderer.setPixelRatio(Number(Q.get('res'))||(touch?Math.min(dpr,2):dpr));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=0.85;document.body.prepend(renderer.domElement);
 export const scene=new THREE.Scene();export const cam=new THREE.PerspectiveCamera(38,innerWidth/innerHeight,.5,120);
-// Cámaras a prueba (R1, 17 nov): el usuario elige en el móvil (Controles > Cámara). «cerca» = la del 16 nov. vel = multiplicador de velocidad para que el paso en pantalla sea parecido.
-export const CAMS={cerca:{n:'Cerca',y:7.6,z:4.9,vel:1},A:{n:'A',y:9.05,z:5.65,vel:1.1},B:{n:'B',y:9.4,z:5.2,vel:1.15},C:{n:'C',y:9.45,z:4.6,vel:1.2},T:{n:'Tiny',y:14,z:8.6,vel:1.55}}; // A, B, C: personaje a 1/10, 1/11 y 1/12 del alto (medido en iPhone 14 apaisado), cada una más cenital (58°, 61°, 64°); T = cámara del Tiny original (1/16), como referencia de «muy lejos»
-export const CAM={id:'cerca',k:1,vel:1}; // k = distancia respecto a la cámara «cerca» (para escalar retícula y chispas)
-export const OFF=new THREE.Vector3(0,7.6,4.9); // Tiny original: (0,14,8.6)
-export function setCam(id,store=true){const c=CAMS[id]||CAMS.cerca;CAM.id=CAMS[id]?id:'cerca';OFF.set(0,c.y,c.z);CAM.k=Math.hypot(c.y,c.z)/Math.hypot(7.6,4.9);CAM.vel=c.vel;CAM.onChange?.();if(store)try{localStorage.setItem('tz_cam',CAM.id);}catch(e){}}
-{let id=Q.get('cam');try{id=id||localStorage.getItem('tz_cam');}catch(e){}setCam(id||'cerca',!!Q.get('cam'));}
+// Cámara definitiva «Tiny» (DECISIONES 2.1, 17 nov): 16,4 m, 58°, campo de visión 38°, centrada en el jugador. Sin menú de cámaras.
+const CAM_Y=14,CAM_Z=8.6;
+export const OFF=new THREE.Vector3(0,CAM_Y,CAM_Z);
+export const CAM={k:Math.hypot(CAM_Y,CAM_Z)/Math.hypot(7.6,4.9),vel:1.55}; // k = distancia respecto a la cámara «cerca» antigua (escala retícula y chispas); vel = velocidad para que el paso en pantalla se vea natural
 // Antialiasing real (MSAA) en el post-proceso: sin él, con antialias:false el personaje sale con bordes de sierra y «pixelado».
 const msaa=Q.has('msaa')?Number(Q.get('msaa')):4;
 const rt=new THREE.WebGLRenderTarget(innerWidth*renderer.getPixelRatio(),innerHeight*renderer.getPixelRatio(),{type:THREE.HalfFloatType,samples:msaa});
