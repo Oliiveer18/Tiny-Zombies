@@ -5,11 +5,10 @@ Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `co
 ## Ahora mismo
 - **Quién trabaja:** solo **Fable** (dirige e implementa), por decisión del usuario del 17 nov. Sonnet queda en pausa.
 - **Objetivos de rendimiento (usuario, 17 nov):** mínimo 30 fps · **sostenido 40** · ideal 60, sin sacrificar calidad visual.
-- **Resultados reales (v0.1.92):** 40 fps sostenidos **cumplidos** con los ajustes actuales, sin caída por calor en 10 minutos. Detalle en `docs/CALIDAD_GRAFICA.md` §2c.
+- **Resultados reales (v0.1.92):** 40 fps sostenidos **cumplidos** con los ajustes actuales, sin caída por calor en 10 minutos. Jugando 4 minutos: media 55 fps, 1 % del tiempo bajo 40, nunca bajo 30. Detalle en `docs/CALIDAD_GRAFICA.md` §2c.
 - **Le toca al usuario:**
   1. **Elegir calidad gráfica:** menú ⚙ → «Calidad gráfica (comparar)» → probar **B · Nítida** y **C · Fluida** jugando un minuto cada una y decir cuál se queda (o seguir con A).
-  2. Enviar la captura de `?debug` tras 5 minutos de juego (en curso).
-  3. Cuando pueda: parte 2 de ART-1 en un ordenador (Mixamo) y elegir el aspecto del personaje (009 §3).
+  2. Cuando pueda: parte 2 de ART-1 en un ordenador (Mixamo) y elegir el aspecto del personaje (009 §3).
 - **Le toca a Fable al próximo «Sigue»:** resto de PAQ-G3 (no dibujar personajes fuera de pantalla, sombras ajustadas a lo visible, dejar por defecto la calidad elegida), luego ART-1 parte 1 y PAQ-03.
 - **Orientación oficial: VERTICAL** (reversible). **Calidad gráfica:** sin tope de triángulos; nadie rebaja calidad sin que lo decida el usuario (`docs/CALIDAD_GRAFICA.md`).
 

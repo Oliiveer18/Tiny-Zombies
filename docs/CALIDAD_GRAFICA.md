@@ -76,6 +76,8 @@ Conclusión: con 30 000 triángulos el móvil va sobrado de CPU. No hay ningún 
 | Resolución 3 + MSAA 4: descartada | 30 y 30 |
 | Quitar bloom o sombras también cruzaría a 60, pero es perder calidad: **no se propone** | 57 · 50-54 |
 
+**Juego real (4,1 minutos jugando el mapa de prueba, v0.1.92, calidad A):** media **55 fps**, el 1 % de cuadros más lentos a 40 fps, **1 % del tiempo por debajo de 40 y 0 % por debajo de 30**. Objetivo cumplido también jugando, con 12 zombis de relleno quietos; falta repetirlo cuando los zombis se muevan (PAQ-03) y con modelos definitivos.
+
 **Lo que sigue sin respuesta**
 - **Qué parte del personaje cuesta.** Las seis variantes con 40 personajes dan todas ≈ 40 fps (meseta): ni la sombra, ni la animación, ni el amontonamiento por separado bastan para cruzar a 60. El descarte por cámara dio 47 en una pasada y 41 en la otra: no concluyente (aunque reduce los triángulos dibujados casi a la mitad, así que se aplicará igual: es gratis).
 - El coste exacto en milisegundos de cada opción (efecto 2). Si hiciera falta afinar, la prueba tendría que buscar umbrales (cuánta carga hasta perder los 60) en vez de medir fps.

@@ -7,11 +7,11 @@ export const DEBUG=new URLSearchParams(location.search).has('debug');
 let el,t0=0,last=0,frames=0,acc=0,shown=0,cpu=0,cpuMax=0,worst=0;const hist=[];let fps=0,worstWin=0,cpuWin=0;
 let SYNC=null,syncT=0;
 if(DEBUG){renderer.info.autoReset=false;
-  el=document.createElement('div');el.style.cssText='position:fixed;top:44px;right:4px;z-index:99;pointer-events:none;font:11px/1.35 monospace;color:#9f9;background:rgba(0,0,0,.6);padding:4px 6px;border-radius:4px;white-space:pre;text-align:left';
+  el=document.createElement('div');el.style.cssText='position:fixed;top:44px;right:4px;z-index:99;pointer-events:none;font:11px/1.35 monospace;color:#9f9;background:rgba(0,0,0,.6);padding:4px 6px;border-radius:4px;white-space:pre-wrap;text-align:left;left:4px;box-sizing:border-box';
   document.body.appendChild(el);
   // Ajuste de cámara: altura (Y) y distancia hacia atrás (Z). Mueve OFF en vivo; el usuario dicta los números.
   const box=document.createElement('div');
-  box.style.cssText='position:fixed;left:50%;top:92px;transform:translateX(-50%);width:58%;z-index:99;font:13px/1.3 monospace;color:#fff;background:rgba(0,0,0,.55);padding:6px 10px;border-radius:8px';
+  box.style.cssText='position:fixed;left:50%;top:230px;transform:translateX(-50%);width:58%;max-height:calc(100% - 250px);overflow-y:auto;z-index:99;font:13px/1.3 monospace;color:#fff;background:rgba(0,0,0,.55);padding:6px 10px;border-radius:8px';
   const row=(name,min,max,key)=>{const r=document.createElement('div');const l=document.createElement('span');
     const s=document.createElement('input');s.type='range';s.min=min;s.max=max;s.step=.1;s.value=OFF[key];s.style.cssText='width:100%;margin:2px 0 6px';
     const show=()=>{l.textContent=name+' '+Number(OFF[key]).toFixed(1);};show();
@@ -38,7 +38,7 @@ if(DEBUG){renderer.info.autoReset=false;
   SYNC=sync;info();
   // Paneles escondidos por defecto: un botón pequeño los muestra u oculta
   const btn=document.createElement('div');btn.textContent='📊';btn.style.cssText='position:fixed;top:max(12px,env(safe-area-inset-top));right:calc(max(12px,env(safe-area-inset-right)) + 46px);z-index:100;width:38px;height:38px;line-height:38px;text-align:center;font-size:18px;color:#fff;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.25);border-radius:50%;box-sizing:border-box';
-  let on=false;const vis=()=>{el.style.display=on?'':'none';box.style.display=on?'':'none';if(on)sync.forEach(f=>f());};vis();
+  let on=false;const vis=()=>{el.style.display=on?'':'none';box.style.display=on?'':'none';if(on){sync.forEach(f=>f());requestAnimationFrame(()=>{box.style.top=(el.getBoundingClientRect().bottom+6)+'px';box.style.maxHeight='calc(100% - '+(el.getBoundingClientRect().bottom+16)+'px)';});}};vis(); // las barras van siempre debajo del texto, sin taparlo
   const tog=e=>{e.stopPropagation();e.preventDefault();on=!on;vis();};btn.addEventListener('touchstart',tog,{passive:false});btn.addEventListener('click',tog);
   document.body.appendChild(btn);
   for(const ev of ['pointerdown','touchstart','touchmove'])box.addEventListener(ev,e=>e.stopPropagation(),{passive:true});
