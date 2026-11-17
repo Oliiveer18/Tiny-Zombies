@@ -12,7 +12,7 @@ Actualizado: 17 nov 2026 por Fable. Cómo se usa: `coordinacion/LEEME.md`. El es
 ## Paquetes de código
 | Paquete | Estado | Traspaso | Notas |
 |---|---|---|---|
-| PAQ-01 Cámara definitiva y lectura del escenario | **LISTO** | `coordinacion/TRASPASOS/PAQ-01_camara_y_lectura.md` | Base: `48aec15` o posterior |
+| PAQ-01 Cámara definitiva y lectura del escenario | **EN CURSO** (Sonnet, 17 nov, desde 44676b0) | `coordinacion/TRASPASOS/PAQ-01_camara_y_lectura.md` | Base: `48aec15` o posterior |
 | PAQ-G1 Prueba de carga gráfica | **LISTO** | `coordinacion/TRASPASOS/PAQ-G1_prueba_de_carga.md` | Requiere PAQ-01 ENTREGADO. Su resultado (captura del usuario) fija los presupuestos reales |
 | PAQ-02 Interacción y reja | **LISTO** | `coordinacion/TRASPASOS/PAQ-02_interaccion_y_reja.md` | Requiere PAQ-01 ENTREGADO |
 | PAQ-03 Ruido y zombis que despiertan | PLANIFICADO | — (diseño: 007 §4, 004 T1-T2) | Lo prepara Fable en su siguiente turno |
