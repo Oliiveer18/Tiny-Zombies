@@ -28,7 +28,7 @@ function gira(z,dx,dz,k){if(k>1)k=1;if(z.gx*dx+z.gz*dz<-.98){dx+=-z.gz*.6;dz+=z.
   let gx=z.gx+(dx-z.gx)*k,gz=z.gz+(dz-z.gz)*k;const l=Math.hypot(gx,gz);if(l<1e-4){gx=dx;gz=dz;}else{gx/=l;gz/=l;}z.gx=gx;z.gz=gz;}
 // Un paso. M: {zs, j:{x,z,agachado,corre,vivo}, muros, obst, ruido, tick, semilla, velJ, golpe(z), aviso(z)}
 export function paso(M,dt){const {zs,j,muros}=M;
-  for(const z of zs){if(!z.alive)continue;z.te+=dt;
+  for(const z of zs){if(!z.alive||z.derribo>0)continue;z.te+=dt;
     // percepción: 5 veces por segundo (cada 12 pasos de simulación), repartida por zombi
     const k=Math.floor((M.tick+z.n%12)/12);let est=null;
     if(k!==z.pk){z.pk=k;let causa='vista';if(ve(z,j,muros))est=[j.x,j.z];
@@ -41,7 +41,7 @@ export function paso(M,dt){const {zs,j,muros}=M;
       else if(causa==='vista'){z.sin=0;z.obj=est;z.estado='persigue';z.te=0;}
       else if(z.estado==='investiga')z.obj=est; // sigue oyendo: corrige el rumbo sin pararse otra vez
       else despierta(z,M,est,1,'ruido',true);} // deambulando y oye algo: se sobresalta y mira
-    const sp=(P.vel[z.tipo]||.5)*M.velJ*P.velX;
+    if(z.stun>0)z.stun-=dt;const sp=(P.vel[z.tipo]||.5)*M.velJ*P.velX*(z.stun>0?.3:1); // un impacto lo frena un instante
     if(z.estado==='despertando'){const dx=z.obj[0]-z.x,dz=z.obj[1]-z.z,d=Math.hypot(dx,dz);if(d>1e-4)gira(z,dx/d,dz/d,dt*8);if(z.te>=z.tDesp){z.te=0;z.sin=0;z.estado=z.causa==='ruido'?'investiga':'persigue';}}
     else if(z.estado==='investiga'){const dx=z.obj[0]-z.x,dz=z.obj[1]-z.z;if(Math.hypot(dx,dz)<.7||z.te>14||z.bq>2.5){z.estado='deambula';z.te=0;z.dest=null;z.pausa=1;z.bq=0;z.bloq=false;}else avanza(z,z.obj[0],z.obj[1],sp*.6,dt,M);}
     else if(z.estado==='persigue'){z.sin+=dt;const jx=j.x-z.x,jz=j.z-z.z,dj=Math.hypot(jx,jz),cerca=j.vivo&&dj<.7*(z.r/.35>1.3?1.3:1)+.2;

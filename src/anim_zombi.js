@@ -2,7 +2,7 @@
 // + controlador que los mezcla con AnimationMixer y añade ajustes por código (inclinarse al girar y al frenar, encajar golpes, seguir con la cabeza).
 // No decide nada del juego: solo lee el estado del zombi (percepcion.js / zombies.js) y lo dibuja. Cuando exista anim.js (PAQ-A1/A3) se integra allí.
 // Ejes de los huesos (sin giro en reposo, pose T, mirando a +Z): X = cabecear (positivo hacia delante) · Y = girar · Z = ladear. Ángulos en grados.
-import * as THREE from 'three';
+import * as THREE from 'three'; import { reiniciaRagdoll, levantaRagdoll, mezclaLevanta } from './ragdoll.js';
 const P='mixamorig', R=Math.PI/180, S=p=>Math.sin(6.2831853*p), C=p=>Math.cos(6.2831853*p), pos=v=>v>0?v:0, mez=(a,b,t)=>a+(b-a)*t, sua=t=>{t=t<0?0:t>1?1:t;return t*t*(3-2*t);};
 // Parámetros de cada clip (contenido como datos): duración en s, si se repite, y amplitudes en grados o en fracciones de la altura.
 export const CLIPS={
@@ -61,13 +61,19 @@ export function creaAnim(inst,escala){if(!inst.mixer||!inst.actions.walk)return 
   for(const n of BUCLES){const a=inst.actions[n];a.setLoop(THREE.LoopRepeat).play();a.setEffectiveWeight(c.w[n]);}
   for(const n of ['wake','die']){const a=inst.actions[n];a.setLoop(THREE.LoopOnce);a.clampWhenFinished=true;a.setEffectiveWeight(0);}
   inst.actions.walk.time=inst.actions.run.time=0;inst.ctl=c;return c;}
-export function revive(inst){const c=inst.ctl;if(!c)return;c.muerto=false;c.est=null;c.fl=0;c.px=null;c.ang=null;c.v=c.ac=c.giro=c.mira=0;inst.actions.die.stop();inst.actions.wake.stop();c.ww=0;c.wd=0;for(const n of BUCLES)c.w[n]=n==='idle'?1:0;}
-export function golpe(inst,lado){const c=inst.ctl;if(c){c.fl=1;c.fls=lado<0?-1:1;}} // encaja un impacto (lado: de dónde vino, para girar el torso)
+export function revive(inst){const c=inst.ctl;if(!c)return;reiniciaRagdoll(inst);c.hit=null;c.muerto=false;c.est=null;c.fl=0;c.px=null;c.ang=null;c.v=c.ac=c.giro=c.mira=0;inst.actions.die.stop();inst.actions.wake.stop();c.ww=0;c.wd=0;for(const n of BUCLES)c.w[n]=n==='idle'?1:0;}
+// Encaja un impacto. zona: 'cabeza' | 'pecho' | 'brazoI' | 'brazoD' | 'piernaI' | 'piernaD'; (dx,dz) = dirección de la bala en el mundo. El hueso golpeado cede con un muelle amortiguado en la dirección del golpe.
+const ZONA={cabeza:['Head',30,.6],pecho:['Spine2',16,1],brazoI:['LeftArm',34,.5],brazoD:['RightArm',34,.5],piernaI:['LeftUpLeg',24,.4],piernaD:['RightUpLeg',24,.4]};
+export function golpe(inst,lado,zona,dx=0,dz=0){const c=inst.ctl;if(!c)return;c.fl=1;c.fls=lado<0?-1:1;if(!zona)return;
+  const y=inst.root.rotation.y,fx=Math.sin(y),fz=Math.cos(y),adelante=dx*fx+dz*fz,lateral=dx*fz-dz*fx; // en el marco del zombi
+  c.hit={zona,t:0,pit:adelante,rol:lateral};}
+// Tras una explosión: se levanta mezclando desde la postura caída hacia la animación de pie.
+export function levantaAnim(inst){const c=inst.ctl;if(!c)return;levantaRagdoll(inst);c.muerto=false;c.est=null;c.fl=0;c.px=null;c.ang=null;c.v=c.ac=c.giro=0;for(const n of BUCLES)c.w[n]=n==='stand'?1:0;inst.actions.wake.stop();inst.actions.die.stop();c.ww=0;c.wd=0;}
 export function muere(inst){const c=inst.ctl;if(!c||c.muerto)return;c.muerto=true;c.wd=0;const a=inst.actions.die;a.reset().play();a.setEffectiveWeight(0);}
 const q1=new THREE.Quaternion(),e1=new THREE.Euler();
 function suma(b,x,y,z){if(b)b.quaternion.multiply(q1.setFromEuler(e1.set(x*R,y*R,z*R,'XYZ')));}
 // o: {estado:'dormido'|'despertando'|'persigue'|'deambula', cerca, x, z, ang (hacia dónde mira, rad), tDesp, jx, jz (jugador), quieto}
-export function anima(inst,dt,o){const c=inst.ctl,A=inst.actions;if(!c||dt<=0)return;
+export function anima(inst,dt,o){const c=inst.ctl,A=inst.actions;if(!c||dt<=0)return;if(inst.rd&&inst.rd.activo)return; // con ragdoll mandan las partículas
   // velocidad real, aceleración y velocidad de giro, suavizadas (de ahí salen el ritmo del paso y las inclinaciones)
   if(c.px!==null){const v=Math.hypot(o.x-c.px,o.z-c.pz)/dt,k=Math.min(1,dt*8);c.v+=(v-c.v)*k;const a=(c.v-c.va)/dt;c.ac+=(a-c.ac)*Math.min(1,dt*5);c.va=c.v;
     let d=o.ang-c.ang;while(d>Math.PI)d-=6.2831853;while(d<-Math.PI)d+=6.2831853;c.giro+=(d/dt-c.giro)*k;}
@@ -84,10 +90,12 @@ export function anima(inst,dt,o){const c=inst.ctl,A=inst.actions;if(!c||dt<=0)re
   // el paso sigue a la velocidad real para que los pies no patinen
   const esc=n=>THREE.MathUtils.clamp(c.v/(nominal(n)*c.escala),.45,1.9);A.walk.timeScale=esc('walk');A.run.timeScale=esc('run');
   inst.mixer.update(dt);
+  if(inst.rd&&inst.rd.lev)mezclaLevanta(inst,dt);
   // ---- ajustes por código, encima de los clips ----
   if(c.muerto)return;
   const mov=Math.min(1,c.w.walk+c.w.run),ladeo=THREE.MathUtils.clamp(-c.giro*5,-14,14)*mov,freno=THREE.MathUtils.clamp(-c.ac*3/c.escala,-12,10)*Math.min(1,mov+c.w.stand); // gira → se ladea hacia dentro; frena → se echa atrás; arranca → hacia delante
   c.fl=Math.max(0,c.fl-dt*5);const f=c.fl*c.fl;
+  if(c.hit){const h=c.hit,Z=ZONA[h.zona];h.t+=dt;if(h.t>.7)c.hit=null;else{const a=Math.exp(-h.t*6.5)*Math.cos(h.t*24)*Z[1]*(c.v>.3?.7:1),b=c.h[Z[0]];suma(b,h.pit*a,0,-h.rol*a*Z[2]);if(Z[0]!=='Spine2'){suma(c.h.Spine,h.pit*a*.35,0,-h.rol*a*.35);}}} // reacción por zona: depende de dónde le diste
   suma(c.h.Spine,-freno-20*f,0,ladeo*.5);suma(c.h.Spine2,-8*f,14*f*c.fls,ladeo*.5);
   // la cabeza busca al jugador (o el ruido) antes que el cuerpo
   let m=0;if(o.estado!=='dormido'&&o.jx!==undefined){let d=Math.atan2(o.jx-o.x,o.jz-o.z)-o.ang;while(d>Math.PI)d-=6.2831853;while(d<-Math.PI)d+=6.2831853;m=THREE.MathUtils.clamp(d/R,-55,55);}

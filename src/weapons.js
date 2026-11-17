@@ -18,7 +18,7 @@ function shoot(){
   const thru=[];for(const o of obstacles){if(o.fly||o.key==='sack')continue;const t=rayCircle(ox,oz,dx,dz,o.x,o.z,o.r*.8);if(t===null)continue;if(OBJ[o.key]&&OBJ[o.key].pasa){thru.push([o,t]);continue;}if(t<best){best=t;wall=true;bo=o;}} // el cartón no frena la bala: la traspasa y se rompe
   for(const z of zombies){if(!z.alive)continue;const t=rayCircle(ox,oz,dx,dz,z.x,z.z,z.t.r+.12);if(t!==null&&t<best){best=t;hz=z;wall=false;bo=null;}}
   tracer(mx,mz,ox+dx*Math.max(best,MUZZLE),oz+dz*Math.max(best,MUZZLE));muzzle(mx,.75,mz,dx,dz);
-  if(hz){hurt(hz,1,dx,dz);impact(ox+dx*best,.7,oz+dz*best,[.5,.9,.3]);if(Math.random()<.34)blood(ox+dx*(best+.6),oz+dz*(best+.6),.5);}else if(wall){if(!hitProp(bo,dx,dz,ox+dx*best,oz+dz*best))impact(ox+dx*best,.5,oz+dz*best);}
+  if(hz){hurt(hz,1,dx,dz,(hz.x-ox)*dz-(hz.z-oz)*dx);impact(ox+dx*best,.7,oz+dz*best,[.5,.9,.3]);if(Math.random()<.34)blood(ox+dx*(best+.6),oz+dz*(best+.6),.5);}else if(wall){if(!hitProp(bo,dx,dz,ox+dx*best,oz+dz*best))impact(ox+dx*best,.5,oz+dz*best);}
   const vistas=new Set();for(const [o,t] of thru)if(t<best){if(o.hoja){if(vistas.has(o.hoja))continue;vistas.add(o.hoja);} // la reja son varios círculos: una bala cuenta una sola vez
     hitProp(o,dx,dz,ox+dx*t,oz+dz*t);}
   wp.ammo--;wp.disp=true;sonido(player.x,player.z,R.disparo,'j1');wp.cd=.11;wp.shake=Math.max(wp.shake,SHAKE_SHOT);player.shootT=.1;

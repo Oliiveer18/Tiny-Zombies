@@ -30,6 +30,16 @@ No debe haber **ningún aro** alrededor del jugador ni círculos blancos en el s
 ## 4 · Combate (2 min)
 Dispara a un zombi: se estremece al impacto y cae hacia atrás al morir. Mira si el golpe del zombi cuando te alcanza se lee (se echa hacia delante con los dos brazos).
 
+## 4b · Física de los zombis: impactos, caídas y explosiones (3 min) — NUEVO 20 nov
+| Haz | Debe verse |
+|---|---|
+| Dispara a un zombi **sin matarlo** (apunta al borde de su cuerpo y al centro) | Se estremece **en la zona que le das** (hombro, cabeza o pierna) y se frena un instante |
+| Mata a uno | **Cae como un cuerpo con peso**, hacia donde iba la bala, con brazos y cabeza sueltos; se queda tumbado donde cae |
+| Mata a uno **pegado a una caja, valla o barril** | Choca con el obstáculo y se queda junto a él o encima |
+| Mata a varios y mira los cuerpos | Cada uno cae en una postura distinta |
+| **Granada o bidón** cerca de zombis | Los que mueren salen despedidos lejos; los que sobreviven salen despedidos, quedan en el suelo ~2 s y **se levantan y vuelven a perseguirte** |
+**Apúntame:** si la caída parece de goma o se queda rara (cuerpo doblado, atravesando un objeto), si se levantan mal, o si el juego se ralentiza al haber varios cuerpos. Hay un tope de 8 cuerpos moviéndose a la vez; los demás se quedan donde estaban.
+
 ## 5 · Rendimiento con varios personajes: `?carga` (3 min)
 1. Añade `?carga` al final de la dirección y entra. Hay 12 personajes quietos y sin daño; el medidor muestra fps, peor cuadro, triángulos y llamadas.
 2. Espera a que la prueba termine y **haz captura de la pantalla de resultados** (y del medidor si sale).
