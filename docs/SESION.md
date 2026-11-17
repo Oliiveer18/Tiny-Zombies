@@ -1,5 +1,13 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## PAQ-G1b · Prueba de carga: arranque táctil e interfaz (17 nov 2026)
+**Resumen fácil:** la prueba de carga ya arranca al tocar el botón en el móvil (antes no hacía nada) y ahora se ve qué pasa: un panel arriba con cuenta atrás, barra de progreso y fps. Al acabar sale «Prueba completada» con la tabla entera en una pantalla: haz captura y envíasela a Fable. Hay botones Repetir, Copiar y Cerrar, y si algo falla te dice qué hacer. Abre el juego con `?carga` para probarlo.
+
+**Detalle técnico**
+- Solo `src/carga.js`. Causa del fallo: `input.js` hace `preventDefault` en `touchstart` salvo en `.btn`/`.ui`; ahora todo lleva clase `ui`. Enter se atiende en cada botón (el juego lo usa para empezar).
+- Estado `inicio|curso|fin|error`, `window.__cargaUI`, panel actualizado a 250 ms por `setInterval`, errores por `visibilitychange`/`webglcontextlost`/`error`/`unhandledrejection`/`step.ap()`/bloqueo 8 s, `wakeLock`. Medición, escalones y `__carga` sin cambios.
+- Pruebas 1-14 en el traspaso.
+
 ## PAQ-02 · Interacción y reja (17 nov 2026)
 **Resumen fácil:** ahora puedes interactuar con cosas. Mira a una caja o barril y aparece el botón «EMPUJAR»; el contenedor se arrastra manteniendo pulsado. En el callejón hay una reja con candado: puedes dispararle al candado, o ponerte frente a ella y mantener «FORZAR» 4 segundos. Sin candado, «ABRIR» abre las dos hojas, o simplemente camina contra ellas; una granada cerca las rompe. En el móvil con mando: ✕ es Usar. Pruébalo en vertical, mirando a la caja que hay al principio del callejón.
 

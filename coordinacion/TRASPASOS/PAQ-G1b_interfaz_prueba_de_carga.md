@@ -73,12 +73,26 @@ Servir con `npm run build` + `npx vite preview`.
 3. Solo se ha tocado `src/carga.js` (y `main.js` si hizo falta, justificado en el informe), más los documentos de Sonnet.
 
 ---
-## Informe de Sonnet (rellenar al entregar)
-- Commit(s):
-- Qué se hizo:
-- Decisiones secundarias tomadas:
-- Resultado de cada prueba (1-14):
-- No comprobado:
+## Informe de Sonnet (entregado 17 nov)
+- Commit(s): «PAQ-G1b entregado (Sonnet)…» (ver `git log`).
+- Qué se hizo: solo `src/carga.js` (interfaz reescrita; lógica de medición, 22 escalones, tiempos y formato de `__carga` intactos). Estado único `inicio|curso|fin|error`, todos los elementos con clase `ui`, panel fijo arriba (115 px de alto) con punto parpadeante, cuenta atrás, barra, paso/fase y «FPS ahora» (actualización cada 250 ms desde un `setInterval`, no desde el bucle), pantalla final con tabla de 22 filas + Repetir/Copiar/Cerrar, pantalla de error con los 4 casos, `wakeLock`, `window.__cargaUI`.
+- Decisiones secundarias: (1) El juego usa Enter para empezar y hace `preventDefault`, lo que anulaba el clic del botón con teclado; los botones atienden Enter por su cuenta (`keydown` con `stopPropagation`). (2) «Copiar» tiene un límite de 1,5 s por si el portapapeles no responde. (3) Quité la variable `cargas` sin usar. (4) Panel con `pointer-events:none` para no interferir con nada. (5) Los fps mostrados son la media de las dos últimas ventanas de 250 ms (≈ 0,5 s). (6) `restante` cuenta los escalones no saltados × 4 s menos lo gastado; baja de golpe al saltar una familia.
+- Resultado de cada prueba (1-14), Chromium con render por software (≈ 5 fps), 390×844:
+  1. Compila OK.
+  2. Tap táctil (`hasTouch`): `touchstart` → panel visible en 179 ms (medido en la página con MutationObserver); `__cargaUI.estado==='curso'`, `restante` 88. OK.
+  3. Ratón (`click`) y Enter: ambos pasan a `curso` (restante 88). OK (Enter requirió el arreglo de la decisión 1).
+  4. Muestreo cada 2 s: `paso` 1→22 sin bajar, `restante` 87→0 sin negativos (baja de golpe en los saltos), barra 2 %→100 %, fase cambia («preparando/midiendo», familias), «FPS ahora» numérico. OK.
+  5. Panel 115 px de alto en vertical (≤ 150) y 115 px en 844×390 (de 390 = 30 %); sin texto cortado. Capturas revisadas. OK.
+  6. Fin: «✔ Prueba completada», `__carga.length===22` (11 saltados), `estado==='fin'`, tabla completa de 22 filas visible en 390×844 junto con título y botones; sin desplazamiento horizontal (scrollWidth 390). OK.
+  7. Repetir (tap): vuelve a `curso` paso 1, `__carga` vaciado y el MISMO objeto, termina con 22; base 27456 tri / 58 llam en ambas pasadas (0 % de diferencia), mismos 22 nombres. OK.
+  8. Copiar: sin permiso → «No se pudo copiar» (2 s); con permiso → «Copiado ✔» (2 s), luego vuelve. Sin excepciones. OK.
+  9. `hidden` simulado a los 8 s: pantalla «Prueba interrumpida» con su texto, tabla parcial y Repetir; al repetir con `hidden=false` termina con 22. OK.
+  10. `ErrorEvent`: «Error en la prueba… paso «50k tri estáticos»: prueba…», Repetir funciona. OK.
+  11. `webglcontextlost`: texto de memoria gráfica con el paso. OK.
+  12. Antes/después en el mismo navegador: mismos 22 nombres y mismos 11 escalones saltados; base 5,46 fps → 5,42 y 5,41 fps (< 1 %). OK.
+  13. Sin `?carga`: `carga.js` no se pide (chunk aparte), `__cargaUI` no existe, 0 errores; chunk principal 697,26 kB igual que antes, `main.js` sin tocar. Triángulos de `?debug` no comparados línea a línea (el panel no mostró las líneas en la prueba), pero no ha cambiado ningún archivo del juego. OK parcial.
+  14. «Cerrar» → `http://localhost:4180/` (sin `?carga`). OK.
+- No comprobado: fps reales y toque en el iPhone de verdad; `wakeLock` (no existe en el navegador de pruebas, solo se verificó que no falla); el bloqueo de 8 s (caso «Bloqueo») no se provocó, solo está implementado. En esta entrega la pantalla de arranque de Tiny («Toca para empezar») sigue viéndose detrás del panel, como ya ocurría.
 
 ## Revisión de Fable
 (pendiente)
