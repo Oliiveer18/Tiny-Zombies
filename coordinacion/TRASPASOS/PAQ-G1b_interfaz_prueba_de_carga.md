@@ -95,4 +95,7 @@ Servir con `npm run build` + `npx vite preview`.
 - No comprobado: fps reales y toque en el iPhone de verdad; `wakeLock` (no existe en el navegador de pruebas, solo se verificó que no falla); el bloqueo de 8 s (caso «Bloqueo») no se provocó, solo está implementado. En esta entrega la pantalla de arranque de Tiny («Toca para empezar») sigue viéndose detrás del panel, como ya ocurría.
 
 ## Revisión de Fable
-(pendiente)
+**ACEPTADO · 17 nov 2026.** Repetido por Fable en Chromium táctil 390 × 844: compila; un toque en «Iniciar prueba» pone `estado: curso` en menos de 250 ms; el paso avanza de 1 a 22 sin retroceder y la cuenta atrás baja de 87 a 0; termina en «✔ Prueba completada» con 22 filas y los mismos 22 nombres de escalón; «Repetir prueba» con toque vuelve al paso 1 con la tabla vacía; 0 errores de página. Capturas del panel, del final y del error revisadas: legibles, sin cortes, la tabla cabe en una captura. Solo cambió `src/carga.js`.
+**No comprobado:** el toque y los fps en el iPhone real; el aviso de bloqueo (> 8 s) no se provocó; `wakeLock` no existe en el navegador de pruebas.
+**Pendiente menor (no devuelve el paquete):** detrás del panel sigue viéndose el cartel «Toca para empezar» del juego, como antes de este paquete. Fable decide si se oculta durante la prueba cuando llegue la primera captura del iPhone (ocultarlo cambia las condiciones de la escena medida).
+**Error de la revisión anterior:** PAQ-G1 se aceptó habiendo probado el botón solo con ratón. Desde ahora, todo botón nuevo se prueba con toque (`hasTouch` + `tap`) además de con ratón; queda como regla en `coordinacion/LEEME.md` §4.5.

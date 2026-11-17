@@ -5,7 +5,7 @@ Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `co
 ## Ahora mismo
 - **Le toca a: SONNET** → (1) **ART-1 parte 1** (corta: preparar el archivo para Mixamo) y después (2) **PAQ-03**. Ambos LISTOS.
 - **Le toca al usuario (no bloquea a Sonnet):**
-  1. **iPhone, prueba de carga:** abrir el juego con `?carga` al final de la dirección, en vertical, pulsar «Iniciar prueba», no tocar nada ≈ 90 s y enviar a Fable la captura de la tabla. Sin modo de bajo consumo.
+  1. **iPhone, prueba de carga:** abrir el juego con `?carga` al final de la dirección, en vertical, pulsar «Iniciar prueba» (debe aparecer arriba «PRUEBA EN CURSO» con cuenta atrás), no tocar nada ≈ 90 s y, al salir «Prueba completada», enviar a Fable la captura de la tabla. Debe verse v0.1.71 o superior. Sin modo de bajo consumo.
   2. **iPhone, jugar 5 minutos el mapa de prueba con `?debug`** (panel de barras cerrado): mover, apuntar, disparar, granada, empujar una caja con «Usar», romper el candado a tiros o forzarlo, abrir la reja. Enviar una captura del medidor y decir si algún botón estorba o cuesta pulsarlo. Girar el móvil una vez para ver que en horizontal nada se rompe.
   3. **Ordenador, Mixamo (gratis, ≈ 20 min):** cuando Sonnet entregue ART-1 parte 1, seguir la parte 2 de `coordinacion/TRASPASOS/ART-1_prueba_mixamo.md`.
   4. **Elegir el aspecto del primer personaje** (paleta A, B o C de 009 §3, o cambios). No corre prisa: se necesita al aceptar ART-1.
@@ -19,6 +19,7 @@ Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `co
 | — | PAQ-01 Cámara definitiva y lectura del escenario | **ACEPTADO** (Fable, 17 nov) · falta validar en iPhone | `coordinacion/TRASPASOS/PAQ-01_camara_y_lectura.md` | |
 | — | PAQ-G1 Prueba de carga gráfica | **ACEPTADO** (herramienta) · **falta la captura `?carga` del usuario** | `coordinacion/TRASPASOS/PAQ-G1_prueba_de_carga.md` | Su resultado fija los presupuestos reales |
 | — | PAQ-02 Interacción y reja | **ACEPTADO** (Fable, 17 nov) · falta validar el tacto en iPhone | `coordinacion/TRASPASOS/PAQ-02_interaccion_y_reja.md` | |
+| — | PAQ-G1b La prueba de carga arranca en táctil + interfaz de progreso | **ACEPTADO** (Fable, 17 nov) · falta validar en iPhone | `coordinacion/TRASPASOS/PAQ-G1b_interfaz_prueba_de_carga.md` | En el móvil, `?carga` NO arrancaba antes de este paquete |
 | 1 | ART-1 parte 1 · archivo para Mixamo | **LISTO** | `coordinacion/TRASPASOS/ART-1_prueba_mixamo.md` | Corta. Al acabar pasa a «ESPERA AL USUARIO (parte 2)» y Sonnet sigue con PAQ-03 |
 | 2 | PAQ-03 Ruido y zombis que despiertan | **LISTO** | `coordinacion/TRASPASOS/PAQ-03_ruido_y_zombis.md` | |
 | 3 | ART-1 parte 3 · convertir lo de Mixamo | ESPERA AL USUARIO | mismo traspaso | Cuando el usuario suba los archivos |
