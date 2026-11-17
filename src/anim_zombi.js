@@ -42,7 +42,10 @@ function pose(n,p){const c=CLIPS[n],o={LeftArm:[0,0,-BR],RightArm:[0,0,BR],LeftF
 const HUESOS=['Hips','Spine','Spine2','Neck','Head','LeftArm','LeftForeArm','LeftHand','RightArm','RightForeArm','RightHand','LeftUpLeg','LeftLeg','LeftFoot','RightUpLeg','RightLeg','RightFoot'];
 const eu=new THREE.Euler(),qq=new THREE.Quaternion();
 // Crea los AnimationClip para un modelo cargado (necesita la posición de reposo de la cadera). 30 muestras por segundo.
-export function clipsZombi(escena){const cad=escena.getObjectByName(P+'Hips');if(!cad)return [];const h0=cad.position.clone(),out=[];
+// Generador común de clips (también lo usa anim_humano.js): tabla de parámetros + función de pose (grados por hueso) → AnimationClip a 30 muestras/s.
+export const HUESOS_AUTO=['Hips','Spine','Spine2','Neck','Head','LeftArm','LeftForeArm','LeftHand','RightArm','RightForeArm','RightHand','LeftUpLeg','LeftLeg','LeftFoot','RightUpLeg','RightLeg','RightFoot'];
+export const clipsZombi=escena=>generaClips(escena,CLIPS,pose);
+export function generaClips(escena,CLIPS,pose){const cad=escena.getObjectByName(P+'Hips');if(!cad)return [];const h0=cad.position.clone(),out=[];
   for(const n in CLIPS){const c=CLIPS[n],N=Math.max(2,Math.round(c.dur*30)),t=new Float32Array(N+1),q={},hp=new Float32Array((N+1)*3);for(const b of HUESOS)q[b]=new Float32Array((N+1)*4);
     for(let i=0;i<=N;i++){const p=i/N,o=pose(n,c.loop&&i===N?0:p);t[i]=p*c.dur;
       for(const b of HUESOS){const e=o[b]||[0,0,0];qq.setFromEuler(eu.set(e[0]*R,e[1]*R,e[2]*R,'XYZ'));q[b].set([qq.x,qq.y,qq.z,qq.w],i*4);}

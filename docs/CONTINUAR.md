@@ -6,7 +6,7 @@ Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `co
 - **Sesión nueva: leer primero `coordinacion/TRASPASO_SESION.md`** (resumen de arranque; evita volver a analizar lo hecho).
 - **Quién trabaja:** solo **Fable** (dirige e implementa; DECISIONES 1.8). Sonnet en pausa.
 - **PAQ-03 IMPLEMENTADO (18 nov)**: pruebas de Node y de navegador pasadas (detalle y lo no comprobado en `SESION.md`); falta la prueba del usuario en el iPhone. `tools/rehacer_textura.mjs` VALIDADA con Lupa ×8 en el juego (sin motas; cabeza y iPhone sin mirar); el jugador provisional ya lleva la textura rehecha.
-- **DIRECCIÓN ARTÍSTICA HD APROBADA (19 nov)**: `docs/DIRECCION_ARTISTICA_HD.md` (DECISIONES 3.25-3.28). **Le toca al usuario:** revisar el prompt v3 del zombi (§10) y, si lo aprueba, generar las 4 imágenes y enseñarlas; se eligen con el filtro del §9 antes de pasar a 3D. No se gasta nada hasta entonces.
+- **PROTAGONISTA Y ZOMBI NORMAL INTEGRADOS Y ANIMADOS (20 nov)** con los modelos de Meshy aprobados (`SESION.md`). **Le toca al usuario:** verlos en el iPhone y decir si le gustan en movimiento; correr `?carga` para medir los fps con los zombis nuevos. Siguiente: piezas de equipo y arma, corredor y tanque.
 - **ZOMBI NORMAL v1 RECHAZADO (19 nov)** tras revisión visual (6,5 cabezas, orejas enormes, ojos en blanco, boca en bloque; detalle en `SESION.md`). El juego sigue con la cápsula. **Le toca al usuario:** generar 4 imágenes nuevas con el texto v2 de `DIRECCION_ARTISTICA.md` §6 y enseñarlas (se elige con el filtro medido antes de pasar a 3D). Herramientas y animación por código listas; se validan con el modelo nuevo.
 - **Dirección artística aprobada como base (18 nov)**: `docs/DIRECCION_ARTISTICA.md`. **Le toca al usuario:** generar las 4 imágenes del zombi normal con el texto de su §6 y enseñarlas. Después: elegir una, 3D, y aprobación dentro del juego comparando con la captura. Pendiente técnico al llegar el modelo: quitar los reflejos de estudio a los personajes nuevos (mate).
 - **PRIMERA TAREA: modelos de zombis** (prioridad del usuario, 17 nov): zombi normal, según `coordinacion/RESPUESTAS_FABLE/010_zombis.md` §8. **Después: PAQ-03** (traspaso LISTO).
@@ -42,7 +42,8 @@ Nota: hoy solo hay un paquete LISTO por delante además de ART-1 (la regla pide 
 |---|---|---|
 | ART-1 Tubería Mixamo | parte 1 LISTA para Sonnet · parte 2 del usuario (ordenador) · parte 3 Sonnet | Ver traspaso. 0 créditos |
 | ART-2 Personaje de referencia | BLOQUEADO | ART-1 ACEPTADA + aspecto elegido por el usuario → Fable escribe el texto para Meshy → el usuario genera (créditos en pausa hasta entonces). Especificación: 009 §3-§4 |
-| ART-4 Personajes: **zombis primero** | Zombi normal v1 **RECHAZADO** (19 nov); esperando imágenes nuevas del usuario | Tubería lista: reduce → rehacer_textura → esqueleto_auto; clips en `anim_zombi.js` |
+| ART-4 Personajes: **zombis primero** | Zombi normal **INTEGRADO y animado** (20 nov), falta aprobación en el iPhone | Siguiente: corredor y tanque con la misma tubería |
+| ART-2 Protagonista (cuerpo base) | **INTEGRADO y animado** (20 nov), falta aprobación en el iPhone | Después: piezas de equipo y arma |
 | ART-5 Objetos y escala | PLANIFICADO | ART-2 + modelos |
 | MED Medición en iPhone 14 | DOS HECHAS (17 nov: v0.1.81 y prueba de carga v0.1.91) | 58 fps · CPU 2,0 ms · 30 404 triángulos · peor cuadro 27 ms con el panel abierto. **Pendiente:** repetir con el panel cerrado en la versión actual y la prueba de carga. Tabla en `coordinacion/mediciones/MOVIL_REFERENCIA.md` |
 
@@ -57,7 +58,7 @@ Nota: hoy solo hay un paquete LISTO por delante además de ART-1 (la regla pide 
 
 ## Lo que NO es verdad todavía (para no darlo por hecho)
 - La primera prueba de carga real (v0.1.91) da una idea general, pero su parte de calidad es contradictoria y no mide el rendimiento sostenido: **aún no hay presupuestos**. Se repite con la versión 2 (PAQ-G2).
-- Corredor, tanque y objetos son relleno (cápsulas y cajas). El zombi normal aún no tiene modelo válido; el jugador es un modelo real de estilo descartado.
+- Corredor, tanque y objetos son relleno (cápsulas y cajas). El zombi normal y el protagonista ya son modelos definitivos con animación; corredor y tanque, objetos y armas siguen siendo relleno.
 - No hay NPC, ni zombis que reaccionen al ruido (en el mapa de prueba siguen quietos), ni sonido. La reja y el botón «Usar» existen pero no se han probado en el iPhone.
 - La animación sigue siendo la antigua (mezcla de cuerpo entero con 8 clips de Meshy). El sistema nuevo (009) está diseñado, no programado. No se ha comprobado todavía nada con Mixamo.
 

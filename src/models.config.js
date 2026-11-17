@@ -5,7 +5,8 @@
 // Para poner el modelo definitivo basta cambiar `file` (y `anims` si los clips van aparte) y, a la derecha de cada nombre lógico, el nombre real del clip.
 // Si falta un clip se usa el anterior de la lista; si no hay ninguno, el movimiento por código.
 export const MODELS = {
-  player:  { file:'personajes/cuerpos/jugador_a.glb', anims:'personajes/anims/humano.glb',  scale:0.53,   offset:[0,0,0], placeholder:{shape:'capsule',color:0x4a8fd8,h:0.9},  clips:{idle:'idle',walk:'walk',run:'run',shoot_side:'shoot_side',shoot_back:'shoot_back',shoot_fwd:'shoot_fwd',reload:'reload',die:'die'} },
+  player:  { file:'personajes/cuerpos/protagonista.glb', scale:1.0, offset:[0,0,0], gen:'humano', relleno:.8, placeholder:{shape:'capsule',color:0x4a8fd8,h:0.9},  clips:{idle:'idle',walk:'walk',run:'run',shoot_side:'shoot_side',shoot_back:'shoot_back',shoot_fwd:'shoot_fwd',reload:'reload',die:'die'} },
+  // player (antes): { file:'personajes/cuerpos/jugador_a.glb', anims:'personajes/anims/humano.glb', scale:0.53, ... } con los 8 clips de Meshy
   // zombie: modelo de Meshy pasado por tools/reduce → rehacer_textura → esqueleto_auto (1 de alto; `scale` = altura en metros, aún no definitiva). gen:'zombi' = clips generados por src/anim_zombi.js
   zombie:  { file:'zombie.glb',  scale:1.4, offset:[0,0,0], gen:'zombi', relleno:.8, placeholder:{shape:'capsule',color:0x6a9a5a,h:0.9},  clips:{idle:'idle',stand:'stand',wake:'wake',walk:'walk',run:'run',attack:'attack',die:'die'} },
   runner:  { file:'runner.glb',  scale:0.9, offset:[0,0,0], placeholder:{shape:'capsule',color:0xb0a040,h:0.85}, clips:{idle:'idle',wake:'wake',walk:'walk',run:'run',attack:'attack',hit:'hit',die:'die'} },

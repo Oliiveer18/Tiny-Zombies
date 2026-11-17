@@ -1,13 +1,14 @@
 import * as THREE from 'three';
 import { instance, play } from './assets.js';
-import { input } from './input.js'; import { sonido, R } from './ruido.js';
+import { input } from './input.js'; import { MODELS } from './models.config.js'; import { VEL_H } from './anim_humano.js'; import { sonido, R } from './ruido.js';
 import { obstacles, FIELD } from './world.js';
 import { wp } from './weapons.js'; import { CAM } from './renderer.js';
 // Velocidades (unidades/s). Tiny original: 4.2 / 7 con cámara a 16.4; con la cámara a 10.1 se ajustan para que la velocidad en pantalla sea parecida.
 export const MOVE={size:1.4,top:1.15,aim:.4,crouch:.5,runAt:.85,runMult:2.1,mult:1,acc:9,dec:14,dead:.12,curve:1.5,
   step:1};
 // Velocidades que recorre cada animación al paso 1, en unidades del MODELO por segundo (medidas en el GLB). Se pasan a unidades del juego con K()=escala del cuerpo.
-const CW=1.10,CR=3.2,CB=.64,CF=.25;
+let CW=1.10,CR=3.2,CB=.64,CF=.25;const GEN=!!MODELS.player.gen; // con clips generados (anim_humano.js) las velocidades salen de la tabla y no hay que girar el cuerpo al apuntar
+if(GEN){CW=VEL_H.walk;CR=VEL_H.run;CB=VEL_H.shoot_back;CF=VEL_H.shoot_fwd;}
 export const K=()=>player.base*MOVE.size; // escala del cuerpo (modelo → juego)
 export const topSpeed=()=>MOVE.top*CW*K()*MOVE.mult*CAM.vel; // velocidad máxima: un poco por encima del paso natural, así las piernas no patinan ni van en cámara lenta
 const vel=new THREE.Vector2();
@@ -47,7 +48,7 @@ export function updatePlayer(dt,cam){
     const dx=player.ax-player.x,dz=player.az-player.z,l=Math.hypot(dx,dz)||1;player.aimX=dx/l;player.aimZ=dz/l; }
   {const b=player.inst.body,tgt=player.crouch?1:0;player.cr=(player.cr||0)+(tgt-(player.cr||0))*Math.min(1,dt*10); // PROVISIONAL sin clip de agachado: encoge y se inclina
    {const S=K();b.scale.set(S,S*(1-.2*player.cr),S);}b.rotation.x=.22*player.cr;}
-  const r=player.inst.root;r.position.set(player.x,0,player.z);r.rotation.y=Math.atan2(player.aimX,player.aimZ)-Math.PI/2*((player.inst.w&&player.inst.w.shoot_side)||0); // el clip «shoot_side» apunta hacia el costado del modelo (+X): se gira 90° para que el arma vaya hacia donde apuntas
+  const r=player.inst.root;r.position.set(player.x,0,player.z);r.rotation.y=Math.atan2(player.aimX,player.aimZ)-(GEN?0:Math.PI/2*((player.inst.w&&player.inst.w.shoot_side)||0)); // el clip «shoot_side» apunta hacia el costado del modelo (+X): se gira 90° para que el arma vaya hacia donde apuntas
   player.reticle.position.set(player.ax,.05,player.az);player.aro.position.set(player.x,.03,player.z);
   // animación: clips si existen, si no código
   player.t+=dt*(run?14:9);player.shootT=Math.max(0,player.shootT-dt);player.hurt=Math.max(0,player.hurt-dt);
@@ -73,7 +74,7 @@ export function updatePlayer(dt,cam){
     if(a.shoot_back)a.shoot_back.timeScale=C(speed/(CB*K()),.5,1.6); // clip «inplace»: ya va hacia atrás por sí mismo
     if(a.shoot_fwd)a.shoot_fwd.timeScale=C(speed/(CF*K()),.7,1.6);
     inst.mixer.update(dt);
-    if(a.shoot_side){const ss=a.shoot_side;if((inst.w.shoot_side||0)<.02)ss.time=.6;else if(ss.time>2.6)ss.time=1.25;} // el clip dura 4 s (sube el arma, apunta, la baja): se queda en la parte de apuntar, sin bajar los brazos cada 4 s
+    if(a.shoot_side&&!GEN){const ss=a.shoot_side;if((inst.w.shoot_side||0)<.02)ss.time=.6;else if(ss.time>2.6)ss.time=1.25;} // el clip dura 4 s (sube el arma, apunta, la baja): se queda en la parte de apuntar, sin bajar los brazos cada 4 s
   }
   else{player.inst.body.position.y=player.moving?Math.abs(Math.sin(player.t))*.07:0;player.inst.body.rotation.x=player.moving?.12:0;player.inst.body.rotation.z=Math.sin(player.t)*(player.moving?.08:0);}
 }
