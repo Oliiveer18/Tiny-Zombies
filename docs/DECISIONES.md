@@ -24,7 +24,8 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 | 2.6 | **El tope de 40 000 triángulos queda retirado.** Era de escena completa, solo existía como texto y como aviso de color en el medidor, venía heredado de otro proyecto y nunca se probó. Triángulos, llamadas y memoria pasan a ser indicadores | U + F · 17 nov (cierra la duda de las sombras) |
 | 2.7 | Los presupuestos de escena saldrán de una prueba de carga en el móvil (PAQ-G1), fijados al 60 % del techo medido. Hasta entonces no hay presupuesto numérico | F · 17 nov |
 | 2.8 | Nadie rebaja calidad por su cuenta: si falta rendimiento, Sonnet abre un bloqueo; las rebajas las decide el usuario con dos capturas. Antes se elimina el desperdicio que no se ve. Orden completo en `docs/CALIDAD_GRAFICA.md` §4 | F · 17 nov |
-| 2.9 | Orientación de juego: la medición del usuario está en **vertical**; los criterios de tamaño y visibilidad se dan para vertical. **Falta confirmar** si vertical es la orientación oficial | pendiente (U) |
+| 2.9 | **Orientación oficial: VERTICAL** (referencia para diseñar cámara, HUD, mapas y combates y para todas las pruebas). **Reversible:** se reevalúa si las pruebas de jugabilidad y visibilidad lo justifican; por eso nada se construye de forma que impida el horizontal (el juego debe seguir funcionando al girar el móvil) | U · 17 nov |
+| 2.10 | Criterios de diseño en vertical: se ven ≈ 4,6-7,1 m de ancho × 14 m de fondo, así que el juego se lee **de abajo arriba**. Lugares y combates se organizan en profundidad (lo importante llega por delante o por detrás del jugador, no por los lados); pasos de ≥ 3 m de ancho; nada importante a menos de 1 m del borde lateral de lo visible; los mandos ocupan el tercio inferior, así que la zona útil de juego es del centro hacia arriba; avisos de peligro lateral fuera de pantalla (marcador en el borde) cuando haya enemigos que disparen | F · 17 nov
 
 ## 3. Arte y personajes
 | # | Decisión | Quién · fecha |
@@ -61,7 +62,7 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 - Mapa compacto de 14 × 20 m (16 nov) y mapa largo de la 007 §2 → 4.2.
 - Tope de 40 000 triángulos (norma 2 antigua) → 2.5-2.8.
 - Cifras de triángulos de la 003 §1, la 006 §3, el informe 008 §4.2 y las «jugador 2 500 / zombi 600» del 17 nov → 3.12.
-- «Personaje ≈ 49 píxeles» y «se ven 21-33 m de ancho» como criterio único (calculados para horizontal) → 2.1, 2.2, 2.9.
+- «Personaje ≈ 49 píxeles» y «se ven 21-33 m de ancho» como criterio único (calculados para horizontal) → 2.1, 2.2, 2.9, 2.10.
 - Cámaras A, B, C y «cerca» de R1 → descartadas (2.1).
 - «Fable no edita código, salvo R0-R8» → Fable no programa (1.2).
 - Nombres de pasos C*, P*, V*, T*, R*, S* → paquetes del «Plan vigente» (`ROADMAP.md`).

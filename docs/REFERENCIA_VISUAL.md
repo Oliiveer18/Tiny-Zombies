@@ -8,9 +8,10 @@
 - **Como el personaje se ve pequeño**, el detalle debe estar en la forma y en el contraste de color de las piezas, no en textura fina.
 - **Créditos de Meshy: en pausa** hasta validar cámara y proporciones.
 - **Prioridad de calidad ✅ (usuario, 17 nov):** máxima calidad visual con rendimiento fluido. No se rebajan polígonos, texturas, sombras ni detalle para cumplir un número; el antiguo tope de 40 000 triángulos está retirado. Estrategia y reglas en `CALIDAD_GRAFICA.md`.
-- **Criterios que salen de la cámara elegida** (✅ la cámara; 💡 las cifras). Corregidos tras ver la captura del usuario, que juega en **vertical** (pendiente de confirmar como orientación oficial):
+- **Criterios que salen de la cámara elegida** (✅ la cámara; 💡 las cifras). **Orientación oficial: VERTICAL ✅ (usuario, 17 nov; reversible si las pruebas de jugabilidad y visibilidad lo justifican).** Criterios para vertical:
   - **Tamaño en pantalla:** personaje ≈ 1/16 del alto → en vertical ≈ **105 píxeles** (cabeza ≈ 23); en horizontal serían ≈ 49.
   - **Lo que se ve:** 14 m de fondo (5,4 m por detrás del jugador y 8,7 m por delante). De ancho, en vertical ≈ 4,6 m abajo y 7,1 m arriba; en horizontal ≈ 21 m y 33 m.
+  - **Diseño en vertical:** el juego se lee de abajo arriba. Lugares y combates en profundidad, pasos de ≥ 3 m, nada importante pegado al borde lateral, zona útil del centro hacia arriba (los mandos tapan el tercio inferior). El juego debe seguir funcionando al girar el móvil: no se construye nada que impida volver al horizontal.
   - **Proporciones:** dentro del 4-5 cabezas aprobado, apuntar a **4,5** 💡; se confirma con el primer personaje.
   - **Visibilidad de personajes:** primero silueta y bloques de color (casco, chaleco, mochila y arma con volumen y color propios, contraste con el suelo, un color dominante por bando, aro en el suelo); a 105 píxeles **también se ve el detalle medio** (bolsillos, correas, hebillas, cara), así que se modela y se pinta, sin escatimar. Cada modelo se aprueba en una captura a tamaño real de juego.
   - **Detalle y presupuesto:** sin tope por modelo; guía orientativa en `CALIDAD_GRAFICA.md` §6. El modelo alto de Meshy se guarda siempre.

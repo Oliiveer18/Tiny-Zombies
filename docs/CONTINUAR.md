@@ -4,7 +4,8 @@ Actualizado: 17 nov 2026 por Fable. Cómo se usa: `coordinacion/LEEME.md`. El es
 
 ## Ahora mismo
 - **Le toca a: SONNET** → implementar **PAQ-01**, después **PAQ-G1** y después **PAQ-02** (los tres `LISTO`, en ese orden).
-- **Le toca al usuario (cuando pueda, no bloquea a Sonnet):** (1) confirmar si la orientación oficial es vertical; (2) cuando Sonnet entregue PAQ-G1, pasar la prueba `?carga` y enviar la captura de la tabla a Fable; (3) descargar dos clips de Mixamo para ART-1 (`coordinacion/TRASPASOS/ART-1_prueba_mixamo.md`).
+- **Le toca al usuario (cuando pueda, no bloquea a Sonnet):** (1) cuando Sonnet entregue PAQ-G1, pasar la prueba `?carga` en vertical y enviar la captura de la tabla a Fable; (2) descargar dos clips de Mixamo para ART-1 (`coordinacion/TRASPASOS/ART-1_prueba_mixamo.md`).
+- **Orientación oficial: VERTICAL** (usuario, 17 nov; reversible). Todas las pruebas se hacen en vertical 390 × 844 y se comprueba además que en horizontal nada se rompe.
 - **Calidad gráfica:** el tope de 40 000 triángulos está RETIRADO. Manda `docs/CALIDAD_GRAFICA.md`: calidad máxima, límites solo por medición.
 - **Fable:** al próximo «Sigue», revisar lo entregado y preparar PAQ-03 y PAQ-04.
 
@@ -46,6 +47,6 @@ Actualizado: 17 nov 2026 por Fable. Cómo se usa: `coordinacion/LEEME.md`. El es
 
 ## Decisiones que son del usuario y siguen abiertas
 1. Tamaño del mapa de prueba (cuando haya personaje de referencia).
-2. Orientación oficial del juego: ¿vertical (como en tu captura) u horizontal? Cambia cuánto escenario se ve a los lados (≈ 5-7 m en vertical, 21-33 m en horizontal).
+2. (Resuelta el 17 nov: orientación vertical, reversible.) Queda como punto a reevaluar tras PAQ-05, cuando haya enemigos que disparen: ¿se ve lo suficiente a los lados?
 3. Visto bueno a las proporciones (4,5 cabezas) al ver el primer personaje.
 4. Umbral del joystick derecho para apuntar sin disparar (se prueba en PAQ-04).

@@ -51,7 +51,7 @@ Ninguno edita los archivos del otro. Si Sonnet ve un error en un documento de Fa
 3. En `docs/CONTINUAR.md`, poner el paquete `EN CURSO` (fecha y commit de partida) y publicar ese cambio ya, para que se vea que está cogido.
 4. Implementar el paquete completo. Sin micropasos ni pedir permiso para lo secundario.
    - **Calidad gráfica (regla fija, `docs/CALIDAD_GRAFICA.md`):** nunca reducir resolución, antialias, bloom, sombras, triángulos, texturas ni efectos para ganar fps o para cumplir una cifra. No hay tope de triángulos. Si algo va lento: medir, anotar y abrir un bloqueo.
-5. Ejecutar TODAS las pruebas del traspaso y `npm run build`.
+5. Ejecutar TODAS las pruebas del traspaso y `npm run build`. Las pruebas de pantalla se hacen en **vertical 390 × 844** (orientación oficial) y se comprueba además en horizontal 844 × 390 que nada se rompe ni queda fuera de pantalla.
 6. Rellenar «Informe de Sonnet» en el traspaso, añadir la entrada en `docs/SESION.md` y una línea en `REGISTRO.md`; poner el paquete `ENTREGADO`.
 7. **Publicar:** `git fetch origin main`; si `main` avanzó, `git merge origin/main` (nunca forzar), volver a compilar; `git push origin HEAD:main`.
 8. Decir al usuario, en fácil: qué se ha hecho, qué cambia en lo que verá, cómo probarlo en el móvil y qué versión debe aparecer abajo a la izquierda.

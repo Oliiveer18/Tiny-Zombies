@@ -17,7 +17,7 @@ Decisión del usuario (17 nov 2026): **no se recortan polígonos, texturas, somb
 | Triángulos | 30 404 | Casi todo es el jugador (dos pasadas) y el suelo |
 | Zombis | 12 (relleno) | |
 Conclusión: con 30 000 triángulos el móvil va sobrado de CPU. No hay ningún dato que diga que 40 000 sea el techo; el techo real está por medir (§5).
-**Dato importante:** la captura está en **vertical**. En vertical el personaje mide ≈ 105 píxeles (no 49) y se ven ≈ 4,6-7,1 m de ancho × 14 m de fondo. Los criterios se han corregido para vertical; falta que el usuario confirme la orientación oficial.
+**Dato importante:** la captura está en **vertical**. En vertical el personaje mide ≈ 105 píxeles (no 49) y se ven ≈ 4,6-7,1 m de ancho × 14 m de fondo. Vertical es la orientación oficial desde el 17 nov (reversible): las mediciones y la prueba de carga se hacen en vertical.
 
 ## 3. Qué cuesta de verdad en un móvil (de más a menos, para este juego) [R]
 | Cosa | Dónde pesa | Cuánto importa aquí |
