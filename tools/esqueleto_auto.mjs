@@ -28,7 +28,7 @@ const J = [ // nombre, padre, posición en el mundo
 // ---- pesos: en pose T cada zona se separa con cortes rectos; en las articulaciones se mezclan los dos huesos vecinos ----
 const jo = new Uint8Array(nv * 4), we = new Float32Array(nv * 4), cuenta = new Array(J.length).fill(0);
 for (let i = 0; i < nv; i++) { const x = X(i), y = Y(i), z = Z(i), ax = Math.abs(x), izq = x > 0, w = new Float32Array(J.length);
-  const brazo = ss(ax, shX - .04, shX + .02) * ss(y, armY - .12, armY - .075) * (1 - ss(y, armY + .05, armY + .08)); // por encima de los brazos ya es cabeza (orejas)
+  const brazo = ss(ax, shX - .04, shX + .02) * ss(y, armY - .14, armY - .095) * (1 - ss(y, armY + .05, armY + .08) * (1 - ss(ax, shX + .01, shX + .06))); // por encima de los brazos ya es cabeza (orejas), pero no sobre la manga: ahí el brazo es más grueso (mangas remangadas, cuerpos compactos)
   if (brazo > 0) { const t = (ax - shX) / L, ante = ss(t, EL - .07, EL + .07), mano = ss(t, WR - .035, WR + .035), b = izq ? 5 : 8; w[b] += brazo * (1 - ante); w[b + 1] += brazo * (ante - mano); w[b + 2] += brazo * mano; }
   const resto = 1 - brazo;
   if (resto > 0) { const pierna = 1 - ss(y, crY - .015, crY + .06);

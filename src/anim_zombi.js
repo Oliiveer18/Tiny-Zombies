@@ -46,11 +46,11 @@ export function clipsZombi(escena){const cad=escena.getObjectByName(P+'Hips');if
   for(const n in CLIPS){const c=CLIPS[n],N=Math.max(2,Math.round(c.dur*30)),t=new Float32Array(N+1),q={},hp=new Float32Array((N+1)*3);for(const b of HUESOS)q[b]=new Float32Array((N+1)*4);
     for(let i=0;i<=N;i++){const p=i/N,o=pose(n,c.loop&&i===N?0:p);t[i]=p*c.dur;
       for(const b of HUESOS){const e=o[b]||[0,0,0];qq.setFromEuler(eu.set(e[0]*R,e[1]*R,e[2]*R,'XYZ'));q[b].set([qq.x,qq.y,qq.z,qq.w],i*4);}
-      const y=o.caida?mez(h0.y+o.hy,.075,o.caida):h0.y+o.hy;hp.set([h0.x,y,h0.z+o.hz],i*3);} // al caer, la cadera baja hasta quedar tumbado en el suelo
+      const y=o.caida?mez(h0.y+o.hy,.1,o.caida):h0.y+o.hy;hp.set([h0.x,y,h0.z+o.hz],i*3);} // al caer, la cadera baja hasta quedar tumbado en el suelo
     const tr=HUESOS.map(b=>new THREE.QuaternionKeyframeTrack(P+b+'.quaternion',t,q[b]));tr.push(new THREE.VectorKeyframeTrack(P+'Hips.position',t,hp));out.push(new THREE.AnimationClip(n,c.dur,tr));}
   return out;}
-// Velocidad (en alturas del modelo por segundo) a la que avanza cada clip de andar sin patinar: dos pasos por ciclo, pierna ≈ 0,47 de la altura.
-const nominal=n=>{const c=CLIPS[n];return 4*.47*Math.sin(c.zancada*R)*(1+c.cojera)/2/c.dur;};
+// Velocidad (en alturas del modelo por segundo) a la que avanza cada clip de andar sin patinar: dos pasos por ciclo, pierna ≈ 0,38 de la altura (cuerpo compacto de Meshy, cadera a 0,38).
+const nominal=n=>{const c=CLIPS[n];return 4*.38*Math.sin(c.zancada*R)*(1+c.cojera)/2/c.dur;};
 const BUCLES=['idle','stand','walk','run','attack'],TAU={attack:.09,idle:.3,stand:.2,walk:.22,run:.22};
 // ---- Controlador por zombi ----
 export function creaAnim(inst,escala){if(!inst.mixer||!inst.actions.walk)return null;const h={};inst.body.traverse(o=>{if(o.isBone)h[o.name.replace(P,'')]=o;});
