@@ -4,6 +4,8 @@
 
 Decidido por el usuario el 16 nov (22:25): **estilizado de juego móvil** (formas simplificadas y fuertes, texturas pintadas; ni fotorrealista ni juguete puro; la prueba «semi-realista» dio una foto y se descartó), mapa **compacto** y **modelos primero**. Esto sustituye el «chunky toy-like» de las recetas 003, 005 §7, 006 §4 y 007 §8 (las cifras de triángulos, texturas y huesos de la 006 siguen valiendo). Arte propio: no copiar colores, ropa ni rótulos del juego de referencia.
 
+> **18 nov:** el texto del zombi y el del jugador vigentes están en `docs/DIRECCION_ARTISTICA.md` (lenguaje común, pendiente de aprobación). El texto de esta sección queda como versión anterior; los pasos 2-5 siguen valiendo.
+
 ## ★ VIGENTE · ZOMBI NORMAL v1 (17 nov, Fable · diseño 010) — pendiente del visto bueno del usuario al gasto
 Sustituye al «ZOMBI A» de más abajo (queda como historial). Nada de corredor, tanque ni variantes hasta aprobar este.
 

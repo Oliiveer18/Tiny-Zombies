@@ -1,5 +1,9 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## 18 nov · Dirección artística común de personajes (propuesta)
+**Resumen fácil:** hay un documento nuevo que fija cómo deben ser TODOS los personajes (jugador y zombis) para que parezcan de la misma familia: proporciones, cabeza, cara, manos, colores, texturas y cómo se leen con nuestra cámara, con un texto de Meshy para el jugador y otro para el zombi. No se ha generado nada ni gastado créditos; en el juego no cambia nada. Falta tu visto bueno.
+**Detalle:** `docs/DIRECCION_ARTISTICA.md`, `docs/arte/hoja_proporciones.png` (esquema por bloques, no arte final) y los dos textos en `docs/arte/`. No modifica DECISIONES; si el usuario la aprueba se apuntará allí.
+
 ## 17-18 nov · PAQ-03 «Ruido y zombis que despiertan» + validación de `rehacer_textura` (Fable)
 **Resumen fácil:** en el mapa de prueba los zombis ya no son estatuas: duermen, te oyen (disparos, pasos, golpes), te ven si te pones delante, te persiguen, te pegan y, si te pierden, deambulan. Agachado no haces ruido; hay un botón nuevo «AGACH.» en el móvil y un aro blanco en el suelo que enseña hasta dónde se ha oído tu último ruido. Si te matan sale «Has caído» y vuelves al inicio. Además, el personaje provisional ya lleva la textura rehecha: con «Lupa ×8» no salen motas. Los zombis siguen siendo las cápsulas de relleno; el modelo definitivo se pondrá cambiando un archivo.
 **Para probar en el móvil:** ⚙ → mapa de prueba. (1) Quédate quieto: nadie se mueve. (2) Pulsa «AGACH.» y cruza por el centro hasta la reja: no debe despertar nadie. (3) Repítelo andando: despiertan los dos de los lados. (4) Dispara: vienen todos los que lo oyen, con un «!» amarillo. (5) Déjate matar. (6) ⚙ → «Lupa y costuras» → «Lupa ×8» y mira al personaje.
