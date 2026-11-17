@@ -1,0 +1,7 @@
+// Resumen de un GLB (mallas, triángulos, medidas, texturas, esqueleto). Uso: node tools/inspecciona.mjs <archivo.glb>
+import { NodeIO } from '@gltf-transform/core'; import { ALL_EXTENSIONS } from '@gltf-transform/extensions'; import { MeshoptDecoder } from 'meshoptimizer';
+const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({ 'meshopt.decoder': MeshoptDecoder });
+const doc = await io.read(process.argv[2]); const r = doc.getRoot();
+console.log('ext', r.listExtensionsUsed().map(e => e.extensionName), 'skins', r.listSkins().length, 'anims', r.listAnimations().length, 'nodes', r.listNodes().map(n => [n.getName(), n.getScale(), n.getRotation().map(v => +v.toFixed(2))]));
+for (const n of r.listNodes()) { const m = n.getMesh(); if (!m) continue; for (const p of m.listPrimitives()) { const P = p.getAttribute('POSITION'), mn = P.getMin([]), mx = P.getMax([]); console.log('verts', P.getCount(), 'tris', p.getIndices().getCount() / 3, p.listSemantics(), 'min', mn.map(v => +v.toFixed(3)), 'max', mx.map(v => +v.toFixed(3)));
+  const mt = p.getMaterial(); for (const [k, t] of [['base', mt.getBaseColorTexture()], ['nor', mt.getNormalTexture()], ['mr', mt.getMetallicRoughnessTexture()], ['occ', mt.getOcclusionTexture()], ['em', mt.getEmissiveTexture()]]) console.log(' ', k, t && t.getMimeType(), t && t.getSize(), t && (t.getImage().length / 1024 | 0) + 'KB'); console.log('  factores', mt.getRoughnessFactor(), mt.getMetallicFactor(), mt.getBaseColorFactor(), mt.getDoubleSided()); } }

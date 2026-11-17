@@ -8,8 +8,8 @@ import { NodeIO } from '@gltf-transform/core'; import { ALL_EXTENSIONS } from '@
 import sharp from 'sharp'; import fs from 'fs'; import path from 'path'; import { createRequire } from 'module';
 const arg = process.argv.slice(2), pos = arg.filter((a, i) => !a.startsWith('--') && !(arg[i - 1] || '').startsWith('--'));
 const op = (n, d) => { const i = arg.indexOf('--' + n); return i < 0 ? d : arg[i + 1]; };
-const [ent, sal] = pos; if (!ent || !sal) { console.error('Uso: node tools/rehacer_textura.mjs <entrada.glb> <salida.glb> [--tam 2048] [--margen 8] [--coste 8] [--png carpeta]'); process.exit(1); }
-const TAM = +op('tam', 2048), MARGEN = +op('margen', 8), COSTE = +op('coste', 8), PNG = op('png', '');
+const [ent, sal] = pos; if (!ent || !sal) { console.error('Uso: node tools/rehacer_textura.mjs <entrada.glb> <salida.glb> [--tam 2048] [--margen 8] [--coste 8] [--png carpeta] [--webp]'); process.exit(1); }
+const TAM = +op('tam', 2048), MARGEN = +op('margen', 8), COSTE = +op('coste', 8), PNG = op('png', ''), WEBP = arg.includes('--webp'); // --webp: guarda las texturas en WebP aunque el original fuera JPG o PNG (mucho menos peso)
 
 // ---------- utilidades ----------
 const cruz = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]], pto = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
@@ -133,13 +133,14 @@ for (const m of M) { const p = m.p, nv = m.nNv;
   p.setAttribute('TEXCOORD_0', doc.createAccessor().setType('VEC2').setNormalized(true).setArray(uv).setBuffer(buf));
   p.setIndices(doc.createAccessor().setType('SCALAR').setArray(nv > 65535 ? m.nIdx : Uint16Array.from(m.nIdx)).setBuffer(buf)); }
 if (PNG) fs.mkdirSync(PNG, { recursive: true });
-for (const F of fuentes) { const img = sharp(Buffer.from(F.out.buffer), { raw: { width: W, height: H, channels: 4 } }), sinAlfa = F.nombre !== 'color' || !F.img.d.some((v, i) => i % 4 === 3 && v < 255), webp = F.tex.getMimeType() === 'image/webp';
+for (const F of fuentes) { const img = sharp(Buffer.from(F.out.buffer), { raw: { width: W, height: H, channels: 4 } }), sinAlfa = F.nombre !== 'color' || !F.img.d.some((v, i) => i % 4 === 3 && v < 255), webp = WEBP || F.tex.getMimeType() === 'image/webp';
   const base = sinAlfa ? img.removeAlpha() : img; const datos = webp ? await base.webp(F.nombre === 'color' ? { quality: 88, effort: 5 } : { quality: 90, effort: 5 }).toBuffer() : await base.png({ compressionLevel: 9 }).toBuffer();
   F.tex.setImage(new Uint8Array(datos)).setMimeType(webp ? 'image/webp' : 'image/png'); const inf = F.info(mat); if (inf) inf.setTexCoord(0);
   if (PNG) await base.png().toFile(path.join(PNG, F.nombre + '.png')); }
 if (PNG) { const v = new Uint8Array(W * H * 3); for (let i = 0; i < W * H; i++) { const a = pzN[i]; if (a < 0) continue; const h = Math.imul(a + 1, 2654435761) >>> 0; v[i * 3] = 80 + (h & 127); v[i * 3 + 1] = 80 + ((h >> 8) & 127); v[i * 3 + 2] = 80 + ((h >> 16) & 127); } await sharp(Buffer.from(v.buffer), { raw: { width: W, height: H, channels: 3 } }).png().toFile(path.join(PNG, 'piezas.png')); }
 // se quitan los datos viejos que ya no usa nadie
 for (const a of root.listAccessors()) if (!a.listParents().some(x => x !== root)) a.dispose();
+if (WEBP) doc.createExtension(ALL_EXTENSIONS.find(e => e.EXTENSION_NAME === 'EXT_texture_webp')).setRequired(true);
 fs.mkdirSync(path.dirname(sal), { recursive: true }); await io.write(sal, doc); xa.destroyAtlas();
 const ok = sep >= MARGEN; // el número de piezas es solo informativo: validado en el juego con Lupa ×8 que lo que quita las motas es el margen (SESION, 18 nov)
 console.log(`${path.basename(ent)} → ${sal} (${(fs.statSync(sal).size / 1024).toFixed(0)} KB; antes ${(fs.statSync(ent).size / 1024).toFixed(0)} KB)`);

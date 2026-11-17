@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
-import { MODELS } from './models.config.js';
+import { MODELS } from './models.config.js'; import { clipsZombi } from './anim_zombi.js';
 import { renderer } from './renderer.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 let env=null; // reflejos suaves de estudio, solo para el personaje (ver A0f)
@@ -35,13 +35,15 @@ export async function loadAll(){
       const g=await loader.parseAsync(await r.arrayBuffer(),url.replace(/[^/]*$/,''));
       if(c.anims){const ua=import.meta.env.BASE_URL+'models/'+c.anims,ra=await fetch(ua); if(!ra.ok||(ra.headers.get('content-type')||'').includes('html'))throw 0;
         g.animations=(await loader.parseAsync(await ra.arrayBuffer(),ua.replace(/[^/]*$/,''))).animations;} // clips compartidos (006 P1): vienen de un GLB aparte
+      if(c.gen==='zombi')g.animations=clipsZombi(g.scene); // clips generados por código para el esqueleto propio
       g.scene.updateMatrixWorld(true);
       g.scene.traverse(o=>{if(!o.isMesh)return; o.castShadow=true;
         if(o.isSkinnedMesh){o.skeleton.update();o.computeBoundingSphere();o.boundingSphere.radius*=2;o.frustumCulled=true;} // PAQ-G3: no se dibuja ni sombrea lo que queda fuera de la cámara. La esfera se dobla porque la animación (andar, caer al morir) mueve el cuerpo fuera de su volumen en reposo
         for(const m of [].concat(o.material)){ m.metalness=0; m.metalnessMap=null; // sin mapa de entorno, el metal sale negro
           for(const t of [m.map,m.normalMap])if(t)t.anisotropy=SEAM?8:4;
           if(SEAM)costuras(m);
-          if(k==='player'){m.envMap=getEnv();m.envMapIntensity=.9;m.roughness=.62;} m.needsUpdate=true; }});
+          if(k==='player'){m.envMap=getEnv();m.envMapIntensity=.9;m.roughness=.62;}
+          else if(c.relleno){m.envMap=getEnv();m.envMapIntensity=c.relleno;m.roughness=1;m.roughnessMap=null;} /* luz de relleno mate (sin brillo): para que la ropa oscura no se funda con el suelo */ m.needsUpdate=true; }});
       cache[k]=g;
     }catch{ cache[k]=placeholder(c.placeholder); }
   }));

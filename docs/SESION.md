@@ -1,5 +1,24 @@
 # SESION · diario técnico (cada entrada empieza con el «Resumen fácil»)
 
+## 19 nov · Zombi normal v1: revisión visual → RECHAZADO; herramientas y animación conservadas (Sonnet, tras Fable)
+**Resumen fácil:** he revisado el modelo de cerca y tenías razón: no alcanza la calidad. Tiene las proporciones de un cuerpo de 6,5 cabezas en lugar de 5, las orejas son casi el doble de altas de lo normal, los ojos están en blanco y la boca es una caja de dientes. Esos defectos están en la geometría que generó Meshy y no se arreglan bien sin rehacer el modelo, así que **no lo he retocado ni lo he dejado en el juego** (el zombi sigue siendo la cápsula). Te doy el texto corregido para una tanda nueva de imágenes. Lo único que sí queda hecho es la maquinaria (reducir, texturas, esqueleto, animaciones), lista para el modelo bueno.
+
+**Medido sobre el GLB original** (`arte_fuente/zombi_normal/meshy_original.glb`, 29 180 triángulos):
+| Aspecto | Medida | Esperado | Origen del defecto |
+|---|---|---|---|
+| Proporción | cabeza = 1/6,5 del cuerpo, cuerpo alto y fino | 5 cabezas, compacto | Generación (el «5 heads tall» no se respeta) |
+| Piernas | 42 % de la altura | ≈ 45 % | Menor |
+| Orejas | 0,66 de la altura de la cara; sobresalen un 30 % del ancho del cráneo | ≈ 0,35-0,4 y pegadas | Geometría |
+| Ojos | globos lisos blancos, sin iris ni pupila | iris y pupila legibles | Geometría + textura |
+| Boca | labios sin definir, hilera de dientes en bloque | labios simples, pocos dientes | Geometría |
+| Capucha | cuelga a la espalda | sin capucha (se pidió «sin tela suelta») | Generación |
+| Lo que sí cumple | pose T, una malla limpia, formas lisas y mates, colores y heridas pedidos, dedos separados, textura sin motas con `rehacer_textura` | | |
+**Qué se puede corregir sin regenerar y qué no:** las orejas se podrían reducir moviendo vértices, pero la cabeza seguiría siendo de 6,5 y los ojos y la boca no se arreglan sin esculpir; hacerlo a ciegas es lo que se pidió no hacer. **Decisión: regenerar.** Las correcciones concretas están en `DIRECCION_ARTISTICA.md` §6 (texto v2 y filtro de elección medido en la imagen, antes de gastar créditos en 3D).
+
+**Estado del código (todo publicado, nada activo con la cápsula):** `tools/reduce.mjs`, `tools/rehacer_textura.mjs --webp`, `tools/esqueleto_auto.mjs`, `tools/inspecciona.mjs` y `src/anim_zombi.js` (7 clips por código + controlador con ajustes) están hechos. El modelo probado se guarda como `arte_fuente/zombi_normal/prototipo_v1_rechazado.glb` (no versionado). Sin `public/models/zombie.glb` el juego usa la cápsula y el camino de animación nuevo no se ejecuta. Con el prototipo se comprobó: fotogramas de los 7 clips, capturas en el juego (dormido, persiguiendo, atacando) sin errores, 0,015 ms por zombi y cuadro, pruebas de PAQ-03 (8, 11, 12, 13 en vertical y horizontal) OK. Eso valdrá para el modelo bueno, pero **el esqueleto, los pesos y los clips no se dan por validados**: se probaron solo con un modelo que se descarta, y `esqueleto_auto` mide el cuerpo, así que hay que rehacer la comprobación visual con el modelo nuevo.
+**Pendiente real:** (1) tanda nueva de imágenes con el texto v2 y elegir con el filtro; (2) 3D + remesh + textura + descarga; (3) pasar la tubería y validar esqueleto y animaciones con el modelo nuevo; (4) fps en el iPhone con muchos zombis; (5) corredor, tanque; (6) decidir si hay clips de Mixamo (DECISIONES 3.24 sigue sin confirmar).
+**Aviso de criterio:** se pidió «Tiny Troopers como criterio principal», pero DECISIONES 3.20 (18 nov) fijó la captura del usuario como referencia principal y retiró Tiny Troopers. He mantenido la captura; si el usuario quiere volver a Tiny Troopers hay que registrarlo.
+
 ## 18 nov (noche) · Identidad de los personajes: saqueadores de un juego de extracción
 **Resumen fácil:** los personajes vivos ya no se describen como civiles: son supervivientes veteranos y saqueadores, con ropa resistente y equipo táctico reunido, sin ser soldados. El cuerpo del jugador se generará limpio y el equipo (casco, chaleco, mochila, fundas, armas) serán piezas aparte para personalizarlo en el juego. El estilo gráfico no cambia. Nada generado; en el juego no cambia nada.
 **Detalle:** `DIRECCION_ARTISTICA.md` §5 (identidad, tabla de huecos y piezas, texto nuevo del jugador), `DECISIONES.md` 3.23, `CLAUDE.md`. El usuario ya ha generado el 3D del zombi normal (imagen elegida por él, no revisada por Fable); falta remesh, textura y descarga.

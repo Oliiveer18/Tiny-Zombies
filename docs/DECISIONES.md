@@ -59,6 +59,7 @@ Lista única de decisiones vigentes. **U** = decidida por el usuario (no se camb
 | 3.21 | Dirección artística común aprobada como base: `docs/DIRECCION_ARTISTICA.md`. Jugador 4,5 cabezas, zombi 5 cabezas, paleta A del jugador. Las «cinco masas» son orientación, no límite. La altura en metros (1,50) **no** está fijada como escala del mundo | U · 18 nov |
 | 3.22 | Un modelo se aprueba **dentro del juego, con nuestra cámara, comparado con la captura de referencia**; la imagen frontal solo sirve para elegir candidata | U · 18 nov |
 | 3.23 | **Identidad de los vivos:** juego de supervivencia con extracción; personajes = supervivientes veteranos, exploradores y saqueadores de zonas peligrosas, con ropa funcional y equipo táctico reunido, carácter propio y diferencias claras entre ellos. Ni civiles indefensos ni soldados de uniforme. Es diseño de ropa y equipo; el estilo gráfico sigue siendo el de la captura (3.20). El cuerpo se genera limpio y armas y equipo son piezas independientes para personalizar en el juego | U · 18 nov |
+| 3.24 | **Zombis: esqueleto y animaciones propios, hechos en el proyecto** (`tools/esqueleto_auto.mjs` + `src/anim_zombi.js`), sin Mixamo ni Meshy. Matiza 3.13 solo para zombis; los huesos llevan nombres de Mixamo por si más adelante se quieren sus clips. Los vivos siguen pendientes de ART-1 | F · 19 nov · **en pausa**: se probó con un modelo rechazado; confirmar con el modelo definitivo |
 
 ## 4. Juego (mapa de prueba y táctica)
 | # | Decisión | Quién · fecha |
