@@ -1,6 +1,6 @@
 # EVALUACIÓN · prueba de Godot 4 frente a Three.js (plantilla + lo ya sabido)
 
-Estado: **ejecutada en Godot 4.7 (Linux, sin pantalla, renderizado por software) el 20 nov; falta la prueba en el Mac y el iPhone** (`godot_prueba/`; el entorno de preparación no pudo ejecutar Godot). Todo lo marcado «MEDIDO» queda vacío hasta que se juegue en el Mac. Lo marcado «expectativa» es una opinión razonada sin comprobar, no un resultado.
+Estado (20 nov, tarde): **probada por el usuario en su Mac: «bastante bien, me gusta mucho»**; fallo conocido: texturas de personajes plateadas/ruidosas en el Mac; fps sin medir; iPhone sin probar. Siguiente trabajo: `docs/GODOT_SIGUIENTE_SESION.md`. Antes: ejecutada en Godot 4.7 (Linux, sin pantalla, renderizado por software) (`godot_prueba/`; el entorno de preparación no pudo ejecutar Godot). Todo lo marcado «MEDIDO» queda vacío hasta que se juegue en el Mac. Lo marcado «expectativa» es una opinión razonada sin comprobar, no un resultado.
 
 ## Lo comprobado de verdad hasta ahora
 - **Godot 4.7 descargado (suma SHA-512 verificada) y ejecutado.** El proyecto abre, **importa los dos GLB sin errores** y arranca **sin errores de scripts**.

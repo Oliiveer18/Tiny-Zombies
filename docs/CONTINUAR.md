@@ -1,13 +1,13 @@
 # CONTINUAR · tablero del proyecto (quién tiene que hacer qué)
 
-Actualizado: 17 nov 2026 por Fable (sesión de recuperación). Cómo se usa: `coordinacion/LEEME.md`. El estado anterior a esta fecha está en `docs/archivo/CONTINUAR_hasta_2026-11-17.md`.
+Actualizado: 20 nov 2026 (línea de Godot al día; el resto, 17 nov por Fable). Cómo se usa: `coordinacion/LEEME.md`. El estado anterior a esta fecha está en `docs/archivo/CONTINUAR_hasta_2026-11-17.md`.
 
 ## Ahora mismo
 - **Sesión nueva: leer primero `coordinacion/TRASPASO_SESION.md`** (resumen de arranque; evita volver a analizar lo hecho).
 - **Quién trabaja:** solo **Fable** (dirige e implementa; DECISIONES 1.8). Sonnet en pausa.
 - **PAQ-03 IMPLEMENTADO (18 nov)**: pruebas de Node y de navegador pasadas (detalle y lo no comprobado en `SESION.md`); falta la prueba del usuario en el iPhone. `tools/rehacer_textura.mjs` VALIDADA con Lupa ×8 en el juego (sin motas; cabeza y iPhone sin mirar); el jugador provisional ya lleva la textura rehecha.
 - **MOVIMIENTO PULIDO, PANTALLA LIMPIA Y ZOMBIS QUE INVESTIGAN EL RUIDO (20 nov).** **Le toca al usuario:** hacer la prueba de `docs/PRUEBA_IPHONE.md` (movimiento, pantalla limpia, zombis, combate y `?carga`) y apuntar qué se siente mal. No se avanza con corredor, tanque, equipo ni Mixamo hasta que él lo apruebe.
-- **PRUEBA DE GODOT (20 nov, rama de la sesión, NO en `main`):** escena independiente preparada en `godot_prueba/` pero **sin ejecutar nunca**. **Le toca al usuario:** instalar Godot 4.7 en el Mac, seguir `godot_prueba/LEEME.md`, probarla y rellenar `docs/EVALUACION_GODOT.md`. No cambia la hoja de ruta de Three.js.
+- **GODOT (20 nov, rama `claude/lucid-lamport-3cmdfz`, NO en `main`): el usuario probó la prueba en su Mac y le gusta mucho.** Pendiente, por orden: (1) **texturas mal en su Mac** (personajes plateados y ruidosos); (2) **medidor de fps fácil y optimización**. Traspaso completo: **`docs/GODOT_SIGUIENTE_SESION.md`** (leer primero si la sesión es de Godot). Estado de la prueba: `godot_prueba/LEEME.md`, `docs/CALIDAD_PERSONAJES_GODOT.md`, `docs/EVALUACION_GODOT.md`.
 - **FÍSICA DE ZOMBIS (20 nov):** reacción por zona, ragdoll y derribo por explosión hechos (`SESION.md`); la prueba está en `docs/PRUEBA_IPHONE.md` §4b. Pendiente de aprobar en el iPhone.
 - **ZOMBI NORMAL v1 RECHAZADO (19 nov)** tras revisión visual (6,5 cabezas, orejas enormes, ojos en blanco, boca en bloque; detalle en `SESION.md`). El juego sigue con la cápsula. **Le toca al usuario:** generar 4 imágenes nuevas con el texto v2 de `DIRECCION_ARTISTICA.md` §6 y enseñarlas (se elige con el filtro medido antes de pasar a 3D). Herramientas y animación por código listas; se validan con el modelo nuevo.
 - **Dirección artística aprobada como base (18 nov)**: `docs/DIRECCION_ARTISTICA.md`. **Le toca al usuario:** generar las 4 imágenes del zombi normal con el texto de su §6 y enseñarlas. Después: elegir una, 3D, y aprobación dentro del juego comparando con la captura. Pendiente técnico al llegar el modelo: quitar los reflejos de estudio a los personajes nuevos (mate).

@@ -415,3 +415,7 @@ Técnico: `MOVE={size:1.4,top:1.15,...}`; `K()=player.base*MOVE.size`; `topSpeed
 ## 20 nov · Godot: repertorio ampliado
 **Resumen fácil:** el protagonista ya se agacha, se desliza al agacharse corriendo, reacciona al golpe y muere con animación. Los zombis duermen tumbados, se levantan, gritan, reaccionan a los disparos y tienen una postura de espera. Probado solo en capturas por software; falta verlo en tu Mac.
 Detalle técnico: ver `docs/CALIDAD_PERSONAJES_GODOT.md` §6.
+
+## 20 nov (cierre) · Godot: prueba en el Mac y traspaso
+**Resumen fácil:** el usuario probó la prueba de Godot en su Mac y le gusta mucho. Falla una cosa: las texturas de los personajes salen plateadas y con ruido (en mis capturas de Linux salían bien). Se añadió soporte completo del mando PS5 (zona muerta, curva, L1/L3 correr, vibración, cambio automático mando/ratón; probado solo con eventos simulados, `pruebas/mando.gd`). Se dejó escrito el traspaso (`docs/GODOT_SIGUIENTE_SESION.md`): arreglar texturas, medir fps y optimizar.
+No comprobado: vibración con mando real, texturas en el Mac (causa sin identificar), fps reales, iPhone.
