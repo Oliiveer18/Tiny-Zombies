@@ -82,7 +82,9 @@ func _physics_process(delta: float) -> void:
 		elif _deslizando <= 0.0:
 			_poner_agachado(not agachado)
 	_t_golpe = maxf(0.0, _t_golpe - delta)
-	corre = Input.is_action_pressed("correr") and not agachado and not apuntando and m.length() > 0.3
+	if m.length() < 0.1 or agachado or apuntando:
+		Entrada.correr_fijo = false
+	corre = (Input.is_action_pressed("correr") or Entrada.correr_fijo) and not agachado and not apuntando and m.length() > 0.3
 	# --- movimiento horizontal con aceleración y frenada ---
 	var vel_max := VEL_CORRER if corre else (VEL_AGACHADO if agachado else VEL_ANDAR)
 	if apuntando:
@@ -132,6 +134,7 @@ func _physics_process(delta: float) -> void:
 		if recargando <= 0.0:
 			balas = CARGADOR
 			recargando = 0.0
+			Entrada.vibrar(0.0, 0.25, 0.08)
 	elif Input.is_action_just_pressed("recargar") and balas < CARGADOR:
 		recargando = T_RECARGA
 	elif Entrada.dispara() and _cd <= 0.0 and _deslizando <= 0.0:
@@ -151,7 +154,7 @@ func _calcular_apunte() -> void:
 	var m := Entrada.vector_mover()
 	if stick.length() > 0.25:
 		dir_apunte = Vector3(stick.x, 0.0, stick.y).normalized()
-	elif Entrada.tactil or Entrada.hay_mando():
+	elif Entrada.tactil or Entrada.con_mando():
 		if m.length() > 0.2:
 			dir_apunte = Vector3(m.x, 0.0, m.y).normalized()
 	elif camara != null:
@@ -166,7 +169,7 @@ func _calcular_apunte() -> void:
 			if v.length() > 0.15:
 				dir_apunte = v.normalized()
 	punto_apunte = global_position + dir_apunte * 4.0 + Vector3(0, 0.55, 0)
-	if stick.length() <= 0.25 and not Entrada.tactil and not Entrada.hay_mando() and camara != null:
+	if stick.length() <= 0.25 and not Entrada.tactil and not Entrada.con_mando() and camara != null:
 		var pm := get_viewport().get_mouse_position()
 		var plano2 := Plane(Vector3.UP, global_position.y + 0.55)
 		var p2 = plano2.intersects_ray(camara.project_ray_origin(pm), camara.project_ray_normal(pm))
@@ -175,6 +178,7 @@ func _calcular_apunte() -> void:
 
 func _disparar() -> void:
 	balas -= 1
+	Entrada.vibrar(0.35, 0.5, 0.07)
 	_cd = CADENCIA
 	_retro = 1.0
 	var dir := dir_apunte
@@ -253,6 +257,7 @@ func recibir_dano(cantidad: float) -> void:
 	if muerto:
 		return
 	hp -= cantidad
+	Entrada.vibrar(0.6, 1.0, 0.25 if hp > 0.0 else 0.7)
 	if hp <= 0.0:
 		muerto = true
 		modelo.reproducir("morir", 0.1, 1.0)

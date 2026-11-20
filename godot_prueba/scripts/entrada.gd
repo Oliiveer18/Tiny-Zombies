@@ -1,9 +1,14 @@
 extends Node
 ## Controles (autoload «Entrada»): teclado + ratón, mando (PlayStation por Bluetooth vale: Godot lo reconoce como mando estándar) y táctil.
 ## Todo se define por código para no depender del editor. Para cambiar teclas, edita _configurar().
-## Mando (nombres PlayStation): stick izq. mover · stick der. apuntar · R2 disparar · L2 apuntar · L3 correr · ○ agacharse · □ recargar · Options reiniciar · Create depurar.
+## Mando (nombres PlayStation, DualSense/DualShock): stick izq. mover · stick der. apuntar · R2 (o R1) disparar · L2 apuntar fijo · L1 correr (mantener) · L3 correr (fijo, pulsar) · ○ agacharse / deslizar · □ recargar · Options reiniciar · Create depurar.
+## Cambia solo entre ratón/teclado y mando según lo último que toques (`usando_mando`). Vibración con `vibrar()`.
 
 var tactil := false
+var usando_mando := false   # último dispositivo tocado: mando (true) o teclado/ratón (false)
+var correr_fijo := false    # L3 pulsado: sigue corriendo hasta soltar el stick, apuntar o agacharse
+var vibracion_activa := true
+signal dispositivo_cambiado(mando: bool)
 var tactil_mover := Vector2.ZERO
 var tactil_apuntar := Vector2.ZERO
 var tactil_dispara := false
@@ -46,7 +51,7 @@ func _configurar() -> void:
 		_accion(a, 0.25)
 	for a in ["disparar", "apuntar"]:
 		_accion(a, 0.5)
-	for a in ["correr", "agacharse", "recargar", "reiniciar", "depurar"]:
+	for a in ["correr", "correr_fijo", "agacharse", "recargar", "reiniciar", "depurar"]:
 		_accion(a)
 	# Movimiento: WASD / flechas / stick izquierdo
 	_tecla("mover_izq", KEY_A); _tecla("mover_izq", KEY_LEFT); _eje("mover_izq", JOY_AXIS_LEFT_X, -1.0)
@@ -61,19 +66,28 @@ func _configurar() -> void:
 	# Acciones
 	_raton("disparar", MOUSE_BUTTON_LEFT); _eje("disparar", JOY_AXIS_TRIGGER_RIGHT, 1.0); _boton("disparar", JOY_BUTTON_RIGHT_SHOULDER)
 	_raton("apuntar", MOUSE_BUTTON_RIGHT); _eje("apuntar", JOY_AXIS_TRIGGER_LEFT, 1.0)
-	_tecla("correr", KEY_SHIFT); _boton("correr", JOY_BUTTON_LEFT_STICK)
+	_tecla("correr", KEY_SHIFT); _boton("correr", JOY_BUTTON_LEFT_SHOULDER)
+	_boton("correr_fijo", JOY_BUTTON_LEFT_STICK)
 	_tecla("agacharse", KEY_C); _tecla("agacharse", KEY_CTRL); _boton("agacharse", JOY_BUTTON_B)
 	_tecla("recargar", KEY_R); _boton("recargar", JOY_BUTTON_X)
 	_tecla("reiniciar", KEY_ENTER); _boton("reiniciar", JOY_BUTTON_START)
 	_tecla("depurar", KEY_F3); _boton("depurar", JOY_BUTTON_BACK)
 
+## Zona muerta circular con reescalado (no salta de 0 a 0,25) y curva suave: el inicio del recorrido es fino y el final llega a 1.
+func _stick(v: Vector2, zona: float) -> Vector2:
+	var l := v.length()
+	if l <= zona:
+		return Vector2.ZERO
+	var n := minf((l - zona) / (1.0 - zona), 1.0)
+	return v / l * pow(n, 1.25)
+
 func vector_mover() -> Vector2:
 	if tactil and tactil_mover.length() > 0.05:
 		return tactil_mover
-	return Input.get_vector("mover_izq", "mover_der", "mover_arr", "mover_abj")
+	return _stick(Input.get_vector("mover_izq", "mover_der", "mover_arr", "mover_abj", 0.0), 0.18)
 
 func vector_apuntar_stick() -> Vector2:
-	var v := Input.get_vector("apuntar_izq", "apuntar_der", "apuntar_arr", "apuntar_abj")
+	var v := _stick(Input.get_vector("apuntar_izq", "apuntar_der", "apuntar_arr", "apuntar_abj", 0.0), 0.2)
 	if v.length() < 0.05 and tactil:
 		return tactil_apuntar
 	return v
@@ -87,8 +101,39 @@ func apunta() -> bool:
 func hay_mando() -> bool:
 	return Input.get_connected_joypads().size() > 0
 
+## ¿Se controla ahora con el mando? (hay uno conectado y es lo último que se ha tocado)
+func con_mando() -> bool:
+	return usando_mando and hay_mando()
+
+func nombre_mando() -> String:
+	var ids := Input.get_connected_joypads()
+	return Input.get_joy_name(ids[0]) if ids.size() > 0 else ""
+
+## Vibración (débil = motor agudo, fuerte = motor grave). Solo si se juega con mando.
+func vibrar(debil: float, fuerte: float, duracion: float) -> void:
+	if not vibracion_activa or not con_mando():
+		return
+	for id in Input.get_connected_joypads():
+		Input.start_joy_vibration(id, clampf(debil, 0.0, 1.0), clampf(fuerte, 0.0, 1.0), duracion)
+
+func _marcar(mando: bool) -> void:
+	if usando_mando != mando:
+		usando_mando = mando
+		dispositivo_cambiado.emit(mando)
+
 ## Táctil (iPhone): mitad izquierda de la pantalla = mover, mitad derecha = apuntar y disparar (arrastrar). Sin dibujar sticks todavía.
 func _input(evento: InputEvent) -> void:
+	if evento is InputEventJoypadButton:
+		_marcar(true)
+		if evento.pressed and evento.button_index == JOY_BUTTON_LEFT_STICK:
+			correr_fijo = not correr_fijo
+	elif evento is InputEventJoypadMotion:
+		if absf(evento.axis_value) > 0.5:
+			_marcar(true)
+	elif evento is InputEventKey or evento is InputEventMouseButton:
+		_marcar(false)
+	elif evento is InputEventMouseMotion and (evento as InputEventMouseMotion).relative.length() > 2.0:
+		_marcar(false)
 	if evento is InputEventScreenTouch:
 		tactil = true
 		var mitad := get_viewport().get_visible_rect().size.x * 0.5

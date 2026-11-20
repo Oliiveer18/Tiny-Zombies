@@ -9,6 +9,8 @@ var zombis: Array[Zombi] = []
 var reticula: Reticula
 var texto: Label
 var depurar: Label
+var aviso: Label
+var _aviso_t := 0.0
 var _reinicio_t := -1.0
 
 func _ready() -> void:
@@ -55,13 +57,30 @@ func _interfaz() -> void:
 	texto.position = Vector2(16, 12)
 	texto.modulate = Color(1, 1, 1, 0.8)
 	capa.add_child(texto)
+	aviso = Label.new()
+	aviso.position = Vector2(16, 36)
+	aviso.modulate = Color(1, 1, 1, 0)
+	capa.add_child(aviso)
+	Input.joy_connection_changed.connect(_mando_cambio)
+	if Entrada.hay_mando():
+		_avisar("Mando conectado: %s" % Entrada.nombre_mando())
 	depurar = Label.new()
 	depurar.position = Vector2(16, 60)
 	depurar.modulate = Color(0.6, 1.0, 0.6, 0.9)
 	depurar.visible = false
 	capa.add_child(depurar)
 
+func _mando_cambio(_id: int, conectado: bool) -> void:
+	_avisar("Mando conectado: %s" % Entrada.nombre_mando() if conectado else "Mando desconectado")
+
+func _avisar(msg: String) -> void:
+	aviso.text = msg
+	_aviso_t = 3.0
+
 func _process(delta: float) -> void:
+	if _aviso_t > 0.0:
+		_aviso_t -= delta
+		aviso.modulate.a = clampf(_aviso_t, 0.0, 1.0) * 0.85
 	reticula.visible = jugador.apuntando and not jugador.muerto
 	if reticula.visible:
 		reticula.position = camara.unproject_position(jugador.punto_apunte)
@@ -95,4 +114,4 @@ func _actualizar_depuracion() -> void:
 		Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED) / 1048576.0,
 		c["dormido"], c["despertando"], c["investiga"], c["persigue"], c["deambula"],
 		"lista" if zombis.size() > 0 and zombis[0].nav_listo else "horneando…",
-		"sí" if Entrada.hay_mando() else "no"]
+		("%s (en uso)" % Entrada.nombre_mando() if Entrada.con_mando() else ("%s (sin tocar)" % Entrada.nombre_mando() if Entrada.hay_mando() else "no"))]

@@ -29,12 +29,13 @@ Un aviso: la documentación de la versión en desarrollo (4.8) sube el mínimo d
 | Apuntar | Ratón | Stick derecho | Mitad derecha: arrastrar |
 | Disparar | Clic izquierdo | R2 (o R1) | Arrastrar a la derecha |
 | Apuntar fijo | Clic derecho | L2 | — |
-| Correr | Mayús | Pulsar L3 | — |
+| Correr | Mayús | L1 (mantener) o L3 (pulsar: queda fijo) | — |
 | Agacharse | C / Ctrl | ○ | — |
 | Recargar | R | □ | — |
 | Reiniciar | Intro | Options | — |
 | Panel de depuración | F3 | Create | — |
-Para conectar el mando: Bluetooth del Mac → mantén **PS + Create** hasta que parpadee. Godot lo detecta solo.
+Para conectar el mando: Bluetooth del Mac → mantén **PS + Create** hasta que parpadee. Godot lo detecta solo (sale «Mando conectado» arriba).
+**Mando (DualSense):** el juego cambia solo entre ratón/teclado y mando según lo último que toques. Los sticks tienen zona muerta y curva fina; inclinar poco = ir más lento. **Vibración** al disparar, recargar y recibir daño. No soportados por Godot: gatillos adaptativos, giroscopio, panel táctil y luz del mando. Probado solo con eventos simulados (`pruebas/mando.gd`), no con un mando real.
 
 ## 4 · Qué hay en la escena
 - **Escenario** (todo por código, sin recursos externos): terreno con colinas y colisión (`HeightMapShape3D`), aldea con 4 casas con puerta, vallas, un coche, una **rampa con plataforma** para probar pendientes, 90 árboles y 70 arbustos (instanciados con `MultiMesh`), 7 cajas y 4 barriles que se **empujan** y reaccionan a los disparos, 2 farolas, sol con sombras. Sin niebla.
