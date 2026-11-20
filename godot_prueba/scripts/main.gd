@@ -69,6 +69,9 @@ func _interfaz() -> void:
 	depurar.modulate = Color(0.6, 1.0, 0.6, 0.9)
 	depurar.visible = false
 	capa.add_child(depurar)
+	var medidor := MedidorFps.new()
+	medidor.main = self
+	add_child(medidor)
 
 func _mando_cambio(_id: int, conectado: bool) -> void:
 	_avisar("Mando conectado: %s" % Entrada.nombre_mando() if conectado else "Mando desconectado")

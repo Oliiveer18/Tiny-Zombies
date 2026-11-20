@@ -51,7 +51,7 @@ func _configurar() -> void:
 		_accion(a, 0.25)
 	for a in ["disparar", "apuntar"]:
 		_accion(a, 0.5)
-	for a in ["correr", "correr_fijo", "agacharse", "recargar", "reiniciar", "depurar"]:
+	for a in ["correr", "correr_fijo", "agacharse", "recargar", "reiniciar", "depurar", "medidor", "grabar", "textura"]:
 		_accion(a)
 	# Movimiento: WASD / flechas / stick izquierdo
 	_tecla("mover_izq", KEY_A); _tecla("mover_izq", KEY_LEFT); _eje("mover_izq", JOY_AXIS_LEFT_X, -1.0)
@@ -72,6 +72,9 @@ func _configurar() -> void:
 	_tecla("recargar", KEY_R); _boton("recargar", JOY_BUTTON_X)
 	_tecla("reiniciar", KEY_ENTER); _boton("reiniciar", JOY_BUTTON_START)
 	_tecla("depurar", KEY_F3); _boton("depurar", JOY_BUTTON_BACK)
+	_tecla("medidor", KEY_M); _tecla("medidor", KEY_F2)
+	_tecla("grabar", KEY_G)
+	_tecla("textura", KEY_T); _tecla("textura", KEY_F4)
 
 ## Zona muerta circular con reescalado (no salta de 0 a 0,25) y curva suave: el inicio del recorrido es fino y el final llega a 1.
 func _stick(v: Vector2, zona: float) -> Vector2:

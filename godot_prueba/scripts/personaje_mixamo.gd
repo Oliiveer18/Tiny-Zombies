@@ -40,22 +40,7 @@ func cargar_rig(ruta_rig: String, ruta_glb_material: String, clips: Dictionary, 
 
 ## Toma el material del GLB original (textura de color, relieve y rugosidad) y lo pone sobre la malla del rig.
 func _poner_material(ruta_glb: String) -> void:
-	var original := (load(ruta_glb) as PackedScene).instantiate()
-	var mat: StandardMaterial3D = null
-	for m in original.find_children("*", "MeshInstance3D", true, false):
-		var mm := (m as MeshInstance3D).get_active_material(0)
-		if mm is StandardMaterial3D:
-			mat = (mm as StandardMaterial3D).duplicate() as StandardMaterial3D
-	original.queue_free()
-	if mat == null:
-		push_warning("No se encontró material en " + ruta_glb)
-		return
-	mat.metallic = 0.0
-	mat.metallic_texture = null
-	mat.roughness = 0.85
-	mat.roughness_texture = null
-	mat.cull_mode = BaseMaterial3D.CULL_BACK
-	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+	var mat := MaterialPersonaje.crear(ruta_glb)
 	for m in raiz.find_children("*", "MeshInstance3D", true, false):
 		var mi := m as MeshInstance3D
 		for i in mi.mesh.get_surface_count():
