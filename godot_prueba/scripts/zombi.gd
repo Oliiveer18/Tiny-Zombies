@@ -11,9 +11,9 @@ signal murio(zombi: Zombi)
 enum Estado { DORMIDO, DESPERTANDO, INVESTIGA, PERSIGUE, DEAMBULA, MUERTO }
 
 const USAR_RAGDOLL := true
-const VEL_DEAMBULA := 0.42
-const VEL_INVESTIGA := 0.36
-const VEL_PERSIGUE := 0.95
+const VEL_DEAMBULA := 0.3     # el clip de Mixamo recorre 0,24 m/s
+const VEL_INVESTIGA := 0.27
+const VEL_PERSIGUE := 1.0     # el clip recorre 1,06 m/s
 const VISTA := 3.6            # 5 m de Three.js / 1,4
 const VISTA_AGACHADO := 0.6
 const VISTA_CORRIENDO := 1.6
@@ -24,7 +24,7 @@ var objetivo: Jugador
 var estado := Estado.DORMIDO
 var hp := 3.0
 var nav_listo := false
-var modelo: Modelo3D
+var modelo: PersonajeMixamo
 var agente: NavigationAgent3D
 var obj_pos := Vector3.ZERO
 var causa := "vista"
@@ -46,6 +46,7 @@ var _golpe_t := 9.0
 var _golpe_dir := Vector3.ZERO
 var _golpe_hueso := "spine2"
 var _golpe_amp := 16.0
+var _encorvado := 0.0
 
 func _ready() -> void:
 	add_to_group("zombis")
@@ -62,9 +63,9 @@ func _ready() -> void:
 	col.shape = cap
 	col.position.y = 0.48
 	add_child(col)
-	modelo = Modelo3D.new()
+	modelo = PersonajeMixamo.new()
 	add_child(modelo)
-	modelo.cargar("res://modelos/zombi.glb", "res://datos/clips_zombi.json", 1.0)
+	modelo.cargar_rig("res://mixamo/zombi_rig.fbx", "res://modelos/zombi.glb", Config.clips_zombi())
 	modelo.rotation.y = _yaw
 	agente = NavigationAgent3D.new()
 	agente.path_desired_distance = 0.4
@@ -260,20 +261,25 @@ func _mirar_hacia(pos: Vector3, delta: float) -> void:
 # ---------- animación ----------
 func _animar(atacando: bool) -> void:
 	var v := Vector2(velocity.x, velocity.z).length()
+	var nat_andar: float = maxf(modelo.velocidad_natural.get("andar", 0.24), 0.1)
+	var nat_correr: float = maxf(modelo.velocidad_natural.get("correr", 1.06), 0.1)
 	match estado:
 		Estado.DORMIDO:
-			modelo.reproducir("idle", 0.3, 1.0)
+			modelo.congelar("morir", 0.0)  # no hay clip de reposo de zombi: primer fotograma de la muerte (de pie) + encorvado por código
 		Estado.DESPERTANDO:
-			modelo.reproducir("stand" if alerta else "wake", 0.15, 1.0 if alerta else 1.0 / maxf(t_desp, 0.3))
+			modelo.congelar("morir", 0.0)
 		Estado.INVESTIGA, Estado.DEAMBULA:
-			modelo.reproducir("walk" if v > 0.08 else "stand", 0.25, clampf(v / 0.35, 0.5, 2.0))
+			if v > 0.06:
+				modelo.reproducir("andar", 0.3, clampf(v / nat_andar, 0.5, 2.0))
+			else:
+				modelo.congelar("morir", 0.0)
 		Estado.PERSIGUE:
 			if atacando:
-				modelo.reproducir("attack", 0.1, 1.0)
+				modelo.reproducir("atacar", 0.15, 1.0)
 			elif v > 0.1:
-				modelo.reproducir("run", 0.2, clampf(v / 0.75, 0.5, 2.0))
+				modelo.reproducir("correr", 0.2, clampf(v / nat_correr, 0.5, 2.0))
 			else:
-				modelo.reproducir("stand", 0.2, 1.0)
+				modelo.congelar("morir", 0.0)
 
 ## Capa por código: la cabeza busca al jugador o el ruido, barre de lado a lado buscando, y el hueso golpeado cede con un muelle amortiguado.
 func _process(delta: float) -> void:
@@ -291,6 +297,16 @@ func _process(delta: float) -> void:
 		_mira = lerpf(_mira, m, minf(1.0, delta * 6.0))
 		modelo.sumar("neck", Vector3(0.0, _mira * 0.4, 0.0))
 		modelo.sumar("head", Vector3(0.0, _mira * 0.6, 0.0))
+	var enc := 0.0
+	if estado == Estado.DORMIDO:
+		enc = 1.0
+	elif estado == Estado.DESPERTANDO:
+		enc = 1.0 - clampf(t_estado / maxf(t_desp, 0.1), 0.0, 1.0)
+	_encorvado = lerpf(_encorvado, enc, minf(1.0, delta * 8.0))
+	if _encorvado > 0.02:
+		modelo.sumar("spine", Vector3(14.0 * _encorvado, 0.0, 0.0))
+		modelo.sumar("spine2", Vector3(12.0 * _encorvado, 0.0, 0.0))
+		modelo.sumar("head", Vector3(26.0 * _encorvado, 0.0, 6.0 * _encorvado))
 	if _golpe_t < 0.7:
 		_golpe_t += delta
 		var f := Vector3(sin(_yaw), 0.0, cos(_yaw))
@@ -313,11 +329,11 @@ func recibir_disparo(dir: Vector3, punto: Vector3, dano: float) -> void:
 		_golpe_hueso = "head"
 		_golpe_amp = 30.0
 	elif dy > 0.42:
-		_golpe_hueso = "leftarm" if lat < -0.12 else ("rightarm" if lat > 0.12 else "spine2")
-		_golpe_amp = 28.0 if _golpe_hueso != "spine2" else 16.0
+		_golpe_hueso = "spine2"
+		_golpe_amp = 20.0 if absf(lat) > 0.12 else 16.0
 	else:
-		_golpe_hueso = "leftupleg" if lat < 0.0 else "rightupleg"
-		_golpe_amp = 22.0
+		_golpe_hueso = "hips"
+		_golpe_amp = 14.0
 	_golpe_t = 0.0
 	_golpe_dir = dir
 	velocity += dir * 0.6

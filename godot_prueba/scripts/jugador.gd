@@ -5,9 +5,9 @@ extends CharacterBody3D
 
 signal murio
 
-const VEL_ANDAR := 1.1
-const VEL_CORRER := 2.4
-const VEL_AGACHADO := 0.6
+const VEL_ANDAR := 0.7       # el clip de Mixamo recorre 0,54 m/s (se acelera ×1,3 para ajustar el paso al suelo)
+const VEL_CORRER := 2.1      # el clip recorre 1,76 m/s
+const VEL_AGACHADO := 0.45
 const FACTOR_APUNTAR := 0.55
 const ACELERACION := 9.0
 const FRENADA := 13.0
@@ -19,7 +19,7 @@ const ALCANCE := 20.0
 const DISPERSION := 0.045
 
 var camara: CamaraTiny
-var modelo: Modelo3D
+var modelo: PersonajeMixamo
 var agachado := false
 var corre := false
 var apuntando := false
@@ -56,9 +56,10 @@ func _ready() -> void:
 	_col.shape = _cap
 	_col.position.y = 0.48
 	add_child(_col)
-	modelo = Modelo3D.new()
+	modelo = PersonajeMixamo.new()
 	add_child(modelo)
-	modelo.cargar("res://modelos/protagonista.glb", "res://datos/clips_humano.json", 1.0)
+	modelo.cargar_rig("res://mixamo/protagonista_rig.fbx", "res://modelos/protagonista.glb", Config.clips_protagonista())
+	modelo.poner_arma()
 
 func _physics_process(delta: float) -> void:
 	if muerto:
@@ -181,24 +182,20 @@ func _disparar() -> void:
 
 func _animar(hv: Vector3) -> void:
 	var v := hv.length()
+	var nat_andar: float = maxf(modelo.velocidad_natural.get("andar", 0.54), 0.1)
+	var nat_correr: float = maxf(modelo.velocidad_natural.get("correr", 1.76), 0.1)
 	if recargando > 0.0:
-		modelo.reproducir("reload", 0.15, 1.0)
-	elif apuntando:
-		var adel := 0.0
-		if v > 0.2:
-			adel = hv.normalized().dot(dir_apunte)
-		if v < 0.25:
-			modelo.reproducir("shoot_side", 0.15, 1.0)
-		elif adel < -0.35:
-			modelo.reproducir("shoot_back", 0.15, clampf(v / 0.45, 0.6, 2.0))
-		else:
-			modelo.reproducir("shoot_fwd", 0.15, clampf(v / 0.55, 0.6, 2.0))
+		modelo.reproducir("recargar", 0.2, 3.3 / T_RECARGA)  # el clip dura 3,3 s: se ajusta al tiempo de recarga
+	elif apuntando and Entrada.dispara() and v < 0.25:
+		modelo.reproducir("disparar", 0.1, 1.0)
+	elif apuntando and v < 0.25:
+		modelo.reproducir("apuntar", 0.2, 1.0)
 	elif v < 0.12:
-		modelo.reproducir("idle", 0.25, 1.0)
-	elif v < VEL_ANDAR * 1.5:
-		modelo.reproducir("walk", 0.2, clampf(v / 0.62, 0.5, 2.2))
+		modelo.reproducir("apuntar", 0.25, 1.0)  # no hay clip de reposo: se usa el de apuntar con fusil
+	elif v < VEL_ANDAR * 1.5 or agachado:
+		modelo.reproducir("andar", 0.2, clampf(v / nat_andar, 0.5, 2.2))
 	else:
-		modelo.reproducir("run", 0.2, clampf(v / 1.48, 0.6, 2.0))
+		modelo.reproducir("correr", 0.2, clampf(v / nat_correr, 0.6, 2.0))
 
 ## Capa por código encima de la animación (como en Three.js): inclinación al arrancar/frenar/correr, ladeo al girar, retroceso del arma y agachado.
 func _process(delta: float) -> void:
@@ -217,8 +214,6 @@ func _process(delta: float) -> void:
 	modelo.sumar("spine", Vector3(_lean * 0.6 - 5.0 * _retro + 12.0 * ag, 0.0, _roll * 0.5))
 	modelo.sumar("spine2", Vector3(_lean * 0.4 - 3.5 * _retro + 8.0 * ag, 0.0, _roll * 0.4))
 	modelo.sumar("head", Vector3(-_lean * 0.3 - 3.0 * _retro - 10.0 * ag, 0.0, -_roll * 0.3))
-	modelo.sumar("leftarm", Vector3(-6.0 * _retro, 0.0, 0.0))
-	modelo.sumar("rightarm", Vector3(-8.0 * _retro, 0.0, 0.0))
 	modelo.scale.y = lerpf(modelo.scale.y, 0.82 if agachado else 1.0, minf(1.0, delta * 10.0))
 
 func recibir_dano(cantidad: float) -> void:

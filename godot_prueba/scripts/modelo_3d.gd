@@ -72,8 +72,10 @@ func activar_ragdoll(impulso: Vector3) -> void:
 	anim.stop()
 	_sim = PhysicalBoneSimulator3D.new()
 	esqueleto.add_child(_sim)
-	var claves := ["hips", "spine", "spine2", "neck", "head", "leftarm", "leftforearm", "lefthand", "rightarm", "rightforearm", "righthand", "leftupleg", "leftleg", "leftfoot", "rightupleg", "rightleg", "rightfoot"]
-	var hijo := {"hips": "spine", "spine": "spine2", "spine2": "neck", "neck": "head", "leftarm": "leftforearm", "leftforearm": "lefthand", "rightarm": "rightforearm", "rightforearm": "righthand", "leftupleg": "leftleg", "leftleg": "leftfoot", "rightupleg": "rightleg", "rightleg": "rightfoot"}
+	var claves := ["hips", "spine", "spine1", "spine2", "neck", "head", "leftarm", "leftforearm", "lefthand", "rightarm", "rightforearm", "righthand", "leftupleg", "leftleg", "leftfoot", "rightupleg", "rightleg", "rightfoot"]
+	var hijo := {"hips": "spine", "spine": "spine1", "spine1": "spine2", "spine2": "neck", "neck": "head", "leftarm": "leftforearm", "leftforearm": "lefthand", "rightarm": "rightforearm", "rightforearm": "righthand", "leftupleg": "leftleg", "leftleg": "leftfoot", "leftfoot": "lefttoebase", "rightupleg": "rightleg", "rightleg": "rightfoot", "rightfoot": "righttoebase"}
+	if not huesos.has("spine1"):  # esqueleto antiguo de 17 huesos
+		hijo["spine"] = "spine2"
 	var cuerpos: Array[PhysicalBone3D] = []
 	for c in claves:
 		var idx: int = huesos.get(c, -1)
@@ -100,7 +102,7 @@ func activar_ragdoll(impulso: Vector3) -> void:
 		if dir.dot(Vector3.UP) < 0.999 and dir.dot(Vector3.UP) > -0.999:
 			base = Basis(Quaternion(Vector3.UP, dir))
 		cs.transform = Transform3D(base, dir * largo * 0.5)
-		pb.mass = 4.0 if (c == "hips" or c == "spine" or c == "spine2") else 1.5
+		pb.mass = 4.0 if (c == "hips" or c.begins_with("spine")) else 1.5
 		pb.collision_layer = Capas.RAGDOLL
 		pb.collision_mask = Capas.MUNDO | Capas.MUROS | Capas.PROPS
 		if c == "hips":
@@ -118,3 +120,12 @@ func activar_ragdoll(impulso: Vector3) -> void:
 	_sim.physical_bones_start_simulation()
 	for pb in cuerpos:
 		pb.apply_central_impulse(impulso * pb.mass * 0.35)
+
+## Deja una animación parada en un instante (p. ej. el primer fotograma como postura de reposo).
+func congelar(nombre: String, t: float = 0.0) -> void:
+	if anim == null or not anim.has_animation(nombre):
+		return
+	if anim.current_animation != nombre or anim.is_playing():
+		anim.play(nombre)
+		anim.seek(t, true)
+		anim.pause()
