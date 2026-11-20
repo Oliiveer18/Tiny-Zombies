@@ -410,3 +410,8 @@ Técnico: `MOVE={size:1.4,top:1.15,...}`; `K()=player.base*MOVE.size`; `topSpeed
 ## Cámara definitiva (17 nov 2026, solo documentos)
 **Resumen fácil:** has elegido la cámara «Tiny» (16,4 m · 58°) y queda como la definitiva. Lo he dejado escrito en las normas y en la referencia visual, junto con lo que implica: el personaje ocupa 1/16 del alto de la pantalla, así que los modelos nuevos se juzgarán por su silueta y sus bloques de color vistos a ese tamaño. No he cambiado nada del juego.
 **Técnico:** `CLAUDE.md` norma 1, `REFERENCIA_VISUAL.md` (criterios de tamaño, visibilidad, presupuesto y escala), `ROADMAP.md` (R1 validado), `CONTINUAR.md` (estado y pendientes). Sin cambios de código: «Tiny» aún no es la cámara por defecto (fleco de R1 anotado).
+
+
+## 20 nov · Godot: repertorio ampliado
+**Resumen fácil:** el protagonista ya se agacha, se desliza al agacharse corriendo, reacciona al golpe y muere con animación. Los zombis duermen tumbados, se levantan, gritan, reaccionan a los disparos y tienen una postura de espera. Probado solo en capturas por software; falta verlo en tu Mac.
+Detalle técnico: ver `docs/CALIDAD_PERSONAJES_GODOT.md` §6.

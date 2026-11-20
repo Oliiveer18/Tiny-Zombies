@@ -7,7 +7,10 @@ signal murio
 
 const VEL_ANDAR := 0.7       # el clip de Mixamo recorre 0,54 m/s (se acelera ×1,3 para ajustar el paso al suelo)
 const VEL_CORRER := 2.1      # el clip recorre 1,76 m/s
-const VEL_AGACHADO := 0.45
+const VEL_AGACHADO := 0.45   # el clip recorre 0,39 m/s
+const T_DESLIZAR := 1.2       # el clip dura 1,53 s y recorre 1,8 m/s: se acelera para que dure 1,2 s (≈ 2,3 m/s al empezar, frenando)
+const VEL_DESLIZAR := 2.3
+const T_GOLPE := 0.8
 const FACTOR_APUNTAR := 0.55
 const ACELERACION := 9.0
 const FRENADA := 13.0
@@ -32,6 +35,9 @@ var punto_apunte := Vector3.ZERO
 var velocidad_h := 0.0
 
 var _cd := 0.0
+var _deslizando := 0.0
+var _dir_slide := Vector3.ZERO
+var _t_golpe := 0.0
 var _t_paso := 0.0
 var _yaw := 0.0
 var _giro := 0.0
@@ -69,7 +75,13 @@ func _physics_process(delta: float) -> void:
 	var m := Entrada.vector_mover()
 	apuntando = Entrada.apunta() or Entrada.dispara()
 	if Input.is_action_just_pressed("agacharse"):
-		_poner_agachado(not agachado)
+		if corre and velocidad_h > 1.2 and _deslizando <= 0.0:
+			_deslizando = T_DESLIZAR
+			_dir_slide = Vector3(velocity.x, 0.0, velocity.z).normalized()
+			_poner_agachado(true)
+		elif _deslizando <= 0.0:
+			_poner_agachado(not agachado)
+	_t_golpe = maxf(0.0, _t_golpe - delta)
 	corre = Input.is_action_pressed("correr") and not agachado and not apuntando and m.length() > 0.3
 	# --- movimiento horizontal con aceleración y frenada ---
 	var vel_max := VEL_CORRER if corre else (VEL_AGACHADO if agachado else VEL_ANDAR)
@@ -79,8 +91,16 @@ func _physics_process(delta: float) -> void:
 	if objetivo_v.length() > 1.0:
 		objetivo_v = objetivo_v.normalized()
 	objetivo_v *= vel_max
+	if _deslizando > 0.0:  # deslizándose: sigue recto y frena poco a poco
+		_deslizando -= delta
+		objetivo_v = _dir_slide * lerpf(0.4, VEL_DESLIZAR, clampf(_deslizando / T_DESLIZAR, 0.0, 1.0))
+		dir_apunte = _dir_slide
+		if _deslizando <= 0.0:
+			_poner_agachado(true)
 	var hv := Vector3(velocity.x, 0.0, velocity.z)
 	var tasa := ACELERACION if objetivo_v.length() > 0.01 else FRENADA
+	if _deslizando > 0.0:
+		tasa = 40.0
 	hv = hv.move_toward(objetivo_v, tasa * delta)
 	# --- gravedad y pendientes ---
 	if is_on_floor():
@@ -114,7 +134,7 @@ func _physics_process(delta: float) -> void:
 			recargando = 0.0
 	elif Input.is_action_just_pressed("recargar") and balas < CARGADOR:
 		recargando = T_RECARGA
-	elif Entrada.dispara() and _cd <= 0.0:
+	elif Entrada.dispara() and _cd <= 0.0 and _deslizando <= 0.0:
 		if balas > 0:
 			_disparar()
 		else:
@@ -184,6 +204,19 @@ func _animar(hv: Vector3) -> void:
 	var v := hv.length()
 	var nat_andar: float = maxf(modelo.velocidad_natural.get("andar", 0.54), 0.1)
 	var nat_correr: float = maxf(modelo.velocidad_natural.get("correr", 1.76), 0.1)
+	var nat_agach: float = maxf(modelo.velocidad_natural.get("agachado_andar", 0.39), 0.1)
+	if _deslizando > 0.0:
+		modelo.reproducir("deslizar", 0.1, 1.53 / T_DESLIZAR)
+		return
+	if _t_golpe > 0.0:
+		modelo.reproducir("golpe", 0.05, 2.3 / T_GOLPE)
+		return
+	if agachado:
+		if v < 0.1:
+			modelo.reproducir("agachado_quieto", 0.2, 1.0)
+		else:
+			modelo.reproducir("agachado_andar", 0.2, clampf(v / nat_agach, 0.5, 2.2))
+		return
 	if recargando > 0.0:
 		modelo.reproducir("recargar", 0.2, 3.3 / T_RECARGA)  # el clip dura 3,3 s: se ajusta al tiempo de recarga
 	elif apuntando and Entrada.dispara() and v < 0.25:
@@ -210,11 +243,11 @@ func _process(delta: float) -> void:
 	_lean = lerpf(_lean, lean_obj, minf(1.0, delta * 10.0))
 	_roll = lerpf(_roll, roll_obj, minf(1.0, delta * 10.0))
 	_retro = maxf(0.0, _retro - delta * 10.0)
-	var ag := 1.0 if agachado else 0.0
-	modelo.sumar("spine", Vector3(_lean * 0.6 - 5.0 * _retro + 12.0 * ag, 0.0, _roll * 0.5))
-	modelo.sumar("spine2", Vector3(_lean * 0.4 - 3.5 * _retro + 8.0 * ag, 0.0, _roll * 0.4))
-	modelo.sumar("head", Vector3(-_lean * 0.3 - 3.0 * _retro - 10.0 * ag, 0.0, -_roll * 0.3))
-	modelo.scale.y = lerpf(modelo.scale.y, 0.82 if agachado else 1.0, minf(1.0, delta * 10.0))
+	if _deslizando > 0.0 or _t_golpe > 0.0:
+		return
+	modelo.sumar("spine", Vector3(_lean * 0.6 - 5.0 * _retro, 0.0, _roll * 0.5))
+	modelo.sumar("spine2", Vector3(_lean * 0.4 - 3.5 * _retro, 0.0, _roll * 0.4))
+	modelo.sumar("head", Vector3(-_lean * 0.3 - 3.0 * _retro, 0.0, -_roll * 0.3))
 
 func recibir_dano(cantidad: float) -> void:
 	if muerto:
@@ -222,5 +255,7 @@ func recibir_dano(cantidad: float) -> void:
 	hp -= cantidad
 	if hp <= 0.0:
 		muerto = true
-		modelo.reproducir("die", 0.1, 1.0)
+		modelo.reproducir("morir", 0.1, 1.0)
 		murio.emit()
+	else:
+		_t_golpe = T_GOLPE

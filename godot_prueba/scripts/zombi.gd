@@ -46,7 +46,6 @@ var _golpe_t := 9.0
 var _golpe_dir := Vector3.ZERO
 var _golpe_hueso := "spine2"
 var _golpe_amp := 16.0
-var _encorvado := 0.0
 
 func _ready() -> void:
 	add_to_group("zombis")
@@ -92,7 +91,8 @@ func despertar(pos: Vector3, motivo: String, factor: float = 1.0) -> void:
 	alerta = estado != Estado.DORMIDO
 	causa = motivo
 	obj_pos = pos
-	t_desp = randf_range(0.6, 1.2) * factor * (0.6 if alerta else 1.0)
+	# dormido: se levanta del suelo (clip de 6 s acelerado ×3,2); ya despierto: grita antes de ir (clip de 2,8 s ×2,8 = 1 s)
+	t_desp = 1.0 if alerta else randf_range(1.7, 2.0)
 	_poner_estado(Estado.DESPERTANDO)
 
 # ---------- percepción ----------
@@ -265,21 +265,28 @@ func _animar(atacando: bool) -> void:
 	var nat_correr: float = maxf(modelo.velocidad_natural.get("correr", 1.06), 0.1)
 	match estado:
 		Estado.DORMIDO:
-			modelo.congelar("morir", 0.0)  # no hay clip de reposo de zombi: primer fotograma de la muerte (de pie) + encorvado por código
+			modelo.congelar("levantarse", 0.0)  # tumbado en el suelo (primer fotograma de levantarse)
 		Estado.DESPERTANDO:
-			modelo.congelar("morir", 0.0)
+			if alerta:
+				modelo.reproducir("gritar", 0.2, 2.8)
+			else:
+				modelo.reproducir("levantarse", 0.05, 3.2)
 		Estado.INVESTIGA, Estado.DEAMBULA:
-			if v > 0.06:
+			if _golpe_t < 0.7 and v < 0.06:
+				modelo.reproducir("golpe", 0.08, 2.8)
+			elif v > 0.06:
 				modelo.reproducir("andar", 0.3, clampf(v / nat_andar, 0.5, 2.0))
 			else:
-				modelo.congelar("morir", 0.0)
+				modelo.reproducir("reposo", 0.3, 1.0)
 		Estado.PERSIGUE:
 			if atacando:
 				modelo.reproducir("atacar", 0.15, 1.0)
 			elif v > 0.1:
 				modelo.reproducir("correr", 0.2, clampf(v / nat_correr, 0.5, 2.0))
+			elif _golpe_t < 0.7:
+				modelo.reproducir("golpe", 0.08, 2.8)
 			else:
-				modelo.congelar("morir", 0.0)
+				modelo.reproducir("reposo", 0.3, 1.0)
 
 ## Capa por código: la cabeza busca al jugador o el ruido, barre de lado a lado buscando, y el hueso golpeado cede con un muelle amortiguado.
 func _process(delta: float) -> void:
@@ -297,16 +304,6 @@ func _process(delta: float) -> void:
 		_mira = lerpf(_mira, m, minf(1.0, delta * 6.0))
 		modelo.sumar("neck", Vector3(0.0, _mira * 0.4, 0.0))
 		modelo.sumar("head", Vector3(0.0, _mira * 0.6, 0.0))
-	var enc := 0.0
-	if estado == Estado.DORMIDO:
-		enc = 1.0
-	elif estado == Estado.DESPERTANDO:
-		enc = 1.0 - clampf(t_estado / maxf(t_desp, 0.1), 0.0, 1.0)
-	_encorvado = lerpf(_encorvado, enc, minf(1.0, delta * 8.0))
-	if _encorvado > 0.02:
-		modelo.sumar("spine", Vector3(14.0 * _encorvado, 0.0, 0.0))
-		modelo.sumar("spine2", Vector3(12.0 * _encorvado, 0.0, 0.0))
-		modelo.sumar("head", Vector3(26.0 * _encorvado, 0.0, 6.0 * _encorvado))
 	if _golpe_t < 0.7:
 		_golpe_t += delta
 		var f := Vector3(sin(_yaw), 0.0, cos(_yaw))
@@ -339,7 +336,9 @@ func recibir_disparo(dir: Vector3, punto: Vector3, dano: float) -> void:
 	velocity += dir * 0.6
 	if hp <= 0.0:
 		morir(dir)
-	elif estado != Estado.PERSIGUE and objetivo != null:
+	elif estado == Estado.DORMIDO and objetivo != null:
+		despertar(objetivo.global_position, "vista")
+	elif estado != Estado.PERSIGUE and estado != Estado.DESPERTANDO and objetivo != null:
 		obj_pos = objetivo.global_position
 		_poner_estado(Estado.PERSIGUE)
 

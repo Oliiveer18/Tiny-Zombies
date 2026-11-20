@@ -57,3 +57,7 @@ Material recibido: rig estándar de Mixamo para los dos personajes (33 huesos: c
 4. **Las mezclas entre clips** son fundidos simples; un `AnimationTree` con espacios de mezcla y capas (torso/piernas) daría más calidad.
 5. El disparo de Mixamo dura 0,27 s: se repite en bucle al disparar de forma continua.
 **Conclusión del piloto:** el rig y las animaciones de Mixamo suponen un salto claro de calidad en deformación y naturalidad, y Godot los integra bien. **Recomiendo ampliar el repertorio.** Falta el juicio del usuario sobre el movimiento en tiempo real (en Mac/iPhone).
+
+## 6. Repertorio ampliado (20 nov)
+Protagonista (Mixamo): + morir (`Rifle_Death`), golpe (`Hit_Reaction`), deslizar (`Running_Slide`, al agacharse corriendo), agachado andar/quieto. Zombi (Mixamo): + levantarse (dormido tumbado → se levanta, clip de 6 s a ×3,2), gritar (×2,8, si ya estaba despierto), golpe (×2,8, solo si no corre), reposo (`Thriller_Idle`). Se retira el «encorvado» por código del zombi.
+Comprobado en banco de capturas (render por software, sin errores de script): deslizar, agachado, golpe y muerte del jugador; zombi tumbado → despierta → persigue → muere en ragdoll. Sin medir fps reales ni probar en Mac/iPhone.
